@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 public class Data : MonoBehaviour
 {
-    public int winnerID;
-    public int numPlayers;
-    public int totalScore;
 
     public float musicVolume = 1;
     public float soundsVolume = 1;
@@ -16,6 +13,10 @@ public class Data : MonoBehaviour
     static Data mInstance = null;
 
     public List<Color> colors; 
+    [HideInInspector]
+    public LevelData levelData;
+    [HideInInspector]
+    public Levels levels;
 
     public static Data Instance
     {
@@ -47,6 +48,9 @@ public class Data : MonoBehaviour
             return;
         }
 
+        levelData = GetComponent<LevelData>();
+        levels = GetComponent<Levels>();
+
         DontDestroyOnLoad(this.gameObject);
 
         GetComponent<UserData>().Init();
@@ -59,10 +63,6 @@ public class Data : MonoBehaviour
     void OnSoundsVolumeChanged(float value)
     {
         soundsVolume = value;
-    }
-    void OnBadgeSelected(int _totalScore)
-    {
-        this.totalScore = _totalScore;
     }
     public void Reset()
     {

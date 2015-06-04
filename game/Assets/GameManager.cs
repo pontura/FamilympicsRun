@@ -8,20 +8,29 @@ public class GameManager : MonoBehaviour {
     Lane lane;
     [SerializeField]
     Player player;
+    [SerializeField]
+    GameObject container;
+    [SerializeField]
+    GameObject gameCanvas;
+    [SerializeField]
+    Chronometer chronometer;
 
     public List<Lane> lanes;
     public List<Player> players;
 
-    public GameObject lanesContainer;
+    public List<GameObject> containers;
 
-    public float speed;
-    public float distance;
+    private float speed = 0;
+    private float targetSpeed;
+    private float acceleration;
 
     public GameCamera gameCamera;
 
-    public int LaneSeparation = 50;
+    private float LaneSeparation = 2.5f;
+    private float scaleFactor;
 
     public states state;
+
     public enum states
     {
         IDLE,
@@ -29,42 +38,77 @@ public class GameManager : MonoBehaviour {
     }
 
 	void Start () {
-        Events.StartGame += StartGame;
-        Events.OnAvatarRun += OnAvatarRun;
-        Events.OnAvatarDie += OnAvatarDie;
 
-        lanesContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, ((Data.Instance.numPlayers - 1) * LaneSeparation) /2);
-        for (int a = 0; a < Data.Instance.numPlayers; a++)
+        Levels.LevelData levelData = Data.Instance.GetComponent<Levels>().GetCurrentLevelData();
+        targetSpeed = levelData.targetSpeed;
+        acceleration = levelData.acceleration;
+
+        float offsetY = ((Data.Instance.levelData.numPlayers-1))*(LaneSeparation/2);
+        for (int a = 0; a < Data.Instance.levelData.numPlayers; a++)
         {
+            GameObject newContainer = Instantiate(container) as GameObject;
+            newContainer.GetComponent<GameCamera>().id = a + 1;
+            containers.Add(newContainer);
+            newContainer.transform.SetParent(gameCanvas.transform);
+            Vector3 pos = new Vector3(0, offsetY, 0);
+            newContainer.transform.localPosition = pos;
+            newContainer.transform.localScale = Vector3.one;
+
             Lane newLane = Instantiate(lane) as Lane;
-            newLane.transform.SetParent(lanesContainer.transform);
+            newLane.transform.SetParent(newContainer.transform);
             lanes.Add(newLane);
-            newLane.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, a * -LaneSeparation);
+            newLane.GetComponent<Transform>().localPosition = new Vector2(0, a * -LaneSeparation);
+            newLane.Init(newContainer.GetComponent<GameCamera>());
 
 
             Player newPlayer = Instantiate(player) as Player;
             newPlayer.SetColor(Data.Instance.colors[a]);
-            newPlayer.transform.SetParent(lanesContainer.transform);
+            newPlayer.transform.SetParent(newContainer.transform);
             players.Add(newPlayer);
-            newPlayer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, a * -LaneSeparation);
+            newPlayer.GetComponent<Transform>().localPosition = new Vector2(-18f, a * -LaneSeparation);
             newPlayer.id = a + 1;
+            newPlayer.Init(newContainer.GetComponent<GameCamera>());
         }
+
+        //scaleFactor = containers[0].GetComponentInParent<Canvas>().scaleFactor;
+        Events.StartGame += StartGame;
+        Events.OnAvatarRun += OnAvatarRun;
+        Events.OnAvatarJump += OnAvatarJump;
+        Events.OnAvatarDie += OnAvatarDie;
+        Events.OnAvatarWinLap += OnAvatarWinLap;
+
+        LaneSeparation /= scaleFactor;
+
         Invoke("OnPowerUp", Random.Range(3,6));
 	}
+    
+    
+    void OnDestroy()
+    {
+        Events.StartGame -= StartGame;
+        Events.OnAvatarRun -= OnAvatarRun;
+        Events.OnAvatarJump -= OnAvatarJump;
+        Events.OnAvatarDie -= OnAvatarDie;
+        Events.OnAvatarWinLap -= OnAvatarWinLap;
+    }
     void OnPowerUp()
     {
         Events.OnPowerUpOn();
         Invoke("OnPowerUp", Random.Range(5, 12));
     }
-    void OnDestroy()
+    void OnAvatarWinLap(int playerID, int count)
     {
-        Events.StartGame -= StartGame;
-        Events.OnAvatarRun -= OnAvatarRun;
-        Events.OnAvatarDie -= OnAvatarDie;
+        if (Data.Instance.levels.GetCurrentLevelData().totalLaps == count)
+            OnPlayerWin(playerID);
     }
     void StartGame()
     {
         state = states.PLAYING;
+    }
+    void OnAvatarJump(int id)
+    {
+        if (state == states.IDLE) return;
+        players[id - 1].Jump();
     }
     void OnAvatarRun(int id)
     {
@@ -74,34 +118,28 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         if (state == states.IDLE) return;
-        float realSpeed = (speed*100)*Time.deltaTime;
-        distance += realSpeed;
-        gameCamera.Move(realSpeed);
+
+        if (speed < targetSpeed) speed += acceleration;
+        float realSpeed = speed*Time.deltaTime;        
+
+        foreach (GameObject container in containers)
+            container.GetComponent<GameCamera>().Move(realSpeed);
 
         foreach (Lane lane in lanes)
-        {
-            lane.UpdatePosition(distance);
-        }
+            lane.UpdatePosition();
+
         foreach (Player player in players)
-        {
-            if (player.state != Player.states.DEAD)
-            {
-                float playerDistance = player.transform.localPosition.x;
-
-                if(player.id == 1)
-                 print(playerDistance - distance); 
-
-                if (distance - playerDistance > 400)
-                    player.Dead();
-                else if (playerDistance - distance  > 400)
-                    player.Win();
-            }
-        }
+            player.UpdatePosition();
     }
-    void OnPlayerWin(int id)
+    void OnPlayerWin(int player_id)
     {
-        Data.Instance.winnerID = id;
-        Application.LoadLevel("Results");
+         int laps =  Data.Instance.levels.GetCurrentLevelData().totalLaps;
+         float time = chronometer.timer;
+         Data.Instance.levelData.SetResultValues(player_id, laps, time);
+        if(Data.Instance.levelData.numPlayers>1)
+            Application.LoadLevel("Results");
+        else
+            Application.LoadLevel("Summary");
     }
     void OnAvatarDie(Player _player)
     {
@@ -112,6 +150,6 @@ public class GameManager : MonoBehaviour {
                 playersDead++;
         }
         if (playersDead == players.Count)
-            Application.LoadLevel("MainMenu");
+            Application.LoadLevel("LevelSelector");
     }
 }

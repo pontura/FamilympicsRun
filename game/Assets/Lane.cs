@@ -4,16 +4,25 @@ using System.Collections;
 public class Lane : MonoBehaviour {
 
     private float lastDistance;
+    private float distToLoop = 2.98f;
+    private float scaleFactor;
+    private GameCamera gameCamera;
 
-    public void UpdatePosition(float distance)
+    public void Init(GameCamera _gameCamera)
+    {
+        gameCamera = _gameCamera;
+     //   scaleFactor = GetComponentInParent<Canvas>().scaleFactor;
+        //distToLoop /= scaleFactor;
+    }
+    public void UpdatePosition()
     {        
         Vector3 pos = transform.localPosition;
-        if (distance > lastDistance+20)
+        if (gameCamera.distance > lastDistance + distToLoop)
         {
 
-            pos.x = distance;
+            pos.x = gameCamera.distance;
             transform.localPosition = pos;
-            lastDistance = distance + 20;
+            lastDistance = gameCamera.distance + distToLoop;
         }
         
     }

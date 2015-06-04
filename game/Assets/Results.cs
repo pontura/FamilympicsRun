@@ -7,12 +7,12 @@ public class Results : MonoBehaviour {
     public Image player;
 	// Use this for initialization
 	void Start () {
-        int id = Data.Instance.winnerID;
+        int id = Data.Instance.levelData.winnerID;
         player.color = Data.Instance.colors[id - 1];
 	}
 	
 	// Update is called once per frame
 	public void Back () {
-        Application.LoadLevel("MainMenu");
+        Application.LoadLevel("LevelSelector");
 	}
 }

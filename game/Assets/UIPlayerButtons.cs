@@ -13,16 +13,23 @@ public class UIPlayerButtons : MonoBehaviour {
     [SerializeField]
     Button button2;
     private Button activeButton;
-    float scaleSmall = 0.38f;
-    float scaleBig = 0.42f;
+    float scaleSmall;
+    float scaleBig;
 
 
-	void Start () {
+	public void Init (int id) {
+        this.id = id;
+        scaleBig = button1.transform.localScale.x;
+        scaleSmall = scaleBig - 0.04f;
         Events.OnAvatarDie += OnAvatarDie;
         Events.OnAvatarWinLap += OnAvatarWinLap;
-        if (Data.Instance.numPlayers < 3 && id > 2) Destroy(gameObject);
-        else if (Data.Instance.numPlayers < 4 && id > 3) Destroy(gameObject);
+        if (Data.Instance.levelData.numPlayers < 2 && id > 1) Destroy(gameObject);
+        if (Data.Instance.levelData.numPlayers < 3 && id > 2) Destroy(gameObject);
+        else if (Data.Instance.levelData.numPlayers < 4 && id > 3) Destroy(gameObject);
 
+        button1.GetComponent<Image>().color = Data.Instance.colors[id - 1];
+        button2.GetComponent<Image>().color = Data.Instance.colors[id - 1];
+        lapsLabel.GetComponent<Text>().color = Data.Instance.colors[id - 1];
 	}
     void OnDestroy()
     {
@@ -41,7 +48,10 @@ public class UIPlayerButtons : MonoBehaviour {
         if(player.id == id)
             Destroy(gameObject);
     }
-
+    public void MidButtonPressed()
+    {
+        Events.OnAvatarJump(id);
+    }
     public void PressedButton(int num)
     {
         Button buttonPressed;

@@ -23,12 +23,15 @@ public static class Events {
 
     //this game
     public static System.Action<int> OnAvatarRun = delegate { };
+    public static System.Action<int> OnAvatarJump = delegate { };
     public static System.Action<Player> OnAvatarDie = delegate { };
+
+    //playerID, laps Count
     public static System.Action<int, int> OnAvatarWinLap = delegate { };
     
 
     public static System.Action OnPowerUpOn = delegate { };
-    public static System.Action<int, int> OnPowerUpActive = delegate { };
+    public static System.Action<int, Powerups.types> OnPowerUpActive = delegate { };
     
     
 

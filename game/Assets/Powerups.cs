@@ -5,7 +5,7 @@ using System.Collections;
 public class Powerups : MonoBehaviour {
 
     private int timeToReset = 2;
-    public int id;
+    public int playerId;
     public int powerUpActive;
     public types type;
 
@@ -66,6 +66,11 @@ public class Powerups : MonoBehaviour {
     }
     public void Clicked(int type)
     {
-
+        switch (type)
+        {
+            case 1: Events.OnPowerUpActive(playerId, types.FORWARD); break;
+            case 2: Events.OnPowerUpActive(playerId, types.PAUSE); break;
+            default: Events.OnPowerUpActive(playerId, types.REWIND); break;
+        }
     }
 }
