@@ -16,10 +16,12 @@ public class ProfileModule : MonoBehaviour {
     }
     public void SetOn()
     {
-        usernameLabel.text = Data.Instance.userData.username;
-        profilePicture.setPicture(Data.Instance.userData.facebookID);
         usernameLabel.gameObject.SetActive(true);
         profilePicture.gameObject.SetActive(true);
+
+        usernameLabel.text = Data.Instance.userData.username;
+        profilePicture.setPicture(Data.Instance.userData.facebookID);
+        
 	}
     public void SetOff()
     {

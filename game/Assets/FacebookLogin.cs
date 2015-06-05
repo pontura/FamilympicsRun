@@ -56,16 +56,16 @@ public class FacebookLogin : MonoBehaviour
 
     private void OnHideUnity(bool isGameShown)
     {
-        if (!isGameShown)
-        {
-            // pause the game - we will need to hide
-            Time.timeScale = 0;
-        }
-        else
-        {
-            // start the game back up - we're getting focus again
-            Time.timeScale = 1;
-        }
+        //if (!isGameShown)
+        //{
+        //    // pause the game - we will need to hide
+        //    Time.timeScale = 0;
+        //}
+        //else
+        //{
+        //    // start the game back up - we're getting focus again
+        //    Time.timeScale = 1;
+        //}
     }
 
     private IEnumerator ParseLogin()
@@ -103,7 +103,8 @@ public class FacebookLogin : MonoBehaviour
     public void FBLogin()
     {
         // Logging in with Facebook
-        FB.Login("user_about_me, user_relationships, user_birthday, user_location", FBLoginCallback);
+      //  FB.Login("user_about_me, user_relationships, user_birthday, user_location", FBLoginCallback);
+        FB.Login("user_about_me, user_relationships, user_location", FBLoginCallback);
     }
 
     private void FBLoginCallback(FBResult result)
@@ -137,36 +138,38 @@ public class FacebookLogin : MonoBehaviour
         }
         else
         {
+            print("HOLA");
             // Got user profile info
             var resultObject = Json.Deserialize(result.Text) as Dictionary<string, object>;
             var userProfile = new Dictionary<string, string>();
 
-            Data.Instance.userData.RegisterUser(getDataValueForKey(resultObject, "name"), getDataValueForKey(resultObject, "id"));
+
+            Data.Instance.userData.RegisterUser(getDataValueForKey(resultObject, "name"), getDataValueForKey(resultObject, "id"), getDataValueForKey(resultObject, "email"));
             profileModule.SetOn();
 
 
-            userProfile["facebookId"] = getDataValueForKey(resultObject, "id");
+           // userProfile["facebookId"] = getDataValueForKey(resultObject, "id");
             userProfile["name"] = getDataValueForKey(resultObject, "name");
-            object location;
-            if (resultObject.TryGetValue("location", out location))
-            {
-                userProfile["location"] = (string)(((Dictionary<string, object>)location)["name"]);
-            }
-            userProfile["gender"] = getDataValueForKey(resultObject, "gender");
-            userProfile["birthday"] = getDataValueForKey(resultObject, "birthday");
-            userProfile["relationship"] = getDataValueForKey(resultObject, "relationship_status");
-            if (userProfile["facebookId"] != "")
-            {
-                userProfile["pictureURL"] = "https://graph.facebook.com/" + userProfile["facebookId"] + "/picture?type=large&return_ssl_resources=1";
-            }
+           // //object location;
+           // //if (resultObject.TryGetValue("location", out location))
+           // //{
+           // //    userProfile["location"] = (string)(((Dictionary<string, object>)location)["name"]);
+           // //}
+           // userProfile["gender"] = getDataValueForKey(resultObject, "gender");
+           //// userProfile["birthday"] = getDataValueForKey(resultObject, "birthday");
+           // //userProfile["relationship"] = getDataValueForKey(resultObject, "relationship_status");
+           // //if (userProfile["facebookId"] != "")
+           // //{
+           // //    userProfile["pictureURL"] = "https://graph.facebook.com/" + userProfile["facebookId"] + "/picture?type=large&return_ssl_resources=1";
+           // //}
 
-            var emptyValueKeys = userProfile
-                .Where(pair => String.IsNullOrEmpty(pair.Value))
-                    .Select(pair => pair.Key).ToList();
-            foreach (var key in emptyValueKeys)
-            {
-                userProfile.Remove(key);
-            }
+           // var emptyValueKeys = userProfile
+           //     .Where(pair => String.IsNullOrEmpty(pair.Value))
+           //         .Select(pair => pair.Key).ToList();
+           // foreach (var key in emptyValueKeys)
+           // {
+           //     userProfile.Remove(key);
+           // }
 
             StartCoroutine("saveUserProfile", userProfile);
         }
@@ -176,6 +179,7 @@ public class FacebookLogin : MonoBehaviour
     {
         var user = ParseUser.CurrentUser;
         user["profile"] = profile;
+        user["email"] = Data.Instance.userData.email;
         // Save if there have been any updates
         if (user.IsKeyDirty("profile"))
         {
@@ -202,7 +206,7 @@ public class FacebookLogin : MonoBehaviour
     {
         // Display cached info
         var user = ParseUser.CurrentUser;
-        IDictionary<string, string> userProfile = user.Get<IDictionary<string, string>>("profile");
+       // IDictionary<string, string> userProfile = user.Get<IDictionary<string, string>>("profile");
 
     }
 

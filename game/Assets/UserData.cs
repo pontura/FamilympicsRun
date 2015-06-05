@@ -7,24 +7,26 @@ public class UserData : MonoBehaviour {
     public bool logged;
     public string facebookID;
     public string username;
-    public string parseUsername;
+    public string email;
 
 	public void Init () {
-        RegisterUser("", "");
+        //RegisterUser("", "", "");
         if (PlayerPrefs.GetString("username") != "" && PlayerPrefs.GetString("facebookID") != "")
-            SetUser(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("facebookID"));
+            SetUser(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("facebookID"), PlayerPrefs.GetString("email"));
 	}
-    void SetUser(string username, string facebookID)
+    void SetUser(string username, string facebookID, string email)
     {
         this.facebookID = facebookID;
         this.username = username;
-        logged = true;
+        this.email = email;
+        if(username != "")
+            logged = true;
     }
-    public void RegisterUser(string username, string facebookID)
+    public void RegisterUser(string username, string facebookID, string email)
     {
         PlayerPrefs.SetString("username", username);
         PlayerPrefs.SetString("facebookID", facebookID);
-
-        SetUser(username, facebookID);
+        PlayerPrefs.SetString("email", email);
+        SetUser(username, facebookID, email);
     }
 }

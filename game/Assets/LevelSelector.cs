@@ -9,8 +9,8 @@ public class LevelSelector : MonoBehaviour {
     public GameObject loginButton;
 
 	void Start () {
-        if (Data.Instance.userData.logged) 
-            loginButton.SetActive(false);
+        //if (Data.Instance.userData.logged) 
+        //    loginButton.SetActive(false);
 	}
 
     public void StartLevel(int id)
