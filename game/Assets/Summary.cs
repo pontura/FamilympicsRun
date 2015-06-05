@@ -4,9 +4,9 @@ using System.Collections;
 
 public class Summary : MonoBehaviour {
 
-    public Text score_txt;
-    public Text time_txt;
-    public Text laps_txt;
+    public Text title_txt;
+    public Text results_txt;
+
     private LevelData levelData;
 
 	void Start () {
@@ -15,10 +15,19 @@ public class Summary : MonoBehaviour {
 
         System.TimeSpan t = System.TimeSpan.FromSeconds(levelData.time);
         string timerFormatted = string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
+       Levels.LevelData CurrentlevelData = Data.Instance.levels.GetCurrentLevelData();
 
-        score_txt.text = "asd";
-        time_txt.text = timerFormatted;
-        laps_txt.text = levelData.laps.ToString();
+       if (CurrentlevelData.totalLaps > 0)
+       {
+           title_txt.text = "TIME";
+           results_txt.text = timerFormatted;
+       }
+       else if (CurrentlevelData.totalTime > 0)
+       {
+           title_txt.text = "LAPS";
+           results_txt.text = levelData.laps.ToString();
+       }
+
 	}
 
     public void GotoLevelSelector()

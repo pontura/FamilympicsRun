@@ -18,6 +18,8 @@ public class Data : MonoBehaviour
     [HideInInspector]
     public Levels levels;
 
+    public UserData userData;
+
     public static Data Instance
     {
         get
@@ -53,7 +55,9 @@ public class Data : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
 
-        GetComponent<UserData>().Init();
+        userData = GetComponent<UserData>();
+        userData.Init();
+
         GetComponent<MusicManager>().Init();
     }
     void OnMusicVolumeChanged(float value)

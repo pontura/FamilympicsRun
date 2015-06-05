@@ -7,6 +7,7 @@ public class GameCamera : MonoBehaviour {
     private states state;
     public float distance = 0;
     private float powerUpMultiplierSpeed = 1;
+    public float _y;
 
     private enum states
     {
@@ -18,10 +19,12 @@ public class GameCamera : MonoBehaviour {
     void Start()
     {
         Events.OnPowerUpActive += OnPowerUpActive;
+        Events.OnAddEnemy += OnAddEnemy;
     }
     void OnDestroy()
     {
         Events.OnPowerUpActive -= OnPowerUpActive;
+        Events.OnAddEnemy -= OnAddEnemy;
     }
     void OnPowerUpActive(int _id, Powerups.types type)
     {
@@ -63,5 +66,16 @@ public class GameCamera : MonoBehaviour {
         Vector3 pos = transform.localPosition;
         pos.x -= speed * powerUpMultiplierSpeed;
         transform.localPosition = pos;
+    }
+    void OnAddEnemy(Enemy enemy)
+    {
+        Enemy newEnemy = Instantiate(enemy) as Enemy;
+        newEnemy.transform.SetParent (transform);
+        Vector3 pos = transform.localPosition;
+        pos.x = distance + 22;
+        pos.y = _y;
+        newEnemy.transform.localPosition = pos;
+        newEnemy.transform.localScale = Vector3.one;
+        newEnemy.Init(this);
     }
 }

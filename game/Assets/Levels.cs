@@ -8,25 +8,32 @@ public class Levels : MonoBehaviour {
     public int currentLevel;
 
     [Serializable]
+    public class enemiesType
+    {
+        public bool HURDLES;
+        public bool BOMB;
+    }
+
+    [Serializable]
     public class LevelData
     {
         [SerializeField]
-        public float scrollSpeed;
-        [SerializeField]
-        public float speed = 0;
-        [SerializeField]
-        public float targetSpeed = 0f;
+        public float speed = 0f;
         [SerializeField]
         public float acceleration = 0.001f;
         [SerializeField]
         public int totalLaps;
+        [SerializeField]
+        public int totalTime;
+        [SerializeField]
+        public enemiesType enemies;
     }
 
     public LevelData[] levels;
 
     public LevelData GetCurrentLevelData()
     {
-        return levels[currentLevel - 1];
+        return levels[currentLevel];
     }
 
 }

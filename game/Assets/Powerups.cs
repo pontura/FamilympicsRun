@@ -25,7 +25,8 @@ public class Powerups : MonoBehaviour {
     }
 
 	void Start () {
-        Events.OnPowerUpOn += OnPowerUpOn;
+        if(Data.Instance.levelData.numPlayers>1)
+             Events.OnPowerUpOn += OnPowerUpOn;
 	}
     void OnDestroy()
     {

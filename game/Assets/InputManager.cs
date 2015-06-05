@@ -5,9 +5,17 @@ public class InputManager : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Events.OnKeyDown("space");
+            Events.OnAvatarRun(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Events.OnAvatarRun(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Events.OnAvatarJump(1);
         }
 
         //RaycastHit hit;

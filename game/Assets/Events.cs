@@ -15,7 +15,7 @@ public static class Events {
 
     //The game:
     public static System.Action StartGame = delegate { };
-    public static System.Action OnLevelComplete = delegate { };
+    public static System.Action OnTimeOver = delegate { };
     public static System.Action<bool> OnGamePaused = delegate { };
 
     public static System.Action<string> OnKeyDown = delegate { };
@@ -28,10 +28,12 @@ public static class Events {
 
     //playerID, laps Count
     public static System.Action<int, int> OnAvatarWinLap = delegate { };
-    
 
+
+    public static System.Action<Enemy> OnAddEnemy = delegate { };
     public static System.Action OnPowerUpOn = delegate { };
     public static System.Action<int, Powerups.types> OnPowerUpActive = delegate { };
+
     
     
 

@@ -22,6 +22,7 @@ public class Player : MonoBehaviour {
         PLAYING,
         RUNNING,
         JUMPING,
+        HURT,
         DEAD
     }
     public void Init(GameCamera _gameCamera)
@@ -80,6 +81,7 @@ public class Player : MonoBehaviour {
     }
     public void Run()
     {
+        if (state == states.HURT) return;
         if (state == states.JUMPING) return;
         state = states.RUNNING;
         gameCamera.OnAvatarMoved();
@@ -88,13 +90,25 @@ public class Player : MonoBehaviour {
     }
     public void Jump()
     {
+        if (state == states.HURT) return;
         state = states.JUMPING;
         gameCamera.OnAvatarMoved();
-        speed = acceleration/3;
+        speed = acceleration/2;
         animation.Play("playerJump");
     }
+    public void Hurt()
+    {
+        state = states.HURT;
+        speed = 0;
+        animation.Play("playerHurt");
+    }
+
     //from animation
     public void EndJump()
+    {
+        Idle();
+    }
+    public void EndHurt()
     {
         Idle();
     }
@@ -102,6 +116,7 @@ public class Player : MonoBehaviour {
     {
         if (state == states.DEAD) return;
         if (state == states.PLAYING) return;
+        if (state == states.HURT) return;
 
         if (speed == 0)
             state = states.PLAYING;
@@ -128,23 +143,15 @@ public class Player : MonoBehaviour {
         pos.x -= 40;
         transform.localPosition = pos;
     }
-    //public void Dead()
-    //{
-    //    if (laps == 0)
-    //    {
-    //        state = states.DEAD;
-    //        print("Die");
-    //        Invoke("SetOff", 0.1f);
-    //    }
-    //    else
-    //    {
-    //        laps--;
-    //        Events.OnAvatarWinLap(id, laps);
-    //        Vector3 pos = transform.localPosition;
-    //        pos.x += 800;
-    //        transform.localPosition = pos;
-    //    }
-    //}
+   
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "enemy" && state != states.JUMPING)
+        {
+           // other.GetComponent<Enemy>().Die();
+            Hurt();
+        }
+    }
     void SetOff()
     {
         Events.OnAvatarDie(this);

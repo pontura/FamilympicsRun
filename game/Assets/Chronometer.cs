@@ -8,6 +8,7 @@ public class Chronometer : MonoBehaviour {
     private bool timeStarted;
     public float timer;
     public string timerFormatted;
+    public int levelSeconds;
 
 
 	void Start () {
@@ -18,6 +19,7 @@ public class Chronometer : MonoBehaviour {
     void StartGame()
     {
         timeStarted = true;
+        levelSeconds = Data.Instance.levels.GetCurrentLevelData().totalTime;
     }
     void Update()
     {
@@ -26,8 +28,17 @@ public class Chronometer : MonoBehaviour {
             timer += Time.deltaTime;
         }     
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
+      
 
         timerFormatted = string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
         label.text = timerFormatted;
+
+          if (levelSeconds >0)
+          {
+              if (timer >= levelSeconds)
+              {
+                  Events.OnTimeOver();
+              }
+          }
     }
 }

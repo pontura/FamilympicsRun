@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 
         Levels.LevelData levelData = Data.Instance.GetComponent<Levels>().GetCurrentLevelData();
-        targetSpeed = levelData.targetSpeed;
+        targetSpeed = levelData.speed;
         acceleration = levelData.acceleration;
 
         float offsetY = ((Data.Instance.levelData.numPlayers-1))*(LaneSeparation/2);
@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
         {
             GameObject newContainer = Instantiate(container) as GameObject;
             newContainer.GetComponent<GameCamera>().id = a + 1;
+            newContainer.GetComponent<GameCamera>()._y = a * -LaneSeparation;
             containers.Add(newContainer);
             newContainer.transform.SetParent(gameCanvas.transform);
             Vector3 pos = new Vector3(0, offsetY, 0);
@@ -76,6 +77,7 @@ public class GameManager : MonoBehaviour {
         Events.OnAvatarJump += OnAvatarJump;
         Events.OnAvatarDie += OnAvatarDie;
         Events.OnAvatarWinLap += OnAvatarWinLap;
+        Events.OnTimeOver += OnTimeOver;
 
         LaneSeparation /= scaleFactor;
 
@@ -90,6 +92,7 @@ public class GameManager : MonoBehaviour {
         Events.OnAvatarJump -= OnAvatarJump;
         Events.OnAvatarDie -= OnAvatarDie;
         Events.OnAvatarWinLap -= OnAvatarWinLap;
+        Events.OnTimeOver -= OnTimeOver;
     }
     void OnPowerUp()
     {
@@ -99,7 +102,7 @@ public class GameManager : MonoBehaviour {
     void OnAvatarWinLap(int playerID, int count)
     {
         if (Data.Instance.levels.GetCurrentLevelData().totalLaps == count)
-            OnPlayerWin(playerID);
+            OnLapsOver();
     }
     void StartGame()
     {
@@ -131,11 +134,32 @@ public class GameManager : MonoBehaviour {
         foreach (Player player in players)
             player.UpdatePosition();
     }
-    void OnPlayerWin(int player_id)
+    void OnLapsOver()
     {
-         int laps =  Data.Instance.levels.GetCurrentLevelData().totalLaps;
+        LevelComplete();
+    }
+    void OnTimeOver()
+    {
+        LevelComplete();
+    }
+    void LevelComplete()
+    {
+        Player winner = players[0];
+        float playerPosition = 0;
+        foreach (Player player in players)
+        {
+            if (player.transform.localPosition.x > playerPosition)
+            {
+                winner = player;
+                playerPosition = player.transform.localPosition.x;
+            }
+        }
+        OnPlayerWin(winner);
+    }
+    void OnPlayerWin(Player player)
+    {
          float time = chronometer.timer;
-         Data.Instance.levelData.SetResultValues(player_id, laps, time);
+         Data.Instance.levelData.SetResultValues(player.id, player.laps, time);
         if(Data.Instance.levelData.numPlayers>1)
             Application.LoadLevel("Results");
         else
