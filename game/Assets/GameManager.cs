@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour {
     }
 
 	void Start () {
-
         Levels.LevelData levelData = Data.Instance.GetComponent<Levels>().GetCurrentLevelData();
         targetSpeed = levelData.speed;
         acceleration = levelData.acceleration;

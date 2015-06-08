@@ -10,7 +10,7 @@ public class LevelButton : MonoBehaviour {
     public RankingLine user2;
     public RankingLine user3;
 
-    private bool infoLoaded;
+    public bool infoLoaded;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class LevelButton : MonoBehaviour {
     {
         if (infoLoaded) return;
         LevelsData.LevelsScore levelScore = Data.Instance.levelsData.GetLevelScores(id);
-        if (levelScore != null)
+        if (levelScore != null && levelScore.scoreData1.score > 0 )
         {
             print("loading scores of " + id);
             infoLoaded = true;

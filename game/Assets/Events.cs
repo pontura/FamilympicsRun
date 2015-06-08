@@ -17,7 +17,10 @@ public static class Events {
     public static System.Action StartGame = delegate { };
     public static System.Action OnTimeOver = delegate { };
     public static System.Action<bool> OnGamePaused = delegate { };
-    public static System.Action<int, float> OnSaveScore = delegate { };    
+    public static System.Action<int, float> OnSaveScore = delegate { };
+    public static System.Action OnRefreshHiscores = delegate { };
+    public static System.Action<int> OnLoadParseScore = delegate { };  
+    
 
     public static System.Action<string> OnKeyDown = delegate { };
 
