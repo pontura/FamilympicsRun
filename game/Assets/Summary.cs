@@ -17,16 +17,22 @@ public class Summary : MonoBehaviour {
         string timerFormatted = string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
        Levels.LevelData CurrentlevelData = Data.Instance.levels.GetCurrentLevelData();
 
+       float score = 0;
        if (CurrentlevelData.totalLaps > 0)
        {
            title_txt.text = "TIME";
            results_txt.text = timerFormatted;
+           score = levelData.time;
        }
        else if (CurrentlevelData.totalTime > 0)
        {
            title_txt.text = "LAPS";
            results_txt.text = levelData.laps.ToString();
+           score = levelData.laps;
        }
+
+       int currentLevel = Data.Instance.levels.currentLevel;
+       Events.OnSaveScore(currentLevel, score);
 
 	}
 

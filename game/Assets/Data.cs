@@ -17,6 +17,8 @@ public class Data : MonoBehaviour
     public LevelData levelData;
     [HideInInspector]
     public Levels levels;
+    [HideInInspector]
+    public LevelsData levelsData;
 
     public UserData userData;
 
@@ -52,6 +54,8 @@ public class Data : MonoBehaviour
 
         levelData = GetComponent<LevelData>();
         levels = GetComponent<Levels>();
+        levelsData = GetComponent<LevelsData>();
+        levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);
 

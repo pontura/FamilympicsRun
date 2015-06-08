@@ -72,9 +72,11 @@
      <Compile Include="Assets\Hurdle.cs" />
      <Compile Include="Assets\InputManager.cs" />
      <Compile Include="Assets\Lane.cs" />
+     <Compile Include="Assets\LevelButton.cs" />
      <Compile Include="Assets\LevelData.cs" />
      <Compile Include="Assets\LevelSelector.cs" />
      <Compile Include="Assets\Levels.cs" />
+     <Compile Include="Assets\LevelsData.cs" />
      <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\MusicManager.cs" />
      <Compile Include="Assets\Player.cs" />
@@ -83,6 +85,7 @@
      <Compile Include="Assets\Powerups.cs" />
      <Compile Include="Assets\ProfileModule.cs" />
      <Compile Include="Assets\ProfilePicture.cs" />
+     <Compile Include="Assets\RankingLine.cs" />
      <Compile Include="Assets\ResizeToScreen.cs" />
      <Compile Include="Assets\Results.cs" />
      <Compile Include="Assets\Score.cs" />

@@ -7,10 +7,23 @@ using System.Threading.Tasks;
 public class LevelSelector : MonoBehaviour {
 
     public GameObject loginButton;
+    public GameObject container;
+
+    [SerializeField]
+    LevelButton levelButton;
+
+    private int buttonsSeparation = 300;
 
 	void Start () {
-        //if (Data.Instance.userData.logged) 
-        //    loginButton.SetActive(false);
+        int a = 0;
+        foreach (Levels.LevelData levelData in Data.Instance.levels.levels)
+        {
+            LevelButton newLevelButton = Instantiate(levelButton) as LevelButton;
+            newLevelButton.transform.SetParent(container.transform);
+            newLevelButton.transform.localPosition = new Vector3(buttonsSeparation * a, 0, 0);
+            newLevelButton.Init(this, a + 1);
+            a++;
+        }
 	}
 
     public void StartLevel(int id)
@@ -21,18 +34,5 @@ public class LevelSelector : MonoBehaviour {
     public void Login()
     {
         Application.LoadLevel("Login");
-    }
-    public void SaveHighScore()
-    {
-        int hiscore = 777;
-        ParseObject gameScore = new ParseObject("Level_1");
-
-        gameScore.Increment("score", hiscore);
-        gameScore["playerName"] = Data.Instance.userData.username;
-        gameScore["facebookID"] = Data.Instance.userData.facebookID;
-        //gameScore["username"] = ParseUser.CurrentUser.Username;
-        gameScore["objectId"] = ParseUser.CurrentUser.Username;
-
-        gameScore.SaveAsync();
     }
 }

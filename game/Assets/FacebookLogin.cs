@@ -47,7 +47,8 @@ public class FacebookLogin : MonoBehaviour
 
     private void SetInit()
     {
-        enabled = true;
+        if(this)
+            enabled = true;
     }
     public void Back()
     {
@@ -56,16 +57,16 @@ public class FacebookLogin : MonoBehaviour
 
     private void OnHideUnity(bool isGameShown)
     {
-        //if (!isGameShown)
-        //{
-        //    // pause the game - we will need to hide
-        //    Time.timeScale = 0;
-        //}
-        //else
-        //{
-        //    // start the game back up - we're getting focus again
-        //    Time.timeScale = 1;
-        //}
+        if (!isGameShown)
+        {
+            // pause the game - we will need to hide
+            Time.timeScale = 0;
+        }
+        else
+        {
+            // start the game back up - we're getting focus again
+            Time.timeScale = 1;
+        }
     }
 
     private IEnumerator ParseLogin()
@@ -104,7 +105,7 @@ public class FacebookLogin : MonoBehaviour
     {
         // Logging in with Facebook
       //  FB.Login("user_about_me, user_relationships, user_birthday, user_location", FBLoginCallback);
-        FB.Login("user_about_me, user_relationships, user_location", FBLoginCallback);
+        FB.Login("email, user_about_me, publish_actions", FBLoginCallback);
     }
 
     private void FBLoginCallback(FBResult result)
