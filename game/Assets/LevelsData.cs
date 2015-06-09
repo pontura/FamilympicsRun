@@ -33,7 +33,7 @@ public class LevelsData : MonoBehaviour {
     public void Init()
     {
         i = 0;
-       levelsScore = new LevelsScore[Data.Instance.levels.levels.Length];
+      // levelsScore = new LevelsScore[Data.Instance.levels.levels.Length];
        totalLevels = Data.Instance.levels.levels.Length;
        Events.OnSaveScore += OnSaveScore;
        Events.OnRefreshHiscores += OnRefreshHiscores;
@@ -143,9 +143,21 @@ public class LevelsData : MonoBehaviour {
     private void LoadData(int _level)
     {
         Debug.Log("LoadData" + _level);
-        var query = ParseObject.GetQuery("Level_" + _level.ToString() )
-          .OrderByDescending("score")
-          .Limit(3);
+
+        ParseQuery<ParseObject> query;
+
+        if (Data.Instance.levels.levels[_level].totalLaps > 0)
+        {
+            query = ParseObject.GetQuery("Level_" + _level.ToString())
+                .OrderBy("score")
+                .Limit(3);
+        }
+        else
+        {
+            query = ParseObject.GetQuery("Level_" + _level.ToString())
+                .OrderByDescending("score")
+                .Limit(3);
+        }
         
         query.FindAsync().ContinueWith(t =>
         {
@@ -164,10 +176,8 @@ public class LevelsData : MonoBehaviour {
                 sd.playerName = result["playerName"].ToString();
                 sd.facebookID = result["facebookID"].ToString();
                 sd.score = float.Parse(result["score"].ToString());
-                
                 a++;
             }
         });
     }
-
 }

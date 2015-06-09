@@ -20,6 +20,7 @@ public class LevelSelector : MonoBehaviour {
             LevelButton newLevelButton = Instantiate(levelButton) as LevelButton;
             newLevelButton.transform.SetParent(container.transform);
             newLevelButton.transform.localPosition = new Vector3(buttonsSeparation * (a-2), 0, 0);
+            newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             newLevelButton.Init(this, a);
         }
         Events.OnRefreshHiscores();
