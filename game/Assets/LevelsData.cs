@@ -46,7 +46,6 @@ public class LevelsData : MonoBehaviour {
     }
     void OnLoadParseScore(int levelID)
     {
-        Data.Instance.levelsData.levelsScore[levelID].myScore = PlayerPrefs.GetFloat("Run_Level_" + levelID);
         levelsScore[levelID].myScoreInParse = 0;
         var query = new ParseQuery<ParseObject>("Level_" + levelID)
               .WhereEqualTo("facebookID", Data.Instance.userData.facebookID);
@@ -84,12 +83,16 @@ public class LevelsData : MonoBehaviour {
         if (Data.Instance.levels.levels[level].totalLaps > 0 && score > levelsScore[level].myScore && levelsScore[level].myScore != 0) { Debug.Log("Ya tenias menos tiempo"); return; }
         if (Data.Instance.levels.levels[level].totalTime > 0 && score < levelsScore[level].myScore) { Debug.Log("Ya hbaias recorrido mas distancia");   return; }
 
+        PlayerPrefs.SetFloat("Run_Level_" + level, score);
+        levelsScore[level].myScore = score;
+
+        if (Data.Instance.userData.facebookID == "") return;
+
         if (levelsScore[level].myScoreInParse == 0)
             SaveNewScore(level, score);
         else
             UpdateScore(level, score);
-
-        PlayerPrefs.SetFloat("Run_Level_" + level, score);
+        
         levelsScore[level].myScoreInParse = score;
         levelsScore[level].myScore = score;
     }
@@ -142,6 +145,7 @@ public class LevelsData : MonoBehaviour {
 
     private void LoadData(int _level)
     {
+        Data.Instance.levelsData.levelsScore[_level].myScore = PlayerPrefs.GetFloat("Run_Level_" + _level);
         Debug.Log("LoadData" + _level);
 
         ParseQuery<ParseObject> query;
@@ -178,6 +182,18 @@ public class LevelsData : MonoBehaviour {
                 sd.score = float.Parse(result["score"].ToString());
                 a++;
             }
-        });
+        });        
+    }
+    public string GetScoreString(int levelID, float score)
+    {
+        if (Data.Instance.levels.levels[levelID].totalLaps > 0)
+            return GetTimer(score);
+        else
+            return score.ToString();
+    }
+    private string GetTimer(float timer)
+    {
+        System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
+        return string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
     }
 }

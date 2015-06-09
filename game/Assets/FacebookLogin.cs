@@ -139,7 +139,6 @@ public class FacebookLogin : MonoBehaviour
         }
         else
         {
-            print("HOLA");
             // Got user profile info
             var resultObject = Json.Deserialize(result.Text) as Dictionary<string, object>;
             var userProfile = new Dictionary<string, string>();

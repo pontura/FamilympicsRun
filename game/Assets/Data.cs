@@ -43,6 +43,8 @@ public class Data : MonoBehaviour
     void Awake()
     {
 
+       // PlayerPrefs.DeleteAll();
+
         if (!mInstance)
             mInstance = this;
 

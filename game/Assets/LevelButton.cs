@@ -9,6 +9,7 @@ public class LevelButton : MonoBehaviour {
     public RankingLine user1;
     public RankingLine user2;
     public RankingLine user3;
+    public Text myScore;
 
     public bool infoLoaded;
 
@@ -18,10 +19,25 @@ public class LevelButton : MonoBehaviour {
         user2.gameObject.SetActive(false);
         user3.gameObject.SetActive(false);
     }
-    public void Init(LevelSelector levelSelector, int num)
+    public void Init(LevelSelector levelSelector, int levelID)
     {
-        this.id = num;
-        labelNum.text = num.ToString();
+        
+        this.id = levelID;
+
+        float _myScore = PlayerPrefs.GetFloat("Run_Level_" + levelID);
+        
+        if(_myScore>0)
+             myScore.text = Data.Instance.levelsData.GetScoreString(levelID, _myScore);
+
+        float myLastScore = PlayerPrefs.GetFloat("Run_Level_" + (levelID-1).ToString() );
+
+        if (myLastScore == 0 && levelID > 1)
+        {
+            labelNum.text = "X";
+            return;
+        }
+        
+        labelNum.text = levelID.ToString();
         GetComponent<Button>().onClick.AddListener(() =>
         {
             levelSelector.StartLevel(id);
@@ -45,5 +61,6 @@ public class LevelButton : MonoBehaviour {
 
         }
     }
+    
     
 }
