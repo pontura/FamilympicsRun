@@ -34,6 +34,14 @@ public class Summary : MonoBehaviour {
        int currentLevel = Data.Instance.levels.currentLevel;
        Events.OnSaveScore(currentLevel, score);
 
+       if (Data.Instance.levelData.challenge_username != "")
+       {
+           string username = Data.Instance.levelData.challenge_username;
+           string facebookID = Data.Instance.levelData.challenge_facebookID;
+           Events.OnChallengeCreate(username, facebookID, currentLevel, score);
+           Data.Instance.levelData.ResetChallenge();
+       }
+       
 	}
 
     public void GotoLevelSelector()

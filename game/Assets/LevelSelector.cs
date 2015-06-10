@@ -15,6 +15,9 @@ public class LevelSelector : MonoBehaviour {
     private int buttonsSeparation = 300;
 
 	void Start () {
+        
+        Data.Instance.levelData.ResetChallenge();
+
         for (int a = 1; a < Data.Instance.levels.levels.Length; a++ )
         {
             LevelButton newLevelButton = Instantiate(levelButton) as LevelButton;

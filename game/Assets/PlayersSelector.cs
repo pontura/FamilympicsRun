@@ -8,4 +8,8 @@ public class PlayersSelector : MonoBehaviour {
         Data.Instance.levelData.numPlayers = num;
         Application.LoadLevel("Game");
     }
+    public void Challenge()
+    {
+        Application.LoadLevel("ChallengeCreator");
+    }
 }

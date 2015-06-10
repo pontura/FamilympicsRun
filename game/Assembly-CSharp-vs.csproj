@@ -46,6 +46,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ChallengeConfirm.cs" />
+     <Compile Include="Assets\ChallengerCreator.cs" />
+     <Compile Include="Assets\ChallengerCreatorButton.cs" />
+     <Compile Include="Assets\ChallengersManager.cs" />
+     <Compile Include="Assets\Challenges.cs" />
+     <Compile Include="Assets\ChallengesLine.cs" />
      <Compile Include="Assets\Chronometer.cs" />
      <Compile Include="Assets\CountDown.cs" />
      <Compile Include="Assets\Data.cs" />
@@ -90,6 +96,7 @@
      <Compile Include="Assets\Results.cs" />
      <Compile Include="Assets\Score.cs" />
      <Compile Include="Assets\Scripts\TestMainMenu.cs" />
+     <Compile Include="Assets\ScrollLimit.cs" />
      <Compile Include="Assets\SoundManager.cs" />
      <Compile Include="Assets\Summary.cs" />
      <Compile Include="Assets\TestMain.cs" />

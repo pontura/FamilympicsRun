@@ -178,15 +178,17 @@ public class FacebookLogin : MonoBehaviour
     private IEnumerator saveUserProfile(Dictionary<string, string> profile)
     {
         var user = ParseUser.CurrentUser;
-        user["profile"] = profile;
+       // user["profile"] = profile;
         user["email"] = Data.Instance.userData.email;
+        user["facebookID"] = Data.Instance.userData.facebookID;
+        user["playerName"] = Data.Instance.userData.username;
         // Save if there have been any updates
-        if (user.IsKeyDirty("profile"))
-        {
+        //if (user.IsKeyDirty("profile"))
+        //{
             var saveTask = user.SaveAsync();
             while (!saveTask.IsCompleted) yield return null;
             UpdateProfile();
-        }
+        //}
     }
 
     private string getDataValueForKey(Dictionary<string, object> dict, string key)

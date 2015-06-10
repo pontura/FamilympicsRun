@@ -37,6 +37,9 @@ public static class Events {
     public static System.Action OnPowerUpOn = delegate { };
     public static System.Action<int, Powerups.types> OnPowerUpActive = delegate { };
 
+    //Challenges
+    public static System.Action<string, string, int, float> OnChallengeCreate = delegate { };
+
     
     
 
