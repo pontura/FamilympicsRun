@@ -84,6 +84,7 @@ public class LevelsData : MonoBehaviour {
         if (Data.Instance.levels.levels[level].totalTime > 0 && score < levelsScore[level].myScore) { Debug.Log("Ya hbaias recorrido mas distancia");   return; }
 
         PlayerPrefs.SetFloat("Run_Level_" + level, score);
+
         levelsScore[level].myScore = score;
 
         if (Data.Instance.userData.facebookID == "") return;
@@ -156,33 +157,33 @@ public class LevelsData : MonoBehaviour {
                 .OrderBy("score")
                 .Limit(3);
         }
-        else
-        {
-            query = ParseObject.GetQuery("Level_" + _level.ToString())
-                .OrderByDescending("score")
-                .Limit(3);
-        }
-        
-        query.FindAsync().ContinueWith(t =>
-        {
-            IEnumerable<ParseObject> results = t.Result;
-            
-            int a = 1;
-            foreach (var result in results)
+            else
             {
-                ScoreData sd = levelsScore[_level].scoreData3;
-                switch (a)
-                {
-                    case 1: sd = levelsScore[_level].scoreData1; break;
-                    case 2: sd = levelsScore[_level].scoreData2; break;
-                    default: sd = levelsScore[_level].scoreData3; break;
-                }
-                sd.playerName = result["playerName"].ToString();
-                sd.facebookID = result["facebookID"].ToString();
-                sd.score = float.Parse(result["score"].ToString());
-                a++;
+                query = ParseObject.GetQuery("Level_" + _level.ToString())
+                    .OrderByDescending("score")
+                    .Limit(3);
             }
-        });        
+        
+            query.FindAsync().ContinueWith(t =>
+            {
+                IEnumerable<ParseObject> results = t.Result;
+            
+                int a = 1;
+                foreach (var result in results)
+                {
+                    ScoreData sd = levelsScore[_level].scoreData3;
+                    switch (a)
+                    {
+                        case 1: sd = levelsScore[_level].scoreData1; break;
+                        case 2: sd = levelsScore[_level].scoreData2; break;
+                        default: sd = levelsScore[_level].scoreData3; break;
+                    }
+                    sd.playerName = result["playerName"].ToString();
+                    sd.facebookID = result["facebookID"].ToString();
+                    sd.score = float.Parse(result["score"].ToString());
+                    a++;
+                }
+            });        
     }
     public string GetScoreString(int levelID, float score)
     {

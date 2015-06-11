@@ -161,8 +161,10 @@ public class GameManager : MonoBehaviour {
          Data.Instance.levelData.SetResultValues(player.id, player.laps, time);
         if(Data.Instance.levelData.numPlayers>1)
             Application.LoadLevel("Results");
-        else
+        else if (Data.Instance.levelData.challenge_facebookID == "")
             Application.LoadLevel("Summary");
+        else
+            Application.LoadLevel("SummaryChallenge");
     }
     void OnAvatarDie(Player _player)
     {

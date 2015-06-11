@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Parse;
@@ -14,6 +15,7 @@ public class FacebookLogin : MonoBehaviour
 
     public ProfileModule profileModule;
 
+    public Text DebugText;
 
     void Start()
     {
@@ -105,7 +107,7 @@ public class FacebookLogin : MonoBehaviour
     {
         // Logging in with Facebook
       //  FB.Login("user_about_me, user_relationships, user_birthday, user_location", FBLoginCallback);
-        FB.Login("email, user_about_me, publish_actions", FBLoginCallback);
+        FB.Login("email, user_about_me, publish_actions, user_friends", FBLoginCallback);
     }
 
     private void FBLoginCallback(FBResult result)
@@ -115,6 +117,7 @@ public class FacebookLogin : MonoBehaviour
         {
             showLoggedIn();
             StartCoroutine("ParseLogin");
+            GetFriends();
         }
         else
         {
@@ -214,14 +217,14 @@ public class FacebookLogin : MonoBehaviour
 
     private void showLoggedIn()
     {
-        loggedInUIElements.SetActive(true);
-        loggedOutUIElements.SetActive(false);
+      //  loggedInUIElements.SetActive(true);
+      //  loggedOutUIElements.SetActive(false);
     }
 
     private void showLoggedOut()
     {
-        loggedInUIElements.SetActive(false);
-        loggedOutUIElements.SetActive(true);
+       // loggedInUIElements.SetActive(false);
+       // loggedOutUIElements.SetActive(true);
     }
 
     // Wrap text by line height
@@ -265,5 +268,30 @@ public class FacebookLogin : MonoBehaviour
         // Remove first " " char
         return result.Substring(1, result.Length - 1);
     }
-
+    public void GetFriends()
+    {
+        FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+    }
+    void FBFriendsCallback(FBResult result)
+    {
+        Debug.Log("APICallback");
+        if (result.Error != null)
+        {
+            Debug.LogError(result.Error);
+            // Let's just try again
+            FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+            return;
+        }
+        print("FBFriendsCallback");
+        List<object> friends = Util.DeserializeJSONFriends(result.Text);
+        foreach (object friend in friends)
+        {
+            Dictionary<string, object> friendData = friend as Dictionary<string, object>;
+            foreach (KeyValuePair<string, object> keyval in friendData)
+            {
+                Debug.Log(keyval.Key + " : " + keyval.Value.ToString());
+                DebugText.text += " " + keyval.Key + " : " + keyval.Value.ToString();
+            }
+        }
+    }
 }

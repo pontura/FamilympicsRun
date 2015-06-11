@@ -24,10 +24,54 @@ public class ChallengerCreator : MonoBehaviour {
 
     void Start()
     {
-        LoadData();
+        if(Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends)
+            LoadFacebookFriends();
+        else
+            LoadParseUsers();
+
         CreateList();
     }
-    private void LoadData()
+    public void ShowParseFriends()
+    {
+        Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends = false;
+        Application.LoadLevel("ChallengeCreator");
+    }
+    public void ShowFacebookFriends()
+    {
+        Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends = true;
+        Application.LoadLevel("ChallengeCreator");
+    }
+    public void LoadFacebookFriends()
+    {
+        FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+    }
+    void FBFriendsCallback(FBResult result)
+    {
+        Debug.Log("APICallback");
+        if (result.Error != null)
+        {
+            Debug.LogError(result.Error);
+            // Let's just try again
+            FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+            return;
+        }
+        print("FBFriendsCallback");
+        List<object> friends = Util.DeserializeJSONFriends(result.Text);
+        int a = 0;
+        foreach (object friend in friends)
+        {
+            Dictionary<string, object> friendData = friend as Dictionary<string, object>;
+            foreach (KeyValuePair<string, object> keyval in friendData)
+            {
+                if (keyval.Key == "id")
+                    userData[a].facebookID = keyval.Value.ToString();
+                else if (keyval.Key == "first_name")
+                    userData[a].playerName = keyval.Value.ToString();
+            }
+            a++;
+        }
+    }
+    private void LoadParseUsers()
     {
         ParseUser.Query
          .Limit(userData.Length)
@@ -48,7 +92,7 @@ public class ChallengerCreator : MonoBehaviour {
          });      
     }
     public void CreateList() {
-        for (int a = 0; a < Data.Instance.levels.levels.Length; a++)
+        for (int a = 0; a < userData.Length-1; a++)
         {
             ChallengerCreatorButton newButton = Instantiate(button) as ChallengerCreatorButton;
             newButton.transform.SetParent(container.transform);

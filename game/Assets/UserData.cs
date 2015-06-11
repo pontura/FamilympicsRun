@@ -29,4 +29,11 @@ public class UserData : MonoBehaviour {
         PlayerPrefs.SetString("email", email);
         SetUser(username, facebookID, email);
     }
+    public void Reset()
+    {
+        logged = false;
+        facebookID = "";
+        username = "";
+        email = "";
+    }
 }

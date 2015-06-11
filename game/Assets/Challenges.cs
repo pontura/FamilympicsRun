@@ -10,8 +10,11 @@ public class Challenges : MonoBehaviour {
     [Serializable]
     public class PlayerData
     {
+        public string objectID;
         public string facebookID;
         public string playerName;
+        public string winner;
+        public string score2;
         public float score;
         public int level;
     }
@@ -31,44 +34,55 @@ public class Challenges : MonoBehaviour {
     }
     private void LoadData()
     {
-        ParseUser.Query
-         .Limit(userData.Length)
-         .FindAsync().ContinueWith(t =>
-         {
-             IEnumerable<ParseUser> result = t.Result;
-             int a = 0;
-             foreach (var item in result)
-             {
-                 string facebookID = item.Get<string>("facebookID");
-                 string playerName = item.Get<string>("playerName");
-                 float score = item.Get<float>("score");
-                 int level = item.Get<int>("level");
+        var  query = ParseObject.GetQuery("Challenges")
+            .WhereEqualTo("op_facebookID", Data.Instance.userData.facebookID)
+            .Limit(userData.Length);
 
-                 userData[a].facebookID = facebookID;
-                 userData[a].playerName = playerName;
-                 userData[a].score = score;
-                 userData[a].level = level;
-                 a++;
-             }
-         });      
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerable<ParseObject> results = t.Result;
+            
+            int a = 0;
+            foreach (var result in results)
+            {
+                string objectID = result.ObjectId;
+                string facebookID = result.Get<string>("facebookID");
+                string playerName = result.Get<string>("playerName");
+                float score = result.Get<float>("score");
+                int level = result.Get<int>("level");
+                float score2 = result.Get<float>("score2");
+                string winner = result.Get<string>("winner");
+
+                userData[a].objectID = objectID;
+                userData[a].facebookID = facebookID;
+                userData[a].playerName = playerName;
+                userData[a].winner = winner;
+                userData[a].score = score;                
+                userData[a].score = score2;
+                userData[a].level = level;
+                a++;
+            }
+        });        
     }
     public void CreateList() {
-        for (int a = 0; a < Data.Instance.levels.levels.Length; a++)
+        for (int a = 0; a < userData.Length; a++)
         {
             ChallengesLine newButton = Instantiate(challengesLine) as ChallengesLine;
             newButton.transform.SetParent(container.transform);
             newButton.transform.localPosition = new Vector3(0, buttonsSeparation * a *-1, 0);
             newButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-            newButton.Init(this, a+1);
+            newButton.Init(this, a);
         }
     }
     public void Back()
     {
-        Application.LoadLevel("Players");
+        Application.LoadLevel("LevelSelector");
     }
-    public void Confirm(string username, string facebookID)
+    public void Confirm(string objectID, string facebookID, float op_score)
     {
-        Data.Instance.levelData.CreateChallenge(username, facebookID);
-        Application.LoadLevel("ChallengeConfirm");
+        Data.Instance.levelData.challenge_facebookID = facebookID;
+        Data.Instance.levelData.challenge_objectID = objectID;
+        Data.Instance.levelData.challenge_op_score = op_score;
+        Application.LoadLevel("Game");
     }
 }

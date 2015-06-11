@@ -28,7 +28,6 @@ public class LevelSelector : MonoBehaviour {
         }
         Events.OnRefreshHiscores();
 	}
-
     public void StartLevel(int id)
     {
         Events.OnLoadParseScore(id);
@@ -43,5 +42,15 @@ public class LevelSelector : MonoBehaviour {
     {
         Data.Instance.levelsData.Refresh();
         Application.LoadLevel("LevelSelector");        
+    }
+    public void Challenges()
+    {
+        Application.LoadLevel("Challenges");
+    }
+    public void ResetApp()
+    {
+        PlayerPrefs.DeleteAll();
+        Data.Instance.userData.Reset();
+        Application.LoadLevel("MainMenu");
     }
 }

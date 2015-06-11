@@ -71,6 +71,7 @@
      <Compile Include="Assets\Facebook\Scripts\IOSFacebook.cs" />
      <Compile Include="Assets\Facebook\Scripts\IOSFacebookLoader.cs" />
      <Compile Include="Assets\Facebook\Scripts\NativeDialogModes.cs" />
+     <Compile Include="Assets\Facebook\Scripts\Util.cs" />
      <Compile Include="Assets\FacebookLogin.cs" />
      <Compile Include="Assets\GameCamera.cs" />
      <Compile Include="Assets\GameManager.cs" />
@@ -83,6 +84,7 @@
      <Compile Include="Assets\LevelSelector.cs" />
      <Compile Include="Assets\Levels.cs" />
      <Compile Include="Assets\LevelsData.cs" />
+     <Compile Include="Assets\LoadingMask.cs" />
      <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\MusicManager.cs" />
      <Compile Include="Assets\Player.cs" />
@@ -97,8 +99,10 @@
      <Compile Include="Assets\Score.cs" />
      <Compile Include="Assets\Scripts\TestMainMenu.cs" />
      <Compile Include="Assets\ScrollLimit.cs" />
+     <Compile Include="Assets\SettingsMenu.cs" />
      <Compile Include="Assets\SoundManager.cs" />
      <Compile Include="Assets\Summary.cs" />
+     <Compile Include="Assets\SummaryChallenge.cs" />
      <Compile Include="Assets\TestMain.cs" />
      <Compile Include="Assets\UIPlayerButton.cs" />
      <Compile Include="Assets\UIPlayerButtons.cs" />

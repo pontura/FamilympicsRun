@@ -18,7 +18,7 @@ public class ProfilePicture : MonoBehaviour
         if (facebookID == "")
             yield break;
 
-        print("FACEBOOK - GetPicture " + facebookID);
+       // print("FACEBOOK - GetPicture " + facebookID);
 
         WWW receivedData = new WWW("https" + "://graph.facebook.com/" + facebookID + "/picture?width=128&height=128");
         yield return receivedData;

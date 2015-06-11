@@ -12,6 +12,7 @@ public class LevelButton : MonoBehaviour {
     public Text myScore;
 
     public bool infoLoaded;
+    public LevelsData.LevelsScore levelScore;
 
     void Start()
     {
@@ -23,6 +24,7 @@ public class LevelButton : MonoBehaviour {
     {
         
         this.id = levelID;
+        levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
 
         float _myScore = PlayerPrefs.GetFloat("Run_Level_" + levelID);
         
@@ -46,7 +48,7 @@ public class LevelButton : MonoBehaviour {
     void Update()
     {
         if (infoLoaded) return;
-        LevelsData.LevelsScore levelScore = Data.Instance.levelsData.GetLevelScores(id);
+        
         if (levelScore != null && levelScore.scoreData1.score > 0 )
         {
             print("loading scores of " + id);

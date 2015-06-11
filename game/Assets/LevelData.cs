@@ -13,6 +13,7 @@ public class LevelData : MonoBehaviour {
     public string challenge_username;
     public string challenge_facebookID;
     public string challenge_objectID;
+    public float challenge_op_score;
 
     public void SetResultValues(int _winnerID, int _laps, float _time)
     {
@@ -30,5 +31,6 @@ public class LevelData : MonoBehaviour {
         challenge_username = "";
         challenge_facebookID = "";
         challenge_objectID = "";
+        challenge_op_score = 0;
     }
 }
