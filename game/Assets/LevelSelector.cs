@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using Parse;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 public class LevelSelector : MonoBehaviour {
 
+    public Text debugText;
     public GameObject loginButton;
     public GameObject container;
 
@@ -15,7 +17,20 @@ public class LevelSelector : MonoBehaviour {
     private int buttonsSeparation = 300;
 
 	void Start () {
-        
+
+        debugText.text = "Not Logged!";
+        if (FB.IsLoggedIn)
+        {
+            debugText.text = "Facebook Logged";
+            if (Data.Instance.userData.FacebookFriends != null && Data.Instance.userData.FacebookFriends.Count == 0)
+            {
+                debugText.text += " carga anigos...";
+                Data.Instance.loginManager.GetFriends();
+            }
+        }
+
+        debugText.text += " amigos: " + Data.Instance.userData.FacebookFriends.Count;
+
         Data.Instance.levelData.ResetChallenge();
 
         for (int a = 1; a < Data.Instance.levels.levels.Length; a++ )
@@ -26,12 +41,16 @@ public class LevelSelector : MonoBehaviour {
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             newLevelButton.Init(this, a);
         }
-        Events.OnRefreshHiscores();
+       // Events.OnRefreshHiscores();
 	}
     public void StartLevel(int id)
     {
         Events.OnLoadParseScore(id);
-        Application.LoadLevel("Players");
+        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+            Application.LoadLevel("SinglePlayer");
+        else
+            Application.LoadLevel("Players");
+
         Data.Instance.GetComponent<Levels>().currentLevel = id;
     }
     public void Login()

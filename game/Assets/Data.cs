@@ -21,6 +21,7 @@ public class Data : MonoBehaviour
     public LevelsData levelsData;
 
     public UserData userData;
+    public LoginManager loginManager;
 
     public static Data Instance
     {
@@ -53,11 +54,11 @@ public class Data : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-
+        loginManager = GetComponent<LoginManager>();
         levelData = GetComponent<LevelData>();
         levels = GetComponent<Levels>();
         levelsData = GetComponent<LevelsData>();
-        levelsData.Init();
+       // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);
 

@@ -30,7 +30,11 @@ public class LevelsData : MonoBehaviour {
     private int i;
     private int totalLevels;
 
-    public void Init()
+    void Start()
+    {
+        Events.OnFacebookFriends += OnFacebookFriends;
+    }
+    public void OnFacebookFriends()
     {
         i = 0;
       // levelsScore = new LevelsScore[Data.Instance.levels.levels.Length];
@@ -42,7 +46,7 @@ public class LevelsData : MonoBehaviour {
     }
     public void Refresh()
     {
-        Init();
+        OnFacebookFriends();
     }
     void OnLoadParseScore(int levelID)
     {
@@ -151,18 +155,27 @@ public class LevelsData : MonoBehaviour {
 
         ParseQuery<ParseObject> query;
 
+
+        IList<string> myList = new List<string>();
+        foreach (UserData.FacebookUserData facebookUserData in Data.Instance.userData.FacebookFriends)
+        {
+            myList.Add(facebookUserData.facebookID);
+        }
+        myList.Add(Data.Instance.userData.facebookID);
+
         if (Data.Instance.levels.levels[_level].totalLaps > 0)
         {
             query = ParseObject.GetQuery("Level_" + _level.ToString())
-                .OrderBy("score")
+            .OrderBy("score")
+            .WhereContainedIn("facebookID", myList)
+            .Limit(3);
+        }
+        else
+        {
+            query = ParseObject.GetQuery("Level_" + _level.ToString())
+                .OrderByDescending("score")
                 .Limit(3);
         }
-            else
-            {
-                query = ParseObject.GetQuery("Level_" + _level.ToString())
-                    .OrderByDescending("score")
-                    .Limit(3);
-            }
         
             query.FindAsync().ContinueWith(t =>
             {

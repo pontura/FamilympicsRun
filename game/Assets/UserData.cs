@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
 
 public class UserData : MonoBehaviour {
 
@@ -8,11 +10,29 @@ public class UserData : MonoBehaviour {
     public string facebookID;
     public string username;
     public string email;
+    public List<FacebookUserData> FacebookFriends;
+    public modes mode;
+    public enum modes
+    {
+        SINGLEPLAYER,
+        MULTIPLAYER
+    }
+
+    [Serializable]
+    public class FacebookUserData
+    {
+        public string facebookID;
+        public string username;
+    }
 
 	public void Init () {
         //RegisterUser("", "", "");
         if (PlayerPrefs.GetString("username") != "" && PlayerPrefs.GetString("facebookID") != "")
             SetUser(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("facebookID"), PlayerPrefs.GetString("email"));
+
+        string modeStr = PlayerPrefs.GetString("mode");
+        if (modeStr == "MULTIPLAYER") mode = modes.MULTIPLAYER;
+        print("mode es : " + modeStr);
 	}
     void SetUser(string username, string facebookID, string email)
     {
@@ -35,5 +55,22 @@ public class UserData : MonoBehaviour {
         facebookID = "";
         username = "";
         email = "";
+    }
+    public void ResetFacebookFriends()
+    {
+        FacebookFriends.Clear();
+    }
+    public void AddFacebookFriend(string id, string username)
+    {
+        FacebookUserData data = new FacebookUserData();
+        data.facebookID = id;
+        data.username = username;
+        FacebookFriends.Add(data);
+    }
+    public void ToogleMode()
+    {
+        if(mode == modes.SINGLEPLAYER) mode = modes.MULTIPLAYER;
+        else mode = modes.SINGLEPLAYER;
+        PlayerPrefs.SetString("mode", mode.ToString() );
     }
 }

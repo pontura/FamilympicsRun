@@ -24,4 +24,9 @@ public class PlayersSelector : MonoBehaviour {
     {
         Application.LoadLevel("LevelSelector");
     }
+    public void SinglePlayer()
+    {
+        Data.Instance.levelData.numPlayers = 1;
+        Application.LoadLevel("Game");
+    }
 }

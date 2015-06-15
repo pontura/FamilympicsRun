@@ -9,10 +9,10 @@ public class UIPlayerButtons : MonoBehaviour {
     [SerializeField]
     Text lapsLabel;
     [SerializeField]
-    Button button1;
+    Image button1;
     [SerializeField]
-    Button button2;
-    private Button activeButton;
+    Image button2;
+    private Image activeButton;
     float scaleSmall;
     float scaleBig;
 
@@ -54,7 +54,7 @@ public class UIPlayerButtons : MonoBehaviour {
     }
     public void PressedButton(int num)
     {
-        Button buttonPressed;
+        Image buttonPressed;
         switch (num)
         {
             case 1: buttonPressed = button1; break;

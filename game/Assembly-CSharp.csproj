@@ -75,6 +75,7 @@
      <Compile Include="Assets\FacebookLogin.cs" />
      <Compile Include="Assets\GameCamera.cs" />
      <Compile Include="Assets\GameManager.cs" />
+     <Compile Include="Assets\GameModeSelector.cs" />
      <Compile Include="Assets\Hiscores.cs" />
      <Compile Include="Assets\Hurdle.cs" />
      <Compile Include="Assets\InputManager.cs" />
@@ -85,6 +86,7 @@
      <Compile Include="Assets\Levels.cs" />
      <Compile Include="Assets\LevelsData.cs" />
      <Compile Include="Assets\LoadingMask.cs" />
+     <Compile Include="Assets\LoginManager.cs" />
      <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\MusicManager.cs" />
      <Compile Include="Assets\Player.cs" />

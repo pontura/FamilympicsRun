@@ -12,11 +12,13 @@ public class Challenges : MonoBehaviour {
     {
         public string objectID;
         public string facebookID;
-        public string playerName;
-        public string winner;
-        public string score2;
+        public string playerName;        
         public float score;
         public int level;
+
+        public float score2;
+        public string winner;
+        
     }
 
     public GameObject container;
@@ -41,7 +43,6 @@ public class Challenges : MonoBehaviour {
         query.FindAsync().ContinueWith(t =>
         {
             IEnumerable<ParseObject> results = t.Result;
-            
             int a = 0;
             foreach (var result in results)
             {
@@ -50,16 +51,26 @@ public class Challenges : MonoBehaviour {
                 string playerName = result.Get<string>("playerName");
                 float score = result.Get<float>("score");
                 int level = result.Get<int>("level");
-                float score2 = result.Get<float>("score2");
-                string winner = result.Get<string>("winner");
+
+                float score2 = 0;
+                string winner = "";
+                try
+                {
+                    score2 = result.Get<float>("score2");
+                    winner = result.Get<string>("winner");
+                }
+                catch
+                {
+                }
 
                 userData[a].objectID = objectID;
                 userData[a].facebookID = facebookID;
-                userData[a].playerName = playerName;
-                userData[a].winner = winner;
+                userData[a].playerName = playerName;                
                 userData[a].score = score;                
-                userData[a].score = score2;
                 userData[a].level = level;
+
+                userData[a].winner = winner;
+                userData[a].score2 = score2;
                 a++;
             }
         });        

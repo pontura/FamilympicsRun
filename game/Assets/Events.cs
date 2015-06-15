@@ -12,6 +12,9 @@ public static class Events {
 
     public static System.Action<string> OnMusicChange = delegate { };
     public static System.Action<GameObject> OnUIClicked = delegate { };
+    public static System.Action OnFacebookFriends = delegate { };
+    public static System.Action OnFacebookLogin = delegate { };   
+    
 
     //The game:
     public static System.Action StartGame = delegate { };
