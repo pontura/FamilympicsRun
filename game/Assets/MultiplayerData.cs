@@ -12,11 +12,7 @@ public class MultiplayerData : MonoBehaviour {
         public string username;
         public Color color;
     }
-    [Serializable]
-    public class Players
-    {
-        public List<PlayerData> playerData;
-    }
+    public List<PlayerData> players;
 
     [Serializable]
     public class HiscoresData
@@ -57,5 +53,27 @@ public class MultiplayerData : MonoBehaviour {
     {
         HiscoreLevel hiscoreLevel = hiscoreLevels[levelID];
         hiscoreLevel.lastWinner = playerID;
+    }
+    public void ResetPlayers()
+    {
+        players.Clear();
+    }
+    public void AddPlayer(int id)
+    {
+        PlayerData data = new PlayerData();
+        data.playerID = id;
+        data.color = Data.Instance.colors[id - 1];
+        players.Add(data);
+    }
+    public void DeletePlayer(int id)
+    {
+        PlayerData player = null;
+        foreach (PlayerData data in players)
+        {
+            if (data.playerID == id)
+                player = data;
+        }
+        if (player != null)
+            players.Remove(player);
     }
 }

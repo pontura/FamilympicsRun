@@ -42,9 +42,17 @@ public class GameManager : MonoBehaviour {
         targetSpeed = levelData.speed;
         acceleration = levelData.acceleration;
 
-        float offsetY = ((Data.Instance.levelData.numPlayers-1))*(LaneSeparation/2);
-        for (int a = 0; a < Data.Instance.levelData.numPlayers; a++)
+        int totalPlayers = 1;
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+            totalPlayers = Data.Instance.multiplayerData.players.Count;
+
+        float offsetY = (totalPlayers-1)*(LaneSeparation/2);
+        for (int a = 0; a < totalPlayers; a++)
         {
+            int id = 1;
+            if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+                id = Data.Instance.multiplayerData.players[a].playerID;
+
             GameObject newContainer = Instantiate(container) as GameObject;
             newContainer.GetComponent<GameCamera>().id = a + 1;
             newContainer.GetComponent<GameCamera>()._y = a * -LaneSeparation;
@@ -62,18 +70,16 @@ public class GameManager : MonoBehaviour {
 
 
             Player newPlayer = Instantiate(player) as Player;
-            newPlayer.SetColor(Data.Instance.colors[a]);
+            newPlayer.SetColor( Data.Instance.colors[id-1] );
             newPlayer.transform.SetParent(newContainer.transform);
             players.Add(newPlayer);
             newPlayer.GetComponent<Transform>().localPosition = new Vector2(-18f, a * -LaneSeparation);
-            newPlayer.id = a + 1;
+            newPlayer.id = id;
             newPlayer.Init(newContainer.GetComponent<GameCamera>());
         }
 
         //scaleFactor = containers[0].GetComponentInParent<Canvas>().scaleFactor;
         Events.StartGame += StartGame;
-        Events.OnAvatarRun += OnAvatarRun;
-        Events.OnAvatarJump += OnAvatarJump;
         Events.OnAvatarDie += OnAvatarDie;
         Events.OnAvatarWinLap += OnAvatarWinLap;
         Events.OnTimeOver += OnTimeOver;
@@ -87,8 +93,6 @@ public class GameManager : MonoBehaviour {
     void OnDestroy()
     {
         Events.StartGame -= StartGame;
-        Events.OnAvatarRun -= OnAvatarRun;
-        Events.OnAvatarJump -= OnAvatarJump;
         Events.OnAvatarDie -= OnAvatarDie;
         Events.OnAvatarWinLap -= OnAvatarWinLap;
         Events.OnTimeOver -= OnTimeOver;
@@ -106,16 +110,6 @@ public class GameManager : MonoBehaviour {
     void StartGame()
     {
         state = states.PLAYING;
-    }
-    void OnAvatarJump(int id)
-    {
-        if (state == states.IDLE) return;
-        players[id - 1].Jump();
-    }
-    void OnAvatarRun(int id)
-    {
-        if (state == states.IDLE) return;
-        players[id-1].Run();
     }
     void Update()
     {
@@ -159,7 +153,7 @@ public class GameManager : MonoBehaviour {
     {
          float time = chronometer.timer;
          Data.Instance.levelData.SetResultValues(player.id, player.laps, time);
-        if(Data.Instance.levelData.numPlayers>1)
+         if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             Application.LoadLevel("SummaryMultiplayer");
         else if (Data.Instance.levelData.challenge_facebookID == "")
             Application.LoadLevel("Summary");

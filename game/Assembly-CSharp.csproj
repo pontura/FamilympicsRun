@@ -89,8 +89,10 @@
      <Compile Include="Assets\LoginManager.cs" />
      <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\MultiplayerData.cs" />
+     <Compile Include="Assets\MultiplayerSelector.cs" />
      <Compile Include="Assets\MusicManager.cs" />
      <Compile Include="Assets\Player.cs" />
+     <Compile Include="Assets\PlayerButton.cs" />
      <Compile Include="Assets\PlayerControllers.cs" />
      <Compile Include="Assets\PlayersSelector.cs" />
      <Compile Include="Assets\Powerups.cs" />

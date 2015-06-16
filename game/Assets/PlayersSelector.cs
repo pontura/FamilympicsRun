@@ -11,11 +11,6 @@ public class PlayersSelector : MonoBehaviour {
         if (Data.Instance.userData.facebookID == "")
             challengeButton.interactable = false;
     }
-    public void Selected(int num)
-    {
-        Data.Instance.levelData.numPlayers = num;
-        Application.LoadLevel("Game");
-    }
     public void Challenge()
     {
         Application.LoadLevel("ChallengeCreator");
@@ -26,7 +21,6 @@ public class PlayersSelector : MonoBehaviour {
     }
     public void SinglePlayer()
     {
-        Data.Instance.levelData.numPlayers = 1;
         Application.LoadLevel("Game");
     }
 }

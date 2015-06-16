@@ -23,9 +23,6 @@ public class UIPlayerButtons : MonoBehaviour {
         scaleSmall = scaleBig - 0.04f;
         Events.OnAvatarDie += OnAvatarDie;
         Events.OnAvatarWinLap += OnAvatarWinLap;
-        if (Data.Instance.levelData.numPlayers < 2 && id > 1) Destroy(gameObject);
-        if (Data.Instance.levelData.numPlayers < 3 && id > 2) Destroy(gameObject);
-        else if (Data.Instance.levelData.numPlayers < 4 && id > 3) Destroy(gameObject);
 
         button1.GetComponent<Image>().color = Data.Instance.colors[id - 1];
         button2.GetComponent<Image>().color = Data.Instance.colors[id - 1];

@@ -3,7 +3,6 @@ using System.Collections;
 
 public class LevelData : MonoBehaviour {
 
-    public int numPlayers;
     public int winnerID;
     public int score;
     public int laps;

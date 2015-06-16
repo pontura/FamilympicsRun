@@ -31,10 +31,15 @@ public class Player : MonoBehaviour {
         acceleration = initialAacceleration;
         deceleration = initialDeceleration;
         Events.OnPowerUpActive += OnPowerUpActive;
+        Events.OnAvatarJump += OnAvatarJump;
+        Events.OnAvatarRun += OnAvatarRun;
+
     }
     void OnDestroy()
     {
         Events.OnPowerUpActive -= OnPowerUpActive;
+        Events.OnAvatarJump -= OnAvatarJump;
+        Events.OnAvatarRun -= OnAvatarRun;
     }
     public void UpdatePosition()
     {
@@ -72,6 +77,16 @@ public class Player : MonoBehaviour {
     public void SetColor(Color color)
     {
         GetComponentInChildren<SpriteRenderer>().color = color;
+    }
+    void OnAvatarRun(int _id)
+    {
+        if(id != _id) return;
+        Run();
+    }
+    void OnAvatarJump(int _id)
+    {
+        if (id != _id) return;
+        Jump();
     }
     public void Idle()
     {

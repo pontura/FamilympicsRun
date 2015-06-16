@@ -25,7 +25,7 @@ public class Powerups : MonoBehaviour {
     }
 
 	void Start () {
-        if(Data.Instance.levelData.numPlayers>1)
+        if(Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
              Events.OnPowerUpOn += OnPowerUpOn;
 	}
     void OnDestroy()
