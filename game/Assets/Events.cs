@@ -23,6 +23,7 @@ public static class Events {
     public static System.Action<int, float> OnSaveScore = delegate { };
     public static System.Action OnRefreshHiscores = delegate { };
     public static System.Action<int> OnLoadParseScore = delegate { };  
+    public static System.Action<int, float, int, string> OnAddMultiplayerScore = delegate { };  
     
 
     public static System.Action<string> OnKeyDown = delegate { };

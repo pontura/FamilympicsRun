@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour {
          float time = chronometer.timer;
          Data.Instance.levelData.SetResultValues(player.id, player.laps, time);
         if(Data.Instance.levelData.numPlayers>1)
-            Application.LoadLevel("Results");
+            Application.LoadLevel("SummaryMultiplayer");
         else if (Data.Instance.levelData.challenge_facebookID == "")
             Application.LoadLevel("Summary");
         else

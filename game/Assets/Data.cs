@@ -19,6 +19,8 @@ public class Data : MonoBehaviour
     public Levels levels;
     [HideInInspector]
     public LevelsData levelsData;
+    [HideInInspector]
+    public MultiplayerData multiplayerData;
 
     public UserData userData;
     public LoginManager loginManager;
@@ -58,12 +60,14 @@ public class Data : MonoBehaviour
         levelData = GetComponent<LevelData>();
         levels = GetComponent<Levels>();
         levelsData = GetComponent<LevelsData>();
+        multiplayerData = GetComponent<MultiplayerData>();
        // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);
 
         userData = GetComponent<UserData>();
         userData.Init();
+        multiplayerData.Init();
 
         GetComponent<MusicManager>().Init();
     }

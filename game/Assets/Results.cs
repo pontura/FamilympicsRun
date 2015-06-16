@@ -9,6 +9,7 @@ public class Results : MonoBehaviour {
 	void Start () {
         int id = Data.Instance.levelData.winnerID;
         player.color = Data.Instance.colors[id - 1];
+        Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, Data.Instance.levelData.score, id, "username");
 	}
 	
 	// Update is called once per frame
