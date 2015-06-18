@@ -99,6 +99,8 @@ public class LevelButton : MonoBehaviour {
     }
     public void Challenge(RankingLine rankingLine)
     {
+        if (rankingLine.facebookID == Data.Instance.userData.facebookID) return;
+
         Data.Instance.levels.currentLevel = id;
         Data.Instance.levelData.challenge_facebookID = rankingLine.facebookID;
         Data.Instance.levelData.challenge_username = rankingLine.playerName;

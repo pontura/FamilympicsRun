@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 public class LevelSelector : MonoBehaviour {
 
+    public Color backgroundSinglePlayer;
+    public Color backgroundMultiplayer;
+
     public Text debugText;
     public GameObject loginButton;
     public GameObject container;
@@ -17,8 +20,8 @@ public class LevelSelector : MonoBehaviour {
     private int buttonsSeparation = 300;
 
 	void Start () {
-
-        debugText.text = "Not Logged!";
+        
+       // debugText.text = "Not Logged!";
         if (FB.IsLoggedIn)
         {
             debugText.text = "Facebook Logged";
@@ -29,7 +32,7 @@ public class LevelSelector : MonoBehaviour {
             }
         }
 
-        debugText.text += " amigos: " + Data.Instance.userData.FacebookFriends.Count;
+       // debugText.text += " amigos: " + Data.Instance.userData.FacebookFriends.Count;
 
         Data.Instance.levelData.ResetChallenge();
 
@@ -41,8 +44,13 @@ public class LevelSelector : MonoBehaviour {
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             newLevelButton.Init(this, a);
         }
-       // Events.OnRefreshHiscores();
+        OnChangePlayMode(Data.Instance.userData.mode);
+        Events.OnChangePlayMode += OnChangePlayMode;
 	}
+    void OnDestroy()
+    {
+        Events.OnChangePlayMode -= OnChangePlayMode;
+    }
     public void StartLevel(int id)
     {
         Events.OnLoadParseScore(id);
@@ -71,5 +79,17 @@ public class LevelSelector : MonoBehaviour {
         PlayerPrefs.DeleteAll();
         Data.Instance.userData.Reset();
         Application.LoadLevel("MainMenu");
+    }
+    void OnChangePlayMode(UserData.modes mode)
+    {
+        switch (mode)
+        {
+            case UserData.modes.MULTIPLAYER:
+                GetComponent<Camera>().backgroundColor = backgroundMultiplayer;
+                break;
+            case UserData.modes.SINGLEPLAYER:
+                GetComponent<Camera>().backgroundColor = backgroundSinglePlayer;
+                break;
+        }
     }
 }

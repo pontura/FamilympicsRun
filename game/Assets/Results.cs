@@ -5,15 +5,26 @@ using System.Collections;
 public class Results : MonoBehaviour {
 
     public Image player;
-	// Use this for initialization
+    public Text usernameLabel;
+
+    public int id;
+
 	void Start () {
-        int id = Data.Instance.levelData.winnerID;
-        player.color = Data.Instance.colors[id - 1];
-        Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, Data.Instance.levelData.score, id, "username");
+        id = Data.Instance.levelData.winnerID;
+        usernameLabel.text = Data.Instance.multiplayerData.GetPlayer(id).username;
 	}
 	
-	// Update is called once per frame
 	public void Back () {
+        player.color = Data.Instance.colors[id - 1];
+
+        float score = 0;
+
+        if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
+            score = Data.Instance.levelData.laps;
+        else
+            score = Data.Instance.levelData.time;
+
+        Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, score, id, usernameLabel.text);
         Application.LoadLevel("LevelSelector");
 	}
 }

@@ -49,10 +49,58 @@ public class MultiplayerData : MonoBehaviour {
     {
         Events.OnAddMultiplayerScore += OnAddMultiplayerScore;
     }
+    void OnDestroy()
+    {
+        Events.OnAddMultiplayerScore -= OnAddMultiplayerScore;
+    }
     void OnAddMultiplayerScore(int levelID, float score, int playerID, string username)
     {
         HiscoreLevel hiscoreLevel = hiscoreLevels[levelID];
         hiscoreLevel.lastWinner = playerID;
+
+        bool newHiscore = false;
+        HiscoresData newHiscoresData = null;
+
+        print(levelID + " multi: " + score);
+
+        foreach (HiscoresData hiscoresData in hiscoreLevel.hiscores)
+        {
+            print("newHiscore " + newHiscoresData);
+            if (newHiscoresData != null)
+            {
+                HiscoresData hiscoresDataToReplace = new HiscoresData();
+                hiscoresDataToReplace.levelID = hiscoresData.levelID;
+                hiscoresDataToReplace.score = hiscoresData.score;
+                hiscoresDataToReplace.username = hiscoresData.username;
+                hiscoresDataToReplace.playerID = hiscoresData.playerID;
+
+                hiscoresData.levelID = newHiscoresData.levelID;
+                hiscoresData.score = newHiscoresData.score;
+                hiscoresData.username = newHiscoresData.username;
+                hiscoresData.playerID = newHiscoresData.playerID;
+
+                newHiscoresData = hiscoresDataToReplace;
+            } else 
+            if (
+                (Data.Instance.levels.GetCurrentLevelData().totalTime > 0 && hiscoresData.score < score)
+                ||
+                (Data.Instance.levels.GetCurrentLevelData().totalLaps > 0 && (hiscoresData.score > score || hiscoresData.score == 0))
+                )
+            {
+                newHiscore = true;
+                newHiscoresData = new HiscoresData();
+
+                newHiscoresData.levelID = hiscoresData.levelID;
+                newHiscoresData.score = hiscoresData.score;
+                newHiscoresData.username = hiscoresData.username;
+                newHiscoresData.playerID = hiscoresData.playerID;
+
+                hiscoresData.levelID = levelID;
+                hiscoresData.score = score;
+                hiscoresData.username = username;
+                hiscoresData.playerID = playerID;
+            }
+        }
     }
     public void ResetPlayers()
     {
