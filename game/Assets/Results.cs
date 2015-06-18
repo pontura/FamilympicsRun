@@ -11,12 +11,11 @@ public class Results : MonoBehaviour {
 
 	void Start () {
         id = Data.Instance.levelData.winnerID;
+        player.color = Data.Instance.colors[id - 1];
         usernameLabel.text = Data.Instance.multiplayerData.GetPlayer(id).username;
 	}
 	
 	public void Back () {
-        player.color = Data.Instance.colors[id - 1];
-
         float score = 0;
 
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
