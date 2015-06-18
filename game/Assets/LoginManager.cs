@@ -28,6 +28,7 @@ public class LoginManager : MonoBehaviour
 
     void Awake()
     {
+        if (FB.IsLoggedIn) return;
         FB.Init(SetInit, OnHideUnity);
     }
 

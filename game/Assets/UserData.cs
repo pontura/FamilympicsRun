@@ -72,5 +72,6 @@ public class UserData : MonoBehaviour {
         if(mode == modes.SINGLEPLAYER) mode = modes.MULTIPLAYER;
         else mode = modes.SINGLEPLAYER;
         PlayerPrefs.SetString("mode", mode.ToString() );
+        Events.OnChangePlayMode(mode);
     }
 }

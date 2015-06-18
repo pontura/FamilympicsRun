@@ -34,6 +34,17 @@ public class ChallengesLine : MonoBehaviour
         if (infoLoaded) return;
         if (challenges.userData[id].facebookID != "")
         {
+            string title = "";
+            if (challenges.type == Challenges.types.MADE)
+            {
+                title = "To: ";
+                InactiveButtons();
+            }
+            else
+            {
+                title = "From: ";
+            }
+
             if (challenges.userData[id].winner != "")
             {
                 if(challenges.userData[id].winner == Data.Instance.userData.facebookID)
@@ -41,12 +52,11 @@ public class ChallengesLine : MonoBehaviour
                 else
                     result.text = "You lose!";
 
-                ok.gameObject.SetActive( false);
-                cancel.gameObject.SetActive( false);
+                InactiveButtons();
             }
             this.objectID = challenges.userData[id].objectID;
             this.facebookID = challenges.userData[id].facebookID;
-            usernameLabel.text = challenges.userData[id].playerName;
+            usernameLabel.text = title + challenges.userData[id].playerName;
             scoreLabel.text = Data.Instance.levelsData.GetScoreString(challenges.userData[id].level, challenges.userData[id].score);
             op_score = challenges.userData[id].score;
             profilePicture.setPicture(challenges.userData[id].facebookID);
@@ -54,6 +64,11 @@ public class ChallengesLine : MonoBehaviour
 
             show();
         }
+    }
+    void InactiveButtons()
+    {
+        ok.gameObject.SetActive(false);
+        cancel.gameObject.SetActive(false);
     }
     private void hide()
     {

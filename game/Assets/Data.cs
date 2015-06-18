@@ -56,6 +56,7 @@ public class Data : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        print("_________Data Awake");
         loginManager = GetComponent<LoginManager>();
         levelData = GetComponent<LevelData>();
         levels = GetComponent<Levels>();

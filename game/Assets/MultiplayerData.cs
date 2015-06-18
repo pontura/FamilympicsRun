@@ -76,4 +76,12 @@ public class MultiplayerData : MonoBehaviour {
         if (player != null)
             players.Remove(player);
     }
+    public PlayerData GetPlayer(int id)
+    {
+        foreach (PlayerData data in players)
+            if (data.playerID == id)
+                return data;
+        return null;
+        
+    }
 }

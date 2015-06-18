@@ -27,16 +27,17 @@ public class FacebookLogin : MonoBehaviour
     }
     void OnFacebookLogin()
     {
-        profileModule.SetOn();
+       // profileModule.SetOn();
+        Application.LoadLevel("LevelSelector");
     }
     public void FBLogin()
     {
 
-        if (FB.IsLoggedIn)
-        {
-            profileModule.SetOn();
-            loggedOutUIElements.SetActive(false);
-        }
+        //if (FB.IsLoggedIn)
+        //{
+        //    profileModule.SetOn();
+        //    loggedOutUIElements.SetActive(false);
+        //}
 
         Data.Instance.loginManager.FBLogin();
     }
