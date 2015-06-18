@@ -25,6 +25,6 @@ public class Results : MonoBehaviour {
             score = Data.Instance.levelData.time;
 
         Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, score, id, usernameLabel.text);
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
 	}
 }

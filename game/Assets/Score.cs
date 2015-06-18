@@ -56,6 +56,6 @@ public class Score : MonoBehaviour {
     }
     public void backToMain()
     {
-        Application.LoadLevel("Menu");
+        Data.Instance.Load("Menu");
     }
 }

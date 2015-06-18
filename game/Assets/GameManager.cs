@@ -154,11 +154,11 @@ public class GameManager : MonoBehaviour {
          float time = chronometer.timer;
          Data.Instance.levelData.SetResultValues(player.id, player.laps, time);
          if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
-            Application.LoadLevel("SummaryMultiplayer");
+            Data.Instance.Load("SummaryMultiplayer");
         else if (Data.Instance.levelData.challenge_facebookID == "")
-            Application.LoadLevel("Summary");
+            Data.Instance.Load("Summary");
         else
-            Application.LoadLevel("SummaryChallenge");
+            Data.Instance.Load("SummaryChallenge");
     }
     void OnAvatarDie(Player _player)
     {
@@ -169,6 +169,6 @@ public class GameManager : MonoBehaviour {
                 playersDead++;
         }
         if (playersDead == players.Count)
-            Application.LoadLevel("LevelSelector");
+            Data.Instance.Load("LevelSelector");
     }
 }

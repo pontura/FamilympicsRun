@@ -10,6 +10,6 @@ public class Ui : MonoBehaviour {
 
     public void LevelSelector()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
 }

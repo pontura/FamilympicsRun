@@ -24,6 +24,7 @@ public class Data : MonoBehaviour
 
     public UserData userData;
     public LoginManager loginManager;
+    public string lastScene;
 
     public static Data Instance
     {
@@ -87,5 +88,15 @@ public class Data : MonoBehaviour
     {
         this.musicVolume = _musicVolume;
         this.soundsVolume = _soundsVolume;
+    }    
+    public void Load(string nextScene)
+    {
+        lastScene = Application.loadedLevelName;
+        if (nextScene == "") nextScene = "LevelSelector";
+        Application.LoadLevel(nextScene);
+    }
+    public void Back()
+    {
+        Load(lastScene);
     }
 }

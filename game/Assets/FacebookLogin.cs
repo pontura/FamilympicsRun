@@ -28,7 +28,7 @@ public class FacebookLogin : MonoBehaviour
     void OnFacebookLogin()
     {
        // profileModule.SetOn();
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
     public void FBLogin()
     {
@@ -43,6 +43,6 @@ public class FacebookLogin : MonoBehaviour
     }
     public void Back()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Back();
     }
 }

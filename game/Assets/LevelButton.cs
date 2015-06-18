@@ -34,11 +34,6 @@ public class LevelButton : MonoBehaviour {
         this.id = levelID;
         levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
 
-        float _myScore = PlayerPrefs.GetFloat("Run_Level_" + levelID);
-        
-        if(_myScore>0)
-             myScore.text = Data.Instance.levelsData.GetScoreString(levelID, _myScore);
-
         float myLastScore = PlayerPrefs.GetFloat("Run_Level_" + (levelID-1).ToString() );
 
         if (myLastScore == 0 && levelID > 1)
@@ -60,35 +55,57 @@ public class LevelButton : MonoBehaviour {
         
         if (levelScore != null && levelScore.scoreData1.score > 0 )
         {
-            print("loading scores of " + id);
             infoLoaded = true;
-            if (levelScore.scoreData1.playerName != "")
-            {
-                user1.gameObject.SetActive(true);
-                user1.Init(id, levelScore.scoreData1.playerName, levelScore.scoreData1.score.ToString(), levelScore.scoreData1.facebookID);
-            }
-            if (levelScore.scoreData2.playerName != "")
-            {
-                user2.gameObject.SetActive(true);
-                user2.Init(id, levelScore.scoreData2.playerName, levelScore.scoreData2.score.ToString(), levelScore.scoreData2.facebookID);                
-            }
-            if (levelScore.scoreData3.playerName != "")
-            {
-                user3.gameObject.SetActive(true);
-                user3.Init(id, levelScore.scoreData3.playerName, levelScore.scoreData3.score.ToString(), levelScore.scoreData3.facebookID);                
-            }
-
+            OnChangePlayMode(Data.Instance.userData.mode);
         }
     }
+    void LoadSinglePlayerWinners()
+    {
+
+        float _myScore = PlayerPrefs.GetFloat("Run_Level_" + id);
+        if (_myScore > 0)
+            myScore.text = Data.Instance.levelsData.GetScoreString(id, _myScore);
+
+        if (levelScore.scoreData1.playerName != "")
+        {
+            user1.gameObject.SetActive(true);
+            user1.Init(id, levelScore.scoreData1.playerName, levelScore.scoreData1.score.ToString(), levelScore.scoreData1.facebookID);
+        }
+        else user1.gameObject.SetActive(false);
+        if (levelScore.scoreData2.playerName != "")
+        {
+            user2.gameObject.SetActive(true);
+            user2.Init(id, levelScore.scoreData2.playerName, levelScore.scoreData2.score.ToString(), levelScore.scoreData2.facebookID);
+        }
+        else user2.gameObject.SetActive(false);
+        if (levelScore.scoreData3.playerName != "")
+        {
+            user3.gameObject.SetActive(true);
+            user3.Init(id, levelScore.scoreData3.playerName, levelScore.scoreData3.score.ToString(), levelScore.scoreData3.facebookID);
+        }
+        else user3.gameObject.SetActive(false);
+    }
+
+    //TODO:::::::::::
+    void LoadMultiplayerWinners()
+    {
+        myScore.text = "";
+        user1.gameObject.SetActive(false);
+        user2.gameObject.SetActive(false);
+        user3.gameObject.SetActive(false);
+    }
+
     void OnChangePlayMode(UserData.modes mode)
     {
         switch (mode)
         {
             case UserData.modes.MULTIPLAYER:
                 CheckForHiscoreColor();
+                LoadMultiplayerWinners();
                 break;
             case UserData.modes.SINGLEPLAYER:
                 button.image.color = Color.white;
+                LoadSinglePlayerWinners();
                 break;
         }
     }
@@ -104,7 +121,7 @@ public class LevelButton : MonoBehaviour {
         Data.Instance.levels.currentLevel = id;
         Data.Instance.levelData.challenge_facebookID = rankingLine.facebookID;
         Data.Instance.levelData.challenge_username = rankingLine.playerName;
-        Application.LoadLevel("ChallengeConfirm");
+        Data.Instance.Load("ChallengeConfirm");
     }
     
     

@@ -58,6 +58,7 @@ public class UserData : MonoBehaviour {
     }
     public void ResetFacebookFriends()
     {
+        print("ResetFacebookFriends");
         FacebookFriends.Clear();
     }
     public void AddFacebookFriend(string id, string username)

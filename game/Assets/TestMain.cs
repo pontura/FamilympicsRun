@@ -10,10 +10,10 @@ public class TestMain : MonoBehaviour {
 
     public void GotoScore()
     {
-        Application.LoadLevel("Score");
+        Data.Instance.Load("Score");
     }
     public void ReadScores()
     {
-        Application.LoadLevel("ReadScores");
+        Data.Instance.Load("ReadScores");
     }
 }

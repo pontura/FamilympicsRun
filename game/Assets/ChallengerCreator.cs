@@ -34,12 +34,12 @@ public class ChallengerCreator : MonoBehaviour {
     public void ShowParseFriends()
     {
         Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends = false;
-        Application.LoadLevel("ChallengeCreator");
+        Data.Instance.Load("ChallengeCreator");
     }
     public void ShowFacebookFriends()
     {
         Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends = true;
-        Application.LoadLevel("ChallengeCreator");
+        Data.Instance.Load("ChallengeCreator");
     }
     public void LoadFacebookFriends()
     {
@@ -103,11 +103,11 @@ public class ChallengerCreator : MonoBehaviour {
     }
     public void Back()
     {
-        Application.LoadLevel("Players");
+        Data.Instance.Back();
     }
     public void Challenge(string username, string facebookID)
     {
         Data.Instance.levelData.CreateChallenge(username, facebookID);
-        Application.LoadLevel("ChallengeConfirm");
+        Data.Instance.Load("ChallengeConfirm");
     }
 }

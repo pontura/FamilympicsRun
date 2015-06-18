@@ -31,10 +31,10 @@ public class MultiplayerSelector : MonoBehaviour {
     }
     public void StartGame()
     {
-        Application.LoadLevel("Game");
+        Data.Instance.Load("Game");
     }
     public void Back()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
 }

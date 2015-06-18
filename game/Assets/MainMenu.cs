@@ -5,6 +5,6 @@ public class MainMenu : MonoBehaviour {
 
     public void GotoLevelSelector()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
 }

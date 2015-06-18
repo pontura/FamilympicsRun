@@ -33,15 +33,16 @@ public class LevelsData : MonoBehaviour {
     void Start()
     {
         Events.OnFacebookFriends += OnFacebookFriends;
+        Events.OnSaveScore += OnSaveScore;
+        Events.OnRefreshHiscores += OnRefreshHiscores;
+        Events.OnLoadParseScore += OnLoadParseScore;
     }
     public void OnFacebookFriends()
     {
         i = 0;
       // levelsScore = new LevelsScore[Data.Instance.levels.levels.Length];
        totalLevels = Data.Instance.levels.levels.Length;
-       Events.OnSaveScore += OnSaveScore;
-       Events.OnRefreshHiscores += OnRefreshHiscores;
-       Events.OnLoadParseScore += OnLoadParseScore;
+       
        Invoke("LoadNextData", 0.5f);
     }
     public void Refresh()
@@ -81,7 +82,7 @@ public class LevelsData : MonoBehaviour {
             Invoke("LoadNextData", 0.5f);
         }
     }
-    public void OnSaveScore(int level, float score)
+    void OnSaveScore(int level, float score)
     {
         // si es por laps entonces el tiempo tiene que ser menor para grabar el score
         if (Data.Instance.levels.levels[level].totalLaps > 0 && score > levelsScore[level].myScore && levelsScore[level].myScore != 0) { Debug.Log("Ya tenias menos tiempo"); return; }
@@ -174,6 +175,7 @@ public class LevelsData : MonoBehaviour {
         {
             query = ParseObject.GetQuery("Level_" + _level.ToString())
                 .OrderByDescending("score")
+                .WhereContainedIn("facebookID", myList)
                 .Limit(3);
         }
         

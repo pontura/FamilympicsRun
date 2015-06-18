@@ -39,7 +39,7 @@ public class LoginManager : MonoBehaviour
     }
     public void Back()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Back();
     }
 
     private void OnHideUnity(bool isGameShown)
@@ -221,7 +221,6 @@ public class LoginManager : MonoBehaviour
     }
     void FBFriendsCallback(FBResult result)
     {
-        Data.Instance.userData.ResetFacebookFriends();
         if (result.Error != null)
         {
             Debug.LogError(result.Error);
@@ -229,6 +228,8 @@ public class LoginManager : MonoBehaviour
             FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
             return;
         }
+        Data.Instance.userData.ResetFacebookFriends();
+
         print("FBFriendsCallback");
         List<object> friends = Util.DeserializeJSONFriends(result.Text);
 

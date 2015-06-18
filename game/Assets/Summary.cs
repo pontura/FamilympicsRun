@@ -11,6 +11,8 @@ public class Summary : MonoBehaviour {
 
 	void Start () {
 
+        print("start summary");
+
         levelData = Data.Instance.levelData;
 
         System.TimeSpan t = System.TimeSpan.FromSeconds(levelData.time);
@@ -37,7 +39,7 @@ public class Summary : MonoBehaviour {
 
     public void GotoLevelSelector()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
 
 }

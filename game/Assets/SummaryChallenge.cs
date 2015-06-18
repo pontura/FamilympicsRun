@@ -71,7 +71,7 @@ public class SummaryChallenge : MonoBehaviour
 
     public void GotoLevelSelector()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
 
 }

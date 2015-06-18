@@ -55,30 +55,30 @@ public class LevelSelector : MonoBehaviour {
     {
         Events.OnLoadParseScore(id);
         if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
-            Application.LoadLevel("SinglePlayer");
+            Data.Instance.Load("SinglePlayer");
         else
-            Application.LoadLevel("Players");
+            Data.Instance.Load("Players");
 
         Data.Instance.GetComponent<Levels>().currentLevel = id;
     }
     public void Login()
     {
-        Application.LoadLevel("Login");
+        Data.Instance.Load("Login");
     }
     public void Refresh()
     {
         Data.Instance.levelsData.Refresh();
-        Application.LoadLevel("LevelSelector");        
+        Data.Instance.Load("LevelSelector");        
     }
     public void Challenges()
     {
-        Application.LoadLevel("Challenges");
+        Data.Instance.Load("Challenges");
     }
     public void ResetApp()
     {
         PlayerPrefs.DeleteAll();
         Data.Instance.userData.Reset();
-        Application.LoadLevel("MainMenu");
+        Data.Instance.Load("MainMenu");
     }
     void OnChangePlayMode(UserData.modes mode)
     {

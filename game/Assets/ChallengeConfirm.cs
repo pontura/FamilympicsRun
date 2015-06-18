@@ -11,10 +11,10 @@ public class ChallengeConfirm : MonoBehaviour {
 	}
 	
 	public void StartGame () {
-        Application.LoadLevel("Game");
+        Data.Instance.Load("Game");
 	}
     public  void Back()
     {
-        Application.LoadLevel("ChallengeCreator");
+        Data.Instance.Back();
     }
 }

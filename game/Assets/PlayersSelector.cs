@@ -13,14 +13,14 @@ public class PlayersSelector : MonoBehaviour {
     }
     public void Challenge()
     {
-        Application.LoadLevel("ChallengeCreator");
+        Data.Instance.Load("ChallengeCreator");
     }
     public void Back()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
     public void SinglePlayer()
     {
-        Application.LoadLevel("Game");
+        Data.Instance.Load("Game");
     }
 }

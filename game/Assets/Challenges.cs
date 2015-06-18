@@ -43,7 +43,7 @@ public class Challenges : MonoBehaviour {
     }
     public void Back()
     {
-        Application.LoadLevel("LevelSelector");
+        Data.Instance.Load("LevelSelector");
     }
     public void ChallengesMade()
     {
@@ -154,6 +154,6 @@ public class Challenges : MonoBehaviour {
         Data.Instance.levelData.challenge_facebookID = facebookID;
         Data.Instance.levelData.challenge_objectID = objectID;
         Data.Instance.levelData.challenge_op_score = op_score;
-        Application.LoadLevel("Game");
+        Data.Instance.Load("Game");
     }
 }
