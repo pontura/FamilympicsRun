@@ -6,11 +6,6 @@ public class PlayersSelector : MonoBehaviour {
 
     public Button challengeButton;
 
-    void Start()
-    {
-        if (Data.Instance.userData.facebookID == "")
-            challengeButton.interactable = false;
-    }
     public void Challenge()
     {
         Data.Instance.Load("ChallengeCreator");

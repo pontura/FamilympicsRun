@@ -63,6 +63,7 @@ public class MultiplayerData : MonoBehaviour {
 
         print(levelID + " multi: " + score);
 
+        int num = 1;
         foreach (HiscoresData hiscoresData in hiscoreLevel.hiscores)
         {
             print("newHiscore " + newHiscoresData);
@@ -78,6 +79,7 @@ public class MultiplayerData : MonoBehaviour {
                 hiscoresData.score = newHiscoresData.score;
                 hiscoresData.username = newHiscoresData.username;
                 hiscoresData.playerID = newHiscoresData.playerID;
+                SavePlayerPrefs(levelID, num, newHiscoresData.username, newHiscoresData.score);
 
                 newHiscoresData = hiscoresDataToReplace;
             } else 
@@ -95,12 +97,21 @@ public class MultiplayerData : MonoBehaviour {
                 newHiscoresData.username = hiscoresData.username;
                 newHiscoresData.playerID = hiscoresData.playerID;
 
+                SavePlayerPrefs(levelID, num, username, score);
+
                 hiscoresData.levelID = levelID;
                 hiscoresData.score = score;
                 hiscoresData.username = username;
                 hiscoresData.playerID = playerID;
             }
+            num++;
         }
+    }
+    void SavePlayerPrefs(int levelID, int num, string username, float score)
+    {
+        string strName = levelID + "_" + num + "_" + username;
+        print("SavePlayerPrefs: " + strName);
+        PlayerPrefs.SetFloat(strName, score);
     }
     public void ResetPlayers()
     {
