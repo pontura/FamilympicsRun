@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Text.RegularExpressions;
+
 
 public class MultiplayerData : MonoBehaviour {
 
@@ -44,6 +46,7 @@ public class MultiplayerData : MonoBehaviour {
                 hiscoreLevel.hiscores.Add( hiscoresData );
             }
         }
+        LeadPlayerPrefs();
 	}
     void Start()
     {
@@ -79,7 +82,7 @@ public class MultiplayerData : MonoBehaviour {
                 hiscoresData.score = newHiscoresData.score;
                 hiscoresData.username = newHiscoresData.username;
                 hiscoresData.playerID = newHiscoresData.playerID;
-                SavePlayerPrefs(levelID, num, newHiscoresData.username, newHiscoresData.score);
+                SavePlayerPrefs(levelID, num, newHiscoresData.playerID, newHiscoresData.username, newHiscoresData.score);
 
                 newHiscoresData = hiscoresDataToReplace;
             } else 
@@ -97,7 +100,7 @@ public class MultiplayerData : MonoBehaviour {
                 newHiscoresData.username = hiscoresData.username;
                 newHiscoresData.playerID = hiscoresData.playerID;
 
-                SavePlayerPrefs(levelID, num, username, score);
+                SavePlayerPrefs(levelID, num, playerID, username, score);
 
                 hiscoresData.levelID = levelID;
                 hiscoresData.score = score;
@@ -107,12 +110,46 @@ public class MultiplayerData : MonoBehaviour {
             num++;
         }
     }
-    void SavePlayerPrefs(int levelID, int num, string username, float score)
+    void SavePlayerPrefs(int levelID, int num, int playerID, string username, float score)
     {
-        string strName = levelID + "_" + num + "_" + username;
-        print("SavePlayerPrefs: " + strName);
-        PlayerPrefs.SetFloat(strName, score);
+        string strName = "Multi_" + levelID + "_" + num;
+        string strValue = playerID + "_" + username + "_" + score;
+        PlayerPrefs.SetString(strName, strValue);
+        print("______________" + strName + "   strValue: " + strValue);
     }
+    void LeadPlayerPrefs()
+    {
+        for (int i = 0; i < Data.Instance.levels.levels.Length; i++)
+        {
+            for (int a = 0; a < 3; a++)
+            {
+                LeadPlayerPrefData( i + 1, a+1);
+            }
+        }
+    }
+
+
+    //llega esto:
+    //Multi_1_1   strValue:1_xcv_2.799766
+    void LeadPlayerPrefData(int levelID, int num)
+    {
+        string result = PlayerPrefs.GetString("Multi_" + levelID + "_" + num);
+
+        if (result.Length < 2) return;
+        string[] nameArr = Regex.Split(result, "_");
+        if (nameArr.Length < 1) return;
+
+        int playerID = int.Parse(nameArr[0]);
+        string username = nameArr[1];
+        float score = float.Parse(nameArr[2]);
+
+        hiscoreLevels[levelID].hiscores[num - 1].levelID = levelID;
+        hiscoreLevels[levelID].hiscores[num - 1].playerID = playerID;
+        hiscoreLevels[levelID].hiscores[num - 1].username = username;
+        hiscoreLevels[levelID].hiscores[num - 1].score = score;
+    }
+
+
     public void ResetPlayers()
     {
         players.Clear();

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public class LevelButton : MonoBehaviour {
 
@@ -15,13 +17,11 @@ public class LevelButton : MonoBehaviour {
     public bool infoLoaded;
     public LevelsData.LevelsScore levelScore;
     private Image image;
+    private MultiplayerData multiplayerData;
 
     void Start()
     {
-        user1.gameObject.SetActive(false);
-        user2.gameObject.SetActive(false);
-        user3.gameObject.SetActive(false);
-
+        this.multiplayerData = Data.Instance.GetComponent<MultiplayerData>();
         Events.OnChangePlayMode += OnChangePlayMode;
     }
     void OnDestroy()
@@ -36,6 +36,8 @@ public class LevelButton : MonoBehaviour {
 
         float myLastScore = PlayerPrefs.GetFloat("Run_Level_" + (levelID-1).ToString() );
 
+        OnChangePlayMode(Data.Instance.userData.mode);
+
         if (myLastScore == 0 && levelID > 1)
         {
             labelNum.text = "X";
@@ -47,7 +49,7 @@ public class LevelButton : MonoBehaviour {
         {
             levelSelector.StartLevel(id);
         });
-        OnChangePlayMode(Data.Instance.userData.mode);
+        
     }
     void Update()
     {
@@ -61,8 +63,15 @@ public class LevelButton : MonoBehaviour {
     }
     void LoadSinglePlayerWinners()
     {
-
+        if (Data.Instance.userData.facebookID.Length < 2)
+        {
+            user1.gameObject.SetActive(false);
+            user2.gameObject.SetActive(false);
+            user3.gameObject.SetActive(false);
+            return;
+        }
         float _myScore = PlayerPrefs.GetFloat("Run_Level_" + id);
+
         if (_myScore > 0)
             myScore.text = Data.Instance.levelsData.GetScoreString(id, _myScore);
 
@@ -90,9 +99,30 @@ public class LevelButton : MonoBehaviour {
     void LoadMultiplayerWinners()
     {
         myScore.text = "";
-        user1.gameObject.SetActive(false);
-        user2.gameObject.SetActive(false);
-        user3.gameObject.SetActive(false);
+        multiplayerData = Data.Instance.GetComponent<MultiplayerData>();
+        List<MultiplayerData.HiscoresData> hiscoreData =  multiplayerData.hiscoreLevels[id].hiscores;
+
+        if (hiscoreData[0].score > 0)
+        {
+            user1.gameObject.SetActive(true);
+            user1.Init(id, hiscoreData[0].username, hiscoreData[0].score.ToString(), "");
+            user1.SetMultiplayerColor(hiscoreData[0].playerID);
+        }
+        else user1.gameObject.SetActive(false);
+        if (hiscoreData[1].score > 0)
+        {
+            user2.gameObject.SetActive(true);
+            user2.Init(id, hiscoreData[1].username, hiscoreData[1].score.ToString(), "");
+            user2.SetMultiplayerColor(hiscoreData[1].playerID);
+        }
+        else user2.gameObject.SetActive(false);
+        if (hiscoreData[2].score > 0)
+        {
+            user3.gameObject.SetActive(true);
+            user3.Init(id, hiscoreData[2].username, hiscoreData[2].score.ToString(), "");
+            user3.SetMultiplayerColor(hiscoreData[2].playerID);
+        }
+        else user3.gameObject.SetActive(false);
     }
 
     void OnChangePlayMode(UserData.modes mode)
@@ -116,6 +146,8 @@ public class LevelButton : MonoBehaviour {
     }
     public void Challenge(RankingLine rankingLine)
     {
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER) return;
+
         if (rankingLine.facebookID == Data.Instance.userData.facebookID) return;
 
         Data.Instance.levels.currentLevel = id;

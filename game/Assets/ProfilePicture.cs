@@ -13,6 +13,11 @@ public class ProfilePicture : MonoBehaviour
     {
         StartCoroutine(GetPicture(facebookID));
     }
+    public void SetMultiplayerColor(int id)
+    {
+        Color color = Data.Instance.colors[id-1];
+        GetComponent<Image>().color = color;
+    }
     IEnumerator GetPicture(string facebookID)
     {
         if (facebookID == "")

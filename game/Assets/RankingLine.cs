@@ -25,6 +25,9 @@ public class RankingLine : MonoBehaviour {
         this.score.text = Data.Instance.levelsData.GetScoreString(levelID, float.Parse(_score));
 
         picture.setPicture(_facebookID);
-
+    }
+    public void SetMultiplayerColor(int playerID)
+    {
+        picture.SetMultiplayerColor(playerID);
     }
 }
