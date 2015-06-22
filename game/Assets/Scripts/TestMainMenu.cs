@@ -83,6 +83,7 @@ public class TestMainMenu: MonoBehaviour {
 
 	void Awake()
 	{
+        print("awake");
 		enabled = false;
 		FB.Init(SetInit, OnHideUnity);
 	}

@@ -7,8 +7,11 @@ using Facebook;
 using Facebook.MiniJSON;
 using System.Linq;
 
+
+
 public class LoginManager : MonoBehaviour
 {
+    private bool triedToLogin;
 
     void Start()
     {
@@ -24,12 +27,15 @@ public class LoginManager : MonoBehaviour
             }
             GetFriends();
         }
-    }
 
-    void Awake()
-    {
         if (FB.IsLoggedIn) return;
+        if(triedToLogin) return;
+
+        triedToLogin = true;
+        print("LoginManager Awake");
+
         FB.Init(SetInit, OnHideUnity);
+        
     }
 
     private void SetInit()
