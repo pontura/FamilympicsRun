@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 
 public class RankingLine : MonoBehaviour {
 
+    public Image circleImage;
     public Text username;
     public Text score;
     public ProfilePicture picture;
@@ -26,8 +27,18 @@ public class RankingLine : MonoBehaviour {
 
         picture.setPicture(_facebookID);
     }
+    public void SetSinglePlayer()
+    {
+        circleImage.gameObject.SetActive(false);
+    }
     public void SetMultiplayerColor(int playerID)
     {
-        picture.SetMultiplayerColor(playerID);
+        circleImage.gameObject.SetActive(true);
+        Color color = Data.Instance.colors[playerID-1];
+        SetColor(color);
+    }
+    public void SetColor(Color color)
+    {
+        circleImage.color = color;
     }
 }

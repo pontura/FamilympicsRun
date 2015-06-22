@@ -80,18 +80,21 @@ public class LevelButton : MonoBehaviour {
         {
             user1.gameObject.SetActive(true);
             user1.Init(id, levelScore.scoreData1.playerName, levelScore.scoreData1.score.ToString(), levelScore.scoreData1.facebookID);
+            user1.SetSinglePlayer();
         }
         else user1.gameObject.SetActive(false);
         if (levelScore.scoreData2.playerName != "")
         {
             user2.gameObject.SetActive(true);
             user2.Init(id, levelScore.scoreData2.playerName, levelScore.scoreData2.score.ToString(), levelScore.scoreData2.facebookID);
+            user2.SetSinglePlayer();
         }
         else user2.gameObject.SetActive(false);
         if (levelScore.scoreData3.playerName != "")
         {
             user3.gameObject.SetActive(true);
             user3.Init(id, levelScore.scoreData3.playerName, levelScore.scoreData3.score.ToString(), levelScore.scoreData3.facebookID);
+            user3.SetSinglePlayer();
         }
         else user3.gameObject.SetActive(false);
     }
@@ -143,7 +146,15 @@ public class LevelButton : MonoBehaviour {
     void CheckForHiscoreColor()
     {
         if (Data.Instance.multiplayerData.hiscoreLevels[id].lastWinner != 0)
-            button.image.color = Data.Instance.multiplayerData.GetPlayer(Data.Instance.multiplayerData.hiscoreLevels[id].lastWinner).color;
+        {
+            int playerID = Data.Instance.multiplayerData.hiscoreLevels[id].lastWinner;
+            Color color = Data.Instance.colors[playerID - 1];
+            print(color);
+            if (button)
+                button.image.color = color;
+            else
+                print("No hay boton");
+        }
     }
     public void Challenge(RankingLine rankingLine)
     {

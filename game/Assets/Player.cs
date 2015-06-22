@@ -7,9 +7,11 @@ public class Player : MonoBehaviour {
     public int id;
     public states state;
     public float speed;
-    private float initialAacceleration = 3;
-    private float initialDeceleration = 10;
-    private float speedJump = 40;
+    private float initialAacceleration = 0.2f;
+    private float initialDeceleration = 1.2f;
+
+    private float maxSpeed = 2.2f;    
+    private float speedJump = 1;
 
     private float acceleration;
     private float deceleration;
@@ -90,7 +92,7 @@ public class Player : MonoBehaviour {
     }
     public void Idle()
     {
-        speed = 0;
+        speed = speed/2;
         state = states.PLAYING;
         animation.Play("playerIdle");
     }
@@ -100,7 +102,7 @@ public class Player : MonoBehaviour {
         if (state == states.JUMPING) return;
         state = states.RUNNING;
         gameCamera.OnAvatarMoved();
-        speed = acceleration;
+        speed += acceleration;
         animation.Play("playerRun");
     }
     public void Jump()
@@ -108,7 +110,7 @@ public class Player : MonoBehaviour {
         if (state == states.HURT) return;
         state = states.JUMPING;
         gameCamera.OnAvatarMoved();
-        speed = acceleration/2;
+        if (speed < speedJump) speed = speedJump;
         animation.Play("playerJump");
     }
     public void Hurt()
@@ -129,6 +131,7 @@ public class Player : MonoBehaviour {
     }
     void Update()
     {
+        if (speed > maxSpeed) speed = maxSpeed;
         if (state == states.DEAD) return;
         if (state == states.PLAYING) return;
         if (state == states.HURT) return;
@@ -139,7 +142,7 @@ public class Player : MonoBehaviour {
         if (state == states.RUNNING)
             speed -= deceleration*Time.deltaTime;
         else if (state == states.JUMPING)
-            speed = speedJump * Time.deltaTime;
+            speed -= deceleration * Time.deltaTime;
 
         
         if (speed < 0) speed = 0;

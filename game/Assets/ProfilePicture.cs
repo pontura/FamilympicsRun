@@ -4,7 +4,6 @@ using System.Collections;
 
 public class ProfilePicture : MonoBehaviour
 {
-
     //public void Init(Hiscores.Hiscore data)
     //{
     //    setPicture(data.facebookID);
@@ -12,11 +11,6 @@ public class ProfilePicture : MonoBehaviour
     public void setPicture(string facebookID)
     {
         StartCoroutine(GetPicture(facebookID));
-    }
-    public void SetMultiplayerColor(int id)
-    {
-        Color color = Data.Instance.colors[id-1];
-        GetComponent<Image>().color = color;
     }
     IEnumerator GetPicture(string facebookID)
     {
