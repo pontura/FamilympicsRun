@@ -63,6 +63,11 @@ public class LevelButton : MonoBehaviour {
     }
     void LoadSinglePlayerWinners()
     {
+        float _myScore = PlayerPrefs.GetFloat("Run_Level_" + id);
+
+        if (_myScore > 0)
+            myScore.text = Data.Instance.levelsData.GetScoreString(id, _myScore);
+
         if (Data.Instance.userData.facebookID.Length < 2)
         {
             user1.gameObject.SetActive(false);
@@ -70,10 +75,6 @@ public class LevelButton : MonoBehaviour {
             user3.gameObject.SetActive(false);
             return;
         }
-        float _myScore = PlayerPrefs.GetFloat("Run_Level_" + id);
-
-        if (_myScore > 0)
-            myScore.text = Data.Instance.levelsData.GetScoreString(id, _myScore);
 
         if (levelScore.scoreData1.playerName != "")
         {

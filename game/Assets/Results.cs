@@ -13,6 +13,25 @@ public class Results : MonoBehaviour {
         id = Data.Instance.levelData.winnerID;
         player.color = Data.Instance.colors[id - 1];
         usernameLabel.text = Data.Instance.multiplayerData.GetPlayer(id).username;
+
+        LevelData levelData = Data.Instance.levelData;
+
+        System.TimeSpan t = System.TimeSpan.FromSeconds(levelData.time);
+
+        string timerFormatted = string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
+        Levels.LevelData CurrentlevelData = Data.Instance.levels.GetCurrentLevelData();
+
+        float score = 0;
+        if (CurrentlevelData.totalLaps > 0)
+        {
+            score = levelData.time;
+        }
+        else if (CurrentlevelData.totalTime > 0)
+        {
+            score = levelData.laps;
+        }
+
+        Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
 	}
 	
 	public void Back () {
