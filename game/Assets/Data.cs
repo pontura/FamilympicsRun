@@ -72,7 +72,6 @@ public class Data : MonoBehaviour
         multiplayerData.Init();
 
         GetComponent<MusicManager>().Init();
-        GetComponent<EnergyManager>().Init();
     }
     void OnMusicVolumeChanged(float value)
     {

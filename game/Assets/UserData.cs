@@ -10,7 +10,6 @@ public class UserData : MonoBehaviour {
     public string facebookID;
     public string username;
     public string email;
-    public int energy;
     public List<FacebookUserData> FacebookFriends;
     public modes mode;
     public enum modes
