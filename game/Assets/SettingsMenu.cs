@@ -30,7 +30,11 @@ public class SettingsMenu : MonoBehaviour {
         if (Data.Instance.userData.facebookID == "")
             Data.Instance.Load("Login");
         else
+        {
+            Data.Instance.userData.Reset();
+            Data.Instance.Load("MainMenu");
             Data.Instance.loginManager.ParseFBLogout();
+        }
     }
     public void Open()
     {
