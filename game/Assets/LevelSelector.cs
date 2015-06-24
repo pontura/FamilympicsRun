@@ -61,10 +61,6 @@ public class LevelSelector : MonoBehaviour {
 
         Data.Instance.GetComponent<Levels>().currentLevel = id;
     }
-    public void Login()
-    {
-        Data.Instance.Load("Login");
-    }
     public void Refresh()
     {
         Data.Instance.levelsData.Refresh();

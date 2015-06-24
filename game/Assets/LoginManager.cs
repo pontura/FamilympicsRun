@@ -244,6 +244,7 @@ public class LoginManager : MonoBehaviour
             Dictionary<string, object> friendData = friend as Dictionary<string, object>;
             Data.Instance.userData.AddFacebookFriend(friendData["id"].ToString(), friendData["first_name"].ToString());
         }
+
         Events.OnFacebookFriends();
     }
 }
