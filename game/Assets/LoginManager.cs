@@ -99,7 +99,7 @@ public class LoginManager : MonoBehaviour
     {
         // Logging in with Facebook
         //  FB.Login("user_about_me, user_relationships, user_birthday, user_location", FBLoginCallback);
-        FB.Login("email, user_about_me, publish_actions, user_friends", FBLoginCallback);
+        FB.Login("email, user_about_me, user_friends", FBLoginCallback);
     }
 
     private void FBLoginCallback(FBResult result)
@@ -117,7 +117,7 @@ public class LoginManager : MonoBehaviour
         }
     }
 
-    private void ParseFBLogout()
+    public void ParseFBLogout()
     {
         FB.Logout();
         ParseUser.LogOut();
