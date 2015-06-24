@@ -100,16 +100,31 @@ public class LoginManager : MonoBehaviour
         // Logging in with Facebook
         //  FB.Login("user_about_me, user_relationships, user_birthday, user_location", FBLoginCallback);
         FB.Login("email, user_about_me, user_friends", FBLoginCallback);
+        doLoop = true;
     }
 
+    bool doLoop = false;
+    void Update()
+    {
+        if (!doLoop) return;
+        if (FB.IsLoggedIn)
+        {
+            print("___________MADE LOGIN");
+            Events.OnFacebookLogin();
+            StartCoroutine("ParseLogin");
+            GetFriends();
+            doLoop = false;
+        }
+
+    }
     private void FBLoginCallback(FBResult result)
     {
-        Events.OnFacebookLogin();
+        //Events.OnFacebookLogin();
 
         if (FB.IsLoggedIn)
         {
-            StartCoroutine("ParseLogin");
-            GetFriends();
+          //  StartCoroutine("ParseLogin");
+           // GetFriends();
         }
         else
         {

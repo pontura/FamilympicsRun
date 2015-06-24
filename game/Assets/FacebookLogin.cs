@@ -32,13 +32,6 @@ public class FacebookLogin : MonoBehaviour
     }
     public void FBLogin()
     {
-
-        //if (FB.IsLoggedIn)
-        //{
-        //    profileModule.SetOn();
-        //    loggedOutUIElements.SetActive(false);
-        //}
-
         Data.Instance.loginManager.FBLogin();
     }
     public void Back()

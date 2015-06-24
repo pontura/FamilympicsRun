@@ -8,7 +8,7 @@ public class SettingsMenu : MonoBehaviour {
     public Button loginButton;
 
 	void Start () {
-        if (Data.Instance.userData.facebookID == "")
+        if (!FB.IsLoggedIn)
         {
             challengesButton.interactable = false;
             SetLoginButton(false);
@@ -27,7 +27,7 @@ public class SettingsMenu : MonoBehaviour {
     }
     public void LoginOrOut()
     {
-        if (Data.Instance.userData.facebookID == "")
+        if (!FB.IsLoggedIn)
             Data.Instance.Load("Login");
         else
         {
