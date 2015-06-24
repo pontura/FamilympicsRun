@@ -99,10 +99,13 @@ public class LevelsData : MonoBehaviour {
             SaveNewScore(level, score);
         else
             UpdateScore(level, score);
+
+        RefreshLevelHiscore(level, score);
         
         levelsScore[level].myScoreInParse = score;
         levelsScore[level].myScore = score;
     }
+    
 
     void UpdateScore(int level, float score)
     {
@@ -212,5 +215,63 @@ public class LevelsData : MonoBehaviour {
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
         return string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
+    }
+    void RefreshLevelHiscore(int level, float score)
+    {
+        print("_____RefreshLevelHiscore ");
+        LevelsScore thisLevelScore = levelsScore[level];
+
+        int newRecord = 0;
+
+        if (Data.Instance.levels.levels[level].totalLaps > 0)
+        {
+            if (thisLevelScore.scoreData1.score > score)
+                newRecord = 1;
+            else if (thisLevelScore.scoreData2.score > score)
+                newRecord = 2;
+            else if (thisLevelScore.scoreData3.score > score)
+                newRecord = 3;
+        }
+        else if (Data.Instance.levels.levels[level].totalTime > 0)
+        {
+            if (thisLevelScore.scoreData1.score < score)
+                newRecord = 1;
+            else if (thisLevelScore.scoreData2.score < score)
+                newRecord = 2;
+            else if (thisLevelScore.scoreData3.score < score)
+                newRecord = 3;
+        }
+
+        if (newRecord == 1)
+        {
+            if (thisLevelScore.scoreData2.playerName != Data.Instance.userData.username)
+            {
+                thisLevelScore.scoreData2.facebookID = thisLevelScore.scoreData1.facebookID;
+                thisLevelScore.scoreData2.score = thisLevelScore.scoreData1.score;
+                thisLevelScore.scoreData2.playerName = thisLevelScore.scoreData1.playerName;
+            }
+            AddNewRefreshedData(thisLevelScore.scoreData1, score);
+        }
+        if (newRecord == 2)
+        {
+            if (thisLevelScore.scoreData3.playerName != Data.Instance.userData.username)
+            {
+                thisLevelScore.scoreData3.facebookID = thisLevelScore.scoreData2.facebookID;
+                thisLevelScore.scoreData3.score = thisLevelScore.scoreData2.score;
+                thisLevelScore.scoreData3.playerName = thisLevelScore.scoreData2.playerName;
+            }
+            AddNewRefreshedData(thisLevelScore.scoreData2, score);
+        }
+        if (newRecord == 3)
+        {
+            AddNewRefreshedData(thisLevelScore.scoreData3, score);
+        }
+    }
+    void AddNewRefreshedData(ScoreData scoreData, float score)
+    {
+        print("AddNewRefreshedData score: " + score);
+        scoreData.score = score;
+        scoreData.playerName = Data.Instance.userData.username;
+        scoreData.facebookID = Data.Instance.userData.facebookID;
     }
 }
