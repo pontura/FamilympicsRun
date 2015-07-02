@@ -21,6 +21,8 @@ public class Data : MonoBehaviour
     public LevelsData levelsData;
     [HideInInspector]
     public MultiplayerData multiplayerData;
+    [HideInInspector]
+    public EnergyManager energyManager;
 
     public UserData userData;
     public LoginManager loginManager;
@@ -63,6 +65,7 @@ public class Data : MonoBehaviour
         levels = GetComponent<Levels>();
         levelsData = GetComponent<LevelsData>();
         multiplayerData = GetComponent<MultiplayerData>();
+        energyManager = GetComponent<EnergyManager>();
        // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);

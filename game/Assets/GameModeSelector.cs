@@ -4,8 +4,14 @@ using System.Collections;
 
 public class GameModeSelector : MonoBehaviour {
 
-    public GameObject multiButton;
-    public GameObject singleButton;
+    public Color Multi;
+    public Color Single;
+    public Color UnselectedText;
+
+    public GameObject interactiveBG;
+
+    public Text multiButton;
+    public Text singleButton;
 
     void Start()
     {
@@ -20,14 +26,28 @@ public class GameModeSelector : MonoBehaviour {
     {
         if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
         {
-            multiButton.SetActive(true);
-            singleButton.SetActive(false);
+            multiButton.color = Color.white;
+            singleButton.color = UnselectedText;
+            MoveBg(false);
         }
         else
         {
-            singleButton.SetActive(true);
-            multiButton.SetActive(false);
+            singleButton.color = Color.white;
+            multiButton.color = UnselectedText;
+            MoveBg(true);
         }
+    }
+    void MoveBg(bool left)
+    {
+        if (left)
+            interactiveBG.GetComponent<Image>().color = Single;
+        else 
+            interactiveBG.GetComponent<Image>().color = Multi;
+
+        float _x = 68;
+        if (left) _x = -68;
+        Vector3 pos = new Vector3(_x, 0, 0);
+        iTween.MoveTo(interactiveBG, iTween.Hash("position", pos, "islocal",true, "easetype", iTween.EaseType.easeInOutSine, "time", 0.5f));
     }
    
 }

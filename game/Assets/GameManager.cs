@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour {
     public enum states
     {
         IDLE,
-        PLAYING
+        PLAYING,
+        READY
     }
 
 	void Start () {
@@ -113,10 +114,11 @@ public class GameManager : MonoBehaviour {
     }
     void Update()
     {
+        if (state == states.READY) return;
         if (state == states.IDLE) return;
 
         if (speed < targetSpeed) speed += acceleration;
-        float realSpeed = speed*Time.deltaTime;        
+        float realSpeed = speed*Time.deltaTime;
 
         foreach (GameObject container in containers)
             container.GetComponent<GameCamera>().Move(realSpeed);
@@ -137,6 +139,7 @@ public class GameManager : MonoBehaviour {
     }
     void LevelComplete()
     {
+        Events.OnLevelComplete();
         Player winner = players[0];
         float playerPosition = 0;
         foreach (Player player in players)
@@ -151,9 +154,14 @@ public class GameManager : MonoBehaviour {
     }
     void OnPlayerWin(Player player)
     {
+        state = states.READY;
          float time = chronometer.timer;
          Data.Instance.levelData.SetResultValues(player.id, player.laps, time);
-         if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+         Invoke("EndGame", 2);
+    }
+    void EndGame()
+    {
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             Data.Instance.Load("SummaryMultiplayer");
         else if (Data.Instance.levelData.challenge_facebookID == "")
             Data.Instance.Load("Summary");

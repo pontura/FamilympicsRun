@@ -25,7 +25,8 @@ public class Player : MonoBehaviour {
         RUNNING,
         JUMPING,
         HURT,
-        DEAD
+        DEAD,
+        READY
     }
     public void Init(GameCamera _gameCamera)
     {
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour {
         Events.OnPowerUpActive += OnPowerUpActive;
         Events.OnAvatarJump += OnAvatarJump;
         Events.OnAvatarRun += OnAvatarRun;
+        Events.OnLevelComplete += OnLevelComplete;
 
     }
     void OnDestroy()
@@ -42,9 +44,15 @@ public class Player : MonoBehaviour {
         Events.OnPowerUpActive -= OnPowerUpActive;
         Events.OnAvatarJump -= OnAvatarJump;
         Events.OnAvatarRun -= OnAvatarRun;
+        Events.OnLevelComplete -= OnLevelComplete;
+    }
+    void OnLevelComplete()
+    {
+        state = states.READY;
     }
     public void UpdatePosition()
     {
+        if (state == states.READY) return;
         if (state != Player.states.DEAD)
         {
             float playerDistance = transform.localPosition.x;
@@ -58,6 +66,7 @@ public class Player : MonoBehaviour {
     }
     void OnPowerUpActive(int _id, Powerups.types type)
     {
+        if (state == states.READY) return;
         if (_id != id) return;
         switch (type)
         {
@@ -98,6 +107,7 @@ public class Player : MonoBehaviour {
     }
     public void Run()
     {
+        if (state == states.READY) return;
         if (state == states.HURT) return;
         if (state == states.JUMPING) return;
         state = states.RUNNING;
@@ -107,6 +117,7 @@ public class Player : MonoBehaviour {
     }
     public void Jump()
     {
+        if (state == states.READY) return;
         if (state == states.HURT) return;
         state = states.JUMPING;
         gameCamera.OnAvatarMoved();
@@ -131,6 +142,7 @@ public class Player : MonoBehaviour {
     }
     void Update()
     {
+        if (state == states.READY) return;
         if (speed > maxSpeed) speed = maxSpeed;
         if (state == states.DEAD) return;
         if (state == states.PLAYING) return;

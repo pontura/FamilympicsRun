@@ -4,7 +4,9 @@ using System.Collections;
 
 public class Chronometer : MonoBehaviour {
 
-    private Text label;
+    public Text label1;
+    public Text label2;
+
     private bool timeStarted;
     public float timer;
     public string timerFormatted;
@@ -12,14 +14,22 @@ public class Chronometer : MonoBehaviour {
 
 
 	void Start () {
-        label = GetComponent<Text>();
         Events.StartGame += StartGame;
+        Events.OnLevelComplete += OnLevelComplete;
 	}
-    
+    void OnDestroy()
+    {
+        Events.StartGame -= StartGame;
+        Events.OnLevelComplete -= OnLevelComplete;
+    }
     void StartGame()
     {
         timeStarted = true;
         levelSeconds = Data.Instance.levels.GetCurrentLevelData().totalTime;
+    }
+    void OnLevelComplete()
+    {
+        timeStarted = false;
     }
     void Update()
     {
@@ -31,7 +41,8 @@ public class Chronometer : MonoBehaviour {
       
 
         timerFormatted = string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
-        label.text = timerFormatted;
+        label1.text = timerFormatted;
+        label2.text = timerFormatted;
 
           if (levelSeconds >0)
           {

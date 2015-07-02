@@ -10,7 +10,6 @@ public class LevelSelector : MonoBehaviour {
     public Color backgroundSinglePlayer;
     public Color backgroundMultiplayer;
 
-    public Text debugText;
     public GameObject loginButton;
     public GameObject container;
 
@@ -24,10 +23,8 @@ public class LevelSelector : MonoBehaviour {
        // debugText.text = "Not Logged!";
         if (FB.IsLoggedIn)
         {
-            debugText.text = "Facebook Logged";
             if (Data.Instance.userData.FacebookFriends != null && Data.Instance.userData.FacebookFriends.Count == 0)
             {
-                debugText.text += " carga anigos...";
                 Data.Instance.loginManager.GetFriends();
             }
         }

@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BoardMenu.cs" />
      <Compile Include="Assets\ChallengeConfirm.cs" />
      <Compile Include="Assets\ChallengerCreator.cs" />
      <Compile Include="Assets\ChallengerCreatorButton.cs" />
@@ -57,6 +58,7 @@
      <Compile Include="Assets\Data.cs" />
      <Compile Include="Assets\EnemiesManager.cs" />
      <Compile Include="Assets\Enemy.cs" />
+     <Compile Include="Assets\EnergyManager.cs" />
      <Compile Include="Assets\Events.cs" />
      <Compile Include="Assets\Facebook\Scripts\AndroidFacebook.cs" />
      <Compile Include="Assets\Facebook\Scripts\AndroidFacebookLoader.cs" />
@@ -73,6 +75,7 @@
      <Compile Include="Assets\Facebook\Scripts\NativeDialogModes.cs" />
      <Compile Include="Assets\Facebook\Scripts\Util.cs" />
      <Compile Include="Assets\FacebookLogin.cs" />
+     <Compile Include="Assets\Finish.cs" />
      <Compile Include="Assets\GameCamera.cs" />
      <Compile Include="Assets\GameManager.cs" />
      <Compile Include="Assets\GameModeSelector.cs" />

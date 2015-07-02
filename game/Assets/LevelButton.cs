@@ -6,6 +6,8 @@ using System;
 
 public class LevelButton : MonoBehaviour {
 
+    public Color lockColor;
+    public Image LockImage;
     public Button button;
     public Text labelNum;
     public int id;
@@ -40,9 +42,12 @@ public class LevelButton : MonoBehaviour {
 
         if (myLastScore == 0 && levelID > 1)
         {
-            labelNum.text = "X";
+            button.GetComponent<Image>().color = lockColor;
+            LockImage.enabled = true;
+            labelNum.enabled = false;
             return;
         }
+        LockImage.enabled = false;
         
         labelNum.text = levelID.ToString();
         button.onClick.AddListener(() =>
