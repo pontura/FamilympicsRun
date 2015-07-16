@@ -27,6 +27,9 @@ public class Levels : MonoBehaviour {
         public int totalTime;
         [SerializeField]
         public enemiesType enemies;
+        public float star1;
+        public float star2;
+        public float star3;
     }
 
     public LevelData[] levels;
@@ -34,6 +37,10 @@ public class Levels : MonoBehaviour {
     public LevelData GetCurrentLevelData()
     {
         return levels[currentLevel];
+    }
+    public LevelData GetData(int id)
+    {
+        return levels[id];
     }
 
 }

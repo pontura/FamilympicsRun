@@ -30,11 +30,22 @@ public class MultiplayerData : MonoBehaviour {
         public List<HiscoresData> hiscores;
         public int lastWinner;
     }
+    public int activePlayerId;
     public List<HiscoreLevel> hiscoreLevels;
+
+    public string playerName1;
+    public string playerName2;
+    public string playerName3;
+    public string playerName4;
     
 	// Use this for initialization
     public void Init()
     {
+        playerName1 = PlayerPrefs.GetString("playerName1");
+        playerName2 = PlayerPrefs.GetString("playerName2");
+        playerName3 = PlayerPrefs.GetString("playerName3");
+        playerName4 = PlayerPrefs.GetString("playerName4");
+
         for (int i = 0; i < Data.Instance.levels.levels.Length; i++)
         {
             HiscoreLevel hiscoreLevel = new HiscoreLevel();
@@ -127,7 +138,23 @@ public class MultiplayerData : MonoBehaviour {
             }
         }
     }
+    public void OnSaveName(string username, int id)
+    {
+        username = username.ToUpper();
 
+        foreach (PlayerData data in players)
+        {
+            if(data.playerID == id)
+                data.username = username;
+        }
+        switch (id)
+        {
+            case 1: playerName1 = username; PlayerPrefs.SetString("playerName1", username); break;
+            case 2: playerName2 = username; PlayerPrefs.SetString("playerName2", username); break;
+            case 3: playerName3 = username; PlayerPrefs.SetString("playerName3", username); break;
+            case 4: playerName4 = username; PlayerPrefs.SetString("playerName4", username); break;
+        }
+    }
 
     //llega esto:
     //Multi_1_1   strValue:1_xcv_2.799766
@@ -159,6 +186,16 @@ public class MultiplayerData : MonoBehaviour {
         PlayerData data = new PlayerData();
         data.playerID = id;
         data.color = Data.Instance.colors[id - 1];
+        
+
+        switch (id)
+        {
+            case 1: data.username = playerName1; break;
+            case 2: data.username = playerName2; break;
+            case 3: data.username = playerName3; break;
+            case 4: data.username = playerName4; break;
+        }
+
         players.Add(data);
     }
     public void DeletePlayer(int id)

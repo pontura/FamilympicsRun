@@ -12,6 +12,21 @@ public class Results : MonoBehaviour {
 	void Start () {
         id = Data.Instance.levelData.winnerID;
         player.color = Data.Instance.colors[id - 1];
+
+        MultiplayerData multiData = Data.Instance.multiplayerData;
+
+        string username = "";
+
+        switch(id)
+        {
+            case 1: username = multiData.playerName1; break;
+            case 2: username = multiData.playerName2; break;
+            case 3: username = multiData.playerName3; break;
+            case 4: username = multiData.playerName4; break;
+        }
+
+        usernameLabel.text = username;
+
         usernameLabel.text = Data.Instance.multiplayerData.GetPlayer(id).username;
 
         LevelData levelData = Data.Instance.levelData;

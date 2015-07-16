@@ -48,6 +48,7 @@ public class EnergyManager : MonoBehaviour {
     }
     void Loop()
     {
+        timerString = "00:00";
         if (energy < MAX_ENERGY)
         {
             var epochStart = new System.DateTime(2010, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
@@ -59,7 +60,7 @@ public class EnergyManager : MonoBehaviour {
 
             timerString = string.Format("{0:00}:{1:00}", t.Minutes, t.Seconds);
 
-            Invoke("Loop", 1);
+            
 
             if (diffTimestamp >= SECONDS_TO_ENERGY)
             {
@@ -77,6 +78,7 @@ public class EnergyManager : MonoBehaviour {
                 SaveNewTime();
             }
         }
+        Invoke("Loop", 1);
     }
     void SaveEnergy()
     {

@@ -20,6 +20,8 @@ public static class Events {
     public static System.Action StartGame = delegate { };
     public static System.Action OnLevelComplete = delegate { };
 
+    public static System.Action<string> OpenPopUp = delegate { };
+
     public static System.Action OnEnergyWon = delegate { };
     public static System.Action OnTimeOver = delegate { };
     public static System.Action<bool> OnGamePaused = delegate { };
@@ -48,6 +50,9 @@ public static class Events {
     //Challenges
     public static System.Action<string, string, int, float> OnChallengeCreate = delegate { };
     public static System.Action<string, string, string, float> OnChallengeClose = delegate { };
+
+    
+    
 
 
 }

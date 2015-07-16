@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+    public bool ForceMultiplayer;
+
     [SerializeField]
     Lane lane;
     [SerializeField]
@@ -44,14 +46,16 @@ public class GameManager : MonoBehaviour {
         acceleration = levelData.acceleration;
 
         int totalPlayers = 1;
-        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+        if (ForceMultiplayer || Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             totalPlayers = Data.Instance.multiplayerData.players.Count;
 
         float offsetY = (totalPlayers-1)*(LaneSeparation/2);
+
         for (int a = 0; a < totalPlayers; a++)
         {
             int id = 1;
-            if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+
+            if(ForceMultiplayer || Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
                 id = Data.Instance.multiplayerData.players[a].playerID;
 
             GameObject newContainer = Instantiate(container) as GameObject;
@@ -156,8 +160,8 @@ public class GameManager : MonoBehaviour {
     {
         state = states.READY;
          float time = chronometer.timer;
-         Data.Instance.levelData.SetResultValues(player.id, player.laps, time);
-         Invoke("EndGame", 2);
+         Data.Instance.levelData.SetResultValues(player.id, int.Parse(player.meters), time);
+         Invoke("EndGame", 1.2f);
     }
     void EndGame()
     {

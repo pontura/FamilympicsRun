@@ -6,6 +6,7 @@ using System;
 
 public class UserData : MonoBehaviour {
 
+    public int levelProgressionId;
     public bool logged;
     public string facebookID;
     public string username;

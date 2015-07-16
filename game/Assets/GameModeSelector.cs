@@ -47,7 +47,7 @@ public class GameModeSelector : MonoBehaviour {
         float _x = 68;
         if (left) _x = -68;
         Vector3 pos = new Vector3(_x, 0, 0);
-        iTween.MoveTo(interactiveBG, iTween.Hash("position", pos, "islocal",true, "easetype", iTween.EaseType.easeInOutSine, "time", 0.5f));
+        iTween.MoveTo(interactiveBG, iTween.Hash("position", pos, "islocal",true, "easetype", iTween.EaseType.easeOutQuad, "time", 0.25f));
     }
    
 }

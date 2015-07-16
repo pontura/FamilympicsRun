@@ -5,8 +5,10 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     public int id;
+    public string meters;
     public states state;
     public float speed;
+    public float realDistance;
     private float initialAacceleration = 0.2f;
     private float initialDeceleration = 1.2f;
 
@@ -16,7 +18,7 @@ public class Player : MonoBehaviour {
     private float acceleration;
     private float deceleration;
     public int laps = 0;
-
+    
     private GameCamera gameCamera;
 
     public enum states
@@ -56,12 +58,19 @@ public class Player : MonoBehaviour {
         if (state != Player.states.DEAD)
         {
             float playerDistance = transform.localPosition.x;
-
+            float realDistance = gameCamera.distance - playerDistance;
             if (gameCamera.distance - playerDistance > 20)
                 gameCamera.OnAvatarGotBorder();
             //Dead();
             else if (playerDistance - gameCamera.distance > 20)
                 Win();
+
+            float posX = (20 - realDistance) * 100 / 40;
+            if (posX < 0) posX = 0; if (posX > 100) posX = 99;
+            meters = ((int)(posX * 10)).ToString();
+            if (meters.Length < 2) meters = "00" + meters;
+            else if (meters.Length < 3) meters = "0" + meters;
+            meters = laps + meters;
         }
     }
     void OnPowerUpActive(int _id, Powerups.types type)

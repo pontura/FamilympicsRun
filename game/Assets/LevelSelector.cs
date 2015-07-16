@@ -39,16 +39,40 @@ public class LevelSelector : MonoBehaviour {
             newLevelButton.transform.SetParent(container.transform);
             newLevelButton.transform.localPosition = new Vector3(buttonsSeparation * (a-2), 0, 0);
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-            newLevelButton.Init(this, a);
+            float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
+            newLevelButton.Init(this, a, lastLevelScore);
+
+            if(lastLevelScore>0)
+                Data.Instance.userData.levelProgressionId = a;
+
         }
+
+        //////////// multi player siempre!:
+        Data.Instance.userData.mode = UserData.modes.MULTIPLAYER;
+
         OnChangePlayMode(Data.Instance.userData.mode);
         Events.OnChangePlayMode += OnChangePlayMode;
+
+        Positionate();
 	}
+    void Positionate()
+    {
+        int positionX = Data.Instance.userData.levelProgressionId-2;
+        if (positionX > 0)
+            positionX *= -buttonsSeparation;
+        Vector3 pos = container.transform.localPosition;
+        pos.x = positionX;
+        container.transform.localPosition = pos;
+    }
     void OnDestroy()
     {
         Events.OnChangePlayMode -= OnChangePlayMode;
     }
     public void StartLevel(int id)
+    {
+        GetComponent<LevelDetailsPopup>().Open(id);
+    }
+    public void GotoLevel(int id)
     {
         Events.OnLoadParseScore(id);
         if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)

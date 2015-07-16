@@ -24,13 +24,13 @@ public class Summary : MonoBehaviour {
        if (CurrentlevelData.totalLaps > 0)
        {
            title_txt.text = "TIME";
-           results_txt.text = timerFormatted;
+           results_txt.text = timerFormatted + "SEC";
            score = levelData.time;
        }
        else if (CurrentlevelData.totalTime > 0)
        {
-           title_txt.text = "LAPS";
-           results_txt.text = levelData.laps.ToString();
+           title_txt.text = "DISTANCE";
+           results_txt.text = levelData.laps.ToString() + " MTS";
            score = levelData.laps;
        }
        int currentLevel = Data.Instance.levels.currentLevel;

@@ -59,6 +59,7 @@
      <Compile Include="Assets\EnemiesManager.cs" />
      <Compile Include="Assets\Enemy.cs" />
      <Compile Include="Assets\EnergyManager.cs" />
+     <Compile Include="Assets\EnergyPopup.cs" />
      <Compile Include="Assets\Events.cs" />
      <Compile Include="Assets\Facebook\Scripts\AndroidFacebook.cs" />
      <Compile Include="Assets\Facebook\Scripts\AndroidFacebookLoader.cs" />
@@ -85,6 +86,7 @@
      <Compile Include="Assets\Lane.cs" />
      <Compile Include="Assets\LevelButton.cs" />
      <Compile Include="Assets\LevelData.cs" />
+     <Compile Include="Assets\LevelDetailsPopup.cs" />
      <Compile Include="Assets\LevelSelector.cs" />
      <Compile Include="Assets\Levels.cs" />
      <Compile Include="Assets\LevelsData.cs" />
@@ -94,6 +96,7 @@
      <Compile Include="Assets\MultiplayerData.cs" />
      <Compile Include="Assets\MultiplayerSelector.cs" />
      <Compile Include="Assets\MusicManager.cs" />
+     <Compile Include="Assets\NameEditor.cs" />
      <Compile Include="Assets\Player.cs" />
      <Compile Include="Assets\PlayerButton.cs" />
      <Compile Include="Assets\PlayerControllers.cs" />
@@ -109,6 +112,7 @@
      <Compile Include="Assets\ScrollLimit.cs" />
      <Compile Include="Assets\SettingsMenu.cs" />
      <Compile Include="Assets\SoundManager.cs" />
+     <Compile Include="Assets\Stars.cs" />
      <Compile Include="Assets\Summary.cs" />
      <Compile Include="Assets\SummaryChallenge.cs" />
      <Compile Include="Assets\TestMain.cs" />

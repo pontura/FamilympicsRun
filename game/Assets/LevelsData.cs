@@ -207,14 +207,30 @@ public class LevelsData : MonoBehaviour {
     public string GetScoreString(int levelID, float score)
     {
         if (Data.Instance.levels.levels[levelID].totalLaps > 0)
+        {
             return GetTimer(score);
+        }
         else
             return score.ToString();
+    }
+    public int GetScoreStars(int levelID, float score)
+    {
+        int stars = 0;
+        Levels.LevelData data = Data.Instance.levels.levels[levelID];
+        if (data.totalLaps > 0)
+        {
+
+        }
+        else
+        {
+
+        }
+        return stars;
     }
     private string GetTimer(float timer)
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
-        return string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
+        return string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds/10);
     }
     void RefreshLevelHiscore(int level, float score)
     {

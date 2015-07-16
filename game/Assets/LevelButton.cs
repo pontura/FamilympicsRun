@@ -6,6 +6,7 @@ using System;
 
 public class LevelButton : MonoBehaviour {
 
+    public Stars stars;
     public Color lockColor;
     public Image LockImage;
     public Button button;
@@ -30,14 +31,14 @@ public class LevelButton : MonoBehaviour {
     {
         Events.OnChangePlayMode -= OnChangePlayMode;
     }
-    public void Init(LevelSelector levelSelector, int levelID)
+    public void Init(LevelSelector levelSelector, int levelID, float myLastScore)
     {
         image = GetComponent<Image>();
         this.id = levelID;
         levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
 
-        float myLastScore = PlayerPrefs.GetFloat("Run_Level_" + (levelID-1).ToString() );
-
+        
+        
         OnChangePlayMode(Data.Instance.userData.mode);
 
         if (myLastScore == 0 && levelID > 1)
@@ -71,7 +72,15 @@ public class LevelButton : MonoBehaviour {
         float _myScore = PlayerPrefs.GetFloat("Run_Level_" + id);
 
         if (_myScore > 0)
-            myScore.text = Data.Instance.levelsData.GetScoreString(id, _myScore);
+        {
+            
+            string _score = Data.Instance.levelsData.GetScoreString(id, _myScore);
+            stars.Init(Data.Instance.levelsData.GetScoreStars(id, _myScore));
+
+            
+
+            myScore.text = _score;
+        }        
 
         if (Data.Instance.userData.facebookID.Length < 2)
         {

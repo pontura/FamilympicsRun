@@ -33,13 +33,7 @@ public class PlayerControllers : MonoBehaviour {
         }
         else
         {
-            UIPlayerButtons newUiPlayerButtons = Instantiate(uiPlayerButtons) as UIPlayerButtons;
-            GameObject container = container_B_R; 
-            newUiPlayerButtons.transform.SetParent(container.transform);
-            newUiPlayerButtons.transform.localScale = Vector3.one;
-            newUiPlayerButtons.transform.localPosition = Vector3.zero;
-
-            newUiPlayerButtons.Init(1);
+            uiPlayerButtons.Init(1);
         }
 	}
 }
