@@ -13,7 +13,7 @@ public class LevelDetailsPopup : MonoBehaviour {
 
 	void Start () {
         panel.SetActive(false);
-        if (FB.IsLoggedIn) Logout.SetActive(false);
+        if (Data.Instance.OnlyMultiplayer || FB.IsLoggedIn) Logout.SetActive(false);
 	}
     public void StartRace()
     {

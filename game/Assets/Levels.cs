@@ -11,7 +11,7 @@ public class Levels : MonoBehaviour {
     public class enemiesType
     {
         public bool HURDLES;
-        public bool BOMB;
+        public bool WIND;
     }
 
     [Serializable]

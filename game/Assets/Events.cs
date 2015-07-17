@@ -51,6 +51,8 @@ public static class Events {
     public static System.Action<string, string, int, float> OnChallengeCreate = delegate { };
     public static System.Action<string, string, string, float> OnChallengeClose = delegate { };
 
+    public static System.Action<int> OnFalseStart = delegate { };
+
     
     
 

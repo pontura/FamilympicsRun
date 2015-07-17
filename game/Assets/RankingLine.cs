@@ -11,6 +11,7 @@ public class RankingLine : MonoBehaviour {
     public ProfilePicture picture;
     public string facebookID;
     public string playerName;
+    public GameObject maskImage;
 
     public void Init(int levelID, string _username, string _score, string _facebookID)
     {
@@ -25,14 +26,17 @@ public class RankingLine : MonoBehaviour {
 
         this.score.text = Data.Instance.levelsData.GetScoreString(levelID, float.Parse(_score));
 
-        picture.setPicture(_facebookID);
+        if(!Data.Instance.OnlyMultiplayer)
+            picture.setPicture(_facebookID);
     }
     public void SetSinglePlayer()
     {
+        maskImage.SetActive(true);
         circleImage.gameObject.SetActive(false);
     }
     public void SetMultiplayerColor(int playerID)
     {
+        maskImage.SetActive(false);
         circleImage.gameObject.SetActive(true);
         Color color = Data.Instance.colors[playerID-1];
         SetColor(color);

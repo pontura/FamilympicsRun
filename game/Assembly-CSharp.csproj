@@ -53,6 +53,7 @@
      <Compile Include="Assets\ChallengersManager.cs" />
      <Compile Include="Assets\Challenges.cs" />
      <Compile Include="Assets\ChallengesLine.cs" />
+     <Compile Include="Assets\CharacterFace.cs" />
      <Compile Include="Assets\Chronometer.cs" />
      <Compile Include="Assets\CountDown.cs" />
      <Compile Include="Assets\Data.cs" />
@@ -80,6 +81,7 @@
      <Compile Include="Assets\GameCamera.cs" />
      <Compile Include="Assets\GameManager.cs" />
      <Compile Include="Assets\GameModeSelector.cs" />
+     <Compile Include="Assets\GameSettings.cs" />
      <Compile Include="Assets\Hiscores.cs" />
      <Compile Include="Assets\Hurdle.cs" />
      <Compile Include="Assets\InputManager.cs" />
@@ -113,6 +115,7 @@
      <Compile Include="Assets\SettingsMenu.cs" />
      <Compile Include="Assets\SoundManager.cs" />
      <Compile Include="Assets\Stars.cs" />
+     <Compile Include="Assets\StartUpFailed.cs" />
      <Compile Include="Assets\Summary.cs" />
      <Compile Include="Assets\SummaryChallenge.cs" />
      <Compile Include="Assets\TestMain.cs" />

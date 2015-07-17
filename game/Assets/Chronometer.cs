@@ -16,7 +16,7 @@ public class Chronometer : MonoBehaviour {
 
 	void Start () {
 
-        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+        if (GameObject.Find("Game").GetComponent<GameManager>().ForceMultiplayer)
             singlePlayerMode = true;
 
         Events.StartGame += StartGame;
@@ -29,10 +29,11 @@ public class Chronometer : MonoBehaviour {
     {
         MultiplayerData md = Data.Instance.multiplayerData;
 
-        label1.enabled = false;
+        
 
-        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+        if (!singlePlayerMode)
         {
+            label1.enabled = false;
             label2.enabled = false;
 
             foreach (MultiplayerData.PlayerData playerData in md.players)

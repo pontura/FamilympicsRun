@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
 
     public GameCamera gameCamera;
 
-    private float LaneSeparation = 2.5f;
+    private float LaneSeparation;
     private float scaleFactor;
 
     public states state;
@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour {
         int totalPlayers = 1;
         if (ForceMultiplayer || Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             totalPlayers = Data.Instance.multiplayerData.players.Count;
+
+        LaneSeparation = Data.Instance.gameSettings.LaneSeparation;
 
         float offsetY = (totalPlayers-1)*(LaneSeparation/2);
 
@@ -91,7 +93,8 @@ public class GameManager : MonoBehaviour {
 
         LaneSeparation /= scaleFactor;
 
-        Invoke("OnPowerUp", Random.Range(3,6));
+        if(!ForceMultiplayer)
+            Invoke("OnPowerUp", Random.Range(3,6));
 	}
     
     
@@ -143,6 +146,7 @@ public class GameManager : MonoBehaviour {
     }
     void LevelComplete()
     {
+        print("LevelComplete");
         Events.OnLevelComplete();
         Player winner = players[0];
         float playerPosition = 0;

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Data : MonoBehaviour
 {
 
+    public bool OnlyMultiplayer;
+
     public float musicVolume = 1;
     public float soundsVolume = 1;
 
@@ -27,6 +29,7 @@ public class Data : MonoBehaviour
     public UserData userData;
     public LoginManager loginManager;
     public string lastScene;
+    public GameSettings gameSettings;
 
     public static Data Instance
     {
@@ -60,6 +63,7 @@ public class Data : MonoBehaviour
             return;
         }
         print("_________Data Awake");
+        gameSettings = GetComponent<GameSettings>();
         loginManager = GetComponent<LoginManager>();
         levelData = GetComponent<LevelData>();
         levels = GetComponent<Levels>();

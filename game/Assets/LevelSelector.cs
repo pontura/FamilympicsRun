@@ -19,19 +19,25 @@ public class LevelSelector : MonoBehaviour {
     private int buttonsSeparation = 300;
 
 	void Start () {
-        
-       // debugText.text = "Not Logged!";
-        if (FB.IsLoggedIn)
+
+        if(Data.Instance.OnlyMultiplayer)
         {
-            if (Data.Instance.userData.FacebookFriends != null && Data.Instance.userData.FacebookFriends.Count == 0)
-            {
-                Data.Instance.loginManager.GetFriends();
-            }
+            Data.Instance.userData.mode = UserData.modes.MULTIPLAYER;
         }
-
-       // debugText.text += " amigos: " + Data.Instance.userData.FacebookFriends.Count;
-
-        Data.Instance.levelData.ResetChallenge();
+        else
+        {
+            if (FB.IsLoggedIn)
+            {
+                if (Data.Instance.userData.FacebookFriends != null && Data.Instance.userData.FacebookFriends.Count == 0)
+                {
+                    Data.Instance.loginManager.GetFriends();
+                }
+            }
+            Data.Instance.levelData.ResetChallenge();
+            OnChangePlayMode(Data.Instance.userData.mode);
+            Events.OnChangePlayMode += OnChangePlayMode;
+            Positionate();
+        }        
 
         for (int a = 1; a < Data.Instance.levels.levels.Length; a++ )
         {
@@ -44,16 +50,7 @@ public class LevelSelector : MonoBehaviour {
 
             if(lastLevelScore>0)
                 Data.Instance.userData.levelProgressionId = a;
-
-        }
-
-        //////////// multi player siempre!:
-        Data.Instance.userData.mode = UserData.modes.MULTIPLAYER;
-
-        OnChangePlayMode(Data.Instance.userData.mode);
-        Events.OnChangePlayMode += OnChangePlayMode;
-
-        Positionate();
+        }        
 	}
     void Positionate()
     {

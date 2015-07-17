@@ -16,6 +16,9 @@ public class UIPlayerButtons : MonoBehaviour {
     [SerializeField]
     Image button2;
 
+    public StartUpFailed startUpFailed;
+
+    public Image[] shadows;
     private Image activeButton;
     float scaleSmall;
     float scaleBig;
@@ -25,15 +28,23 @@ public class UIPlayerButtons : MonoBehaviour {
 
 
 	public void Init (int id) {
-        
+
+        startUpFailed.Init(id);
+
         this.id = id;
         scaleBig = button1.transform.localScale.x;
         scaleSmall = scaleBig - 0.04f;
         
+        Color colorID = Data.Instance.colors[id - 1];
+        button1.GetComponent<Image>().color = colorID;
+        button2.GetComponent<Image>().color = colorID;
+        lapsLabel.GetComponent<Text>().color = colorID;
 
-        button1.GetComponent<Image>().color = Data.Instance.colors[id - 1];
-        button2.GetComponent<Image>().color = Data.Instance.colors[id - 1];
-        lapsLabel.GetComponent<Text>().color = Data.Instance.colors[id - 1];
+        foreach (Image shadow in shadows)
+        {
+            colorID.a = 0.25f;
+            shadow.GetComponent<Image>().color = colorID;
+        }
 
         if (GameObject.Find("Game").GetComponent<GameManager>().ForceMultiplayer) return;
 
@@ -107,6 +118,13 @@ public class UIPlayerButtons : MonoBehaviour {
     }
     public void PressedButton(int num)
     {
+        if (!gameManager) return;
+
+        if (gameManager.state == GameManager.states.IDLE)
+        {
+            Events.OnFalseStart(id);
+            return;
+        }
         Image buttonPressed;
         switch (num)
         {
