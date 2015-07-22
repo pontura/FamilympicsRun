@@ -43,7 +43,7 @@ public static class Events {
     public static System.Action<int, int> OnAvatarWinLap = delegate { };
 
 
-    public static System.Action<Enemy> OnAddEnemy = delegate { };
+    public static System.Action<Enemy, int> OnAddEnemy = delegate { };
     public static System.Action OnPowerUpOn = delegate { };
     public static System.Action<int, Powerups.types> OnPowerUpActive = delegate { };
 

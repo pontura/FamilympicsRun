@@ -12,6 +12,7 @@ public class Levels : MonoBehaviour {
     {
         public bool HURDLES;
         public bool WIND;
+        public int distance = 24;
     }
 
     [Serializable]

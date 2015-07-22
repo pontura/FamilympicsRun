@@ -17,6 +17,6 @@ public class Finish : MonoBehaviour {
     void OnLevelComplete()
     {
         FinishAsset.SetActive(true);
-        FinishAsset.animation.Play("FinishFlagOpen");
+        FinishAsset.GetComponent<Animation>().Play("FinishFlagOpen");
     }
 }

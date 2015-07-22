@@ -38,10 +38,10 @@ public class SettingsMenu : MonoBehaviour {
     }
     public void Open()
     {
-        animation.Play("SettingsOpen");
+        GetComponent<Animation>().Play("SettingsOpen");
     }
     public void Close()
     {
-        animation.Play("SettingsClose");
+        GetComponent<Animation>().Play("SettingsClose");
     }
 }

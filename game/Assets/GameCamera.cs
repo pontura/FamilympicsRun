@@ -8,6 +8,7 @@ public class GameCamera : MonoBehaviour {
     public float distance = 0;
     private float powerUpMultiplierSpeed = 1;
     public float _y;
+    
 
     private enum states
     {
@@ -66,16 +67,35 @@ public class GameCamera : MonoBehaviour {
         Vector3 pos = transform.localPosition;
         pos.x -= speed * powerUpMultiplierSpeed;
         transform.localPosition = pos;
+
+        if (!enemy) return;
+
+        if (distance > lastEnemyAddedDistance)
+        {
+            lastEnemyAddedDistance += distanceToAddEnemy;
+            AddEnemy();
+        }
     }
-    void OnAddEnemy(Enemy enemy)
+
+    private int lastEnemyAddedDistance;
+    private int distanceToAddEnemy;
+    private Enemy enemy;
+    void OnAddEnemy(Enemy enemy, int _distance)
+    {
+        lastEnemyAddedDistance = 0;
+        distanceToAddEnemy = _distance;
+        this.enemy = enemy;
+    }
+    void AddEnemy()
     {
         Enemy newEnemy = Instantiate(enemy) as Enemy;
-        newEnemy.transform.SetParent (transform);
-        Vector3 pos = transform.localPosition;
-        pos.x = distance + 22;
-        pos.y = _y;
-        newEnemy.transform.localPosition = pos;
+        newEnemy.transform.SetParent (transform);        
         newEnemy.transform.localScale = Vector3.one;
-        newEnemy.Init(this);
+
+        Vector3 pos = transform.localPosition;
+        pos.x = distance + 30;
+        pos.y = _y;
+        
+        newEnemy.Init(this, pos);
     }
 }

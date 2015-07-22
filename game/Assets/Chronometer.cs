@@ -9,6 +9,7 @@ public class Chronometer : MonoBehaviour {
 
     private bool singlePlayerMode;
     private bool timeStarted;
+    private bool timeReady;
     public float timer;
     public string timerFormatted;
     public int levelSeconds;
@@ -60,6 +61,7 @@ public class Chronometer : MonoBehaviour {
     }
     void Update()
     {
+        if (timeReady) return;
         if (timeStarted)
         {
             timer += Time.deltaTime;
@@ -86,6 +88,7 @@ public class Chronometer : MonoBehaviour {
               if (timer >= levelSeconds)
               {
                   Events.OnTimeOver();
+                  timeReady = true;
               }
           }
     }

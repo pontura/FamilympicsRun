@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public class LevelSelector : MonoBehaviour {
 
+    public ScrollLimit scrollLimit;
     public Color backgroundSinglePlayer;
     public Color backgroundMultiplayer;
 
@@ -50,7 +51,9 @@ public class LevelSelector : MonoBehaviour {
 
             if(lastLevelScore>0)
                 Data.Instance.userData.levelProgressionId = a;
-        }        
+        }
+        int scrollLevels = (Data.Instance.levels.levels.Length - 4) * -300;
+        scrollLimit.SetLimit(new Vector2(0, scrollLevels));
 	}
     void Positionate()
     {

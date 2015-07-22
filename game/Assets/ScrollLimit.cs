@@ -13,4 +13,8 @@ public class ScrollLimit : MonoBehaviour {
         else if (container.transform.localPosition.x < limitX.y)
             container.transform.localPosition = new Vector3(limitX.y, container.transform.localPosition.y, 0);
 	}
+    public void SetLimit(Vector2 _limitX)
+    {
+        this.limitX = _limitX;
+    }
 }

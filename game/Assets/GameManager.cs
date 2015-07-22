@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour {
     }
     void OnTimeOver()
     {
+        print("OnTimeOver");
         LevelComplete();
     }
     void LevelComplete()

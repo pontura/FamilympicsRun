@@ -3,25 +3,21 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-    private float lastDistance;
-    private float distToLoop;
+    private float distanceToDie;
+   // private float distToLoop;
     private GameCamera gameCamera;
 
-    public void Init(GameCamera _gameCamera)
+    public void Init(GameCamera _gameCamera, Vector3 pos)
     {
-        lastDistance = distToLoop = transform.localPosition.x;
+        transform.localPosition = pos;
+        distanceToDie = pos.x;
         gameCamera = _gameCamera;
     }
     void Update()
     {
         Vector3 pos = transform.localPosition;
-        if (gameCamera.distance > lastDistance + distToLoop)
-        {
-            lastDistance = gameCamera.distance + distToLoop;
-            pos.x = lastDistance;
-            transform.localPosition = pos;
-        }
-
+        if (gameCamera.distance > distanceToDie + 30)
+            Die();
     }
 
     public void Die()

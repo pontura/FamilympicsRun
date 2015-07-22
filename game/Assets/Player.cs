@@ -30,6 +30,7 @@ public class Player : MonoBehaviour {
         JUMPING,
         HURT,
         DEAD,
+        IN_WIND_ZONE,
         STARTING_NEXT_LAP,
         READY        
     }
@@ -75,12 +76,14 @@ public class Player : MonoBehaviour {
             float playerDistance = transform.localPosition.x;
             float realDistance = gameCamera.distance - playerDistance;
             if (gameCamera.distance - playerDistance > 20)
+            {
+                Die();
                 gameCamera.OnAvatarGotBorder();
+            }
             else if (playerDistance - gameCamera.distance > 20)
                 Win();
             else
             {
-                print("meters" + state);
                 float posX = (20 - realDistance) * 100 / 40;
                 if (posX < 0) posX = 0; if (posX > 100) posX = 99;
                 meters = ((int)(posX * 10)).ToString();
@@ -97,7 +100,7 @@ public class Player : MonoBehaviour {
         switch (type)
         {
             case Powerups.types.FORWARD:
-                animation.Play("playerOnForward");
+                GetComponent<Animation>().Play("playerOnForward");
                 deceleration /= 2;
                 acceleration = 12;
                 speed = acceleration;
@@ -130,7 +133,7 @@ public class Player : MonoBehaviour {
     {
         speed = speed/2;
         state = states.PLAYING;
-        animation.Play("playerIdle");
+        GetComponent<Animation>().Play("playerIdle");
     }
     public void Run()
     {
@@ -138,27 +141,42 @@ public class Player : MonoBehaviour {
         if (state == states.READY) return;
         if (state == states.HURT) return;
         if (state == states.JUMPING) return;
-        state = states.RUNNING;
+
+        if (state != states.IN_WIND_ZONE)
+             state = states.RUNNING;
+
         gameCamera.OnAvatarMoved();
         speed += acceleration;
-        animation.Play("playerRun");
+        GetComponent<Animation>().Play("playerRun");
     }
     public void Jump()
     {
         if (state == states.STARTING_NEXT_LAP) return;
         if (state == states.READY) return;
         if (state == states.HURT) return;
-        state = states.JUMPING;
+
+        if (state != states.IN_WIND_ZONE)
+            state = states.JUMPING;
+
         gameCamera.OnAvatarMoved();
         if (speed < speedJump) speed = speedJump;
-        animation.Play("playerJump");
+        GetComponent<Animation>().Play("playerJump");
     }
     public void Hurt()
     {
         if (state == states.STARTING_NEXT_LAP) return;
         state = states.HURT;
         speed = 0;
-        animation.Play("playerHurt");
+        GetComponent<Animation>().Play("playerHurt");
+    }
+    public void OnEnterWindZone()
+    {
+        state = states.IN_WIND_ZONE;
+    }
+    public void OnExitWindZone()
+    {
+        state = states.RUNNING;
+        speed /= 2;
     }
 
     //from animation
@@ -192,13 +210,17 @@ public class Player : MonoBehaviour {
         else if (speed > 0) 
         {
             Vector3 pos = transform.localPosition;
-            pos.x += (speed*10) * Time.deltaTime;
+
+            if (state == states.IN_WIND_ZONE)
+                pos.x += (speed * 4) * Time.deltaTime;
+            else
+                pos.x += (speed * 10) * Time.deltaTime;
+
             transform.localPosition = pos;
         }
     }
     public void Win()
     {
-        print("Win");
         laps++;
         state = states.STARTING_NEXT_LAP;
         meters = laps + "000";
@@ -224,9 +246,20 @@ public class Player : MonoBehaviour {
     {
         if (other.tag == "enemy" && state != states.JUMPING)
         {
-           // other.GetComponent<Enemy>().Die();
-            Hurt();
+            if(other.GetComponent<Hurdle>())
+                Hurt();
+            else if (other.GetComponent<Wind>())
+                OnEnterWindZone(); 
         }
+    }
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.GetComponent<Wind>())
+            OnExitWindZone();
+    }
+    void Die()
+    {
+        SetOff();
     }
     void SetOff()
     {

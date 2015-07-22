@@ -6,7 +6,7 @@ public class MusicManager : MonoBehaviour {
     public float volume;
        
 	public void Init () {
-        audio.loop = true;
+        GetComponent<AudioSource>().loop = true;
         OnMusicVolumeChanged(Data.Instance.musicVolume);
 
         Events.OnGamePaused += OnGamePaused;
@@ -22,14 +22,14 @@ public class MusicManager : MonoBehaviour {
 
     void OnMusicChange(string soundName)
     {
-        if (audio.clip && audio.clip.name == soundName) return;
-        audio.clip = Resources.Load("music/" + soundName) as AudioClip;
-        audio.Play();
+        if (GetComponent<AudioSource>().clip && GetComponent<AudioSource>().clip.name == soundName) return;
+        GetComponent<AudioSource>().clip = Resources.Load("music/" + soundName) as AudioClip;
+        GetComponent<AudioSource>().Play();
 
         if (soundName == "victoryMusic") 
-            audio.loop = false;
+            GetComponent<AudioSource>().loop = false;
         else
-            audio.loop = true;
+            GetComponent<AudioSource>().loop = true;
     }
     void OnSoundsFadeTo(float to)
     {
@@ -40,19 +40,19 @@ public class MusicManager : MonoBehaviour {
     }
     void OnMusicVolumeChanged(float value)
     {
-        audio.volume = value;
+        GetComponent<AudioSource>().volume = value;
         volume = value;
     }
     void OnGamePaused(bool paused)
     {
         if(paused)
-            audio.Stop();
+            GetComponent<AudioSource>().Stop();
         else
-            audio.Play();
+            GetComponent<AudioSource>().Play();
     }
     void stopAllSounds()
     {
-        audio.Stop();
+        GetComponent<AudioSource>().Stop();
     }
 }
 

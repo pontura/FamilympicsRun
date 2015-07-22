@@ -21,6 +21,6 @@ public class StartUpFailed : MonoBehaviour {
     void OnFalseStart(int _id)
     {
 	    if(id != _id) return;
-        animation.Play("FalseStart");
+        GetComponent<Animation>().Play("FalseStart");
 	}
 }
