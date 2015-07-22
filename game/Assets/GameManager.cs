@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour {
     }
 
 	void Start () {
+        Events.OnMusicChange("");
+
         Levels.LevelData levelData = Data.Instance.GetComponent<Levels>().GetCurrentLevelData();
         targetSpeed = levelData.speed;
         acceleration = levelData.acceleration;

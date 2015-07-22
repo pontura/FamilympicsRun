@@ -135,8 +135,8 @@ public class UIPlayerButtons : MonoBehaviour {
         Image buttonPressed;
         switch (num)
         {
-            case 1: buttonPressed = button1; break;
-            default: buttonPressed = button2; break;
+            case 1: buttonPressed = button1; Events.OnSoundFX("stepLeft"); break;
+            default: buttonPressed = button2; Events.OnSoundFX("stepRight"); break;
         }
         if (buttonPressed == activeButton)
             return;

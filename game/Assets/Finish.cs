@@ -16,6 +16,8 @@ public class Finish : MonoBehaviour {
 	}
     void OnLevelComplete()
     {
+        Events.OnSoundFX("raceFinished");
+        Events.OnMusicChange("raceFinishMenus");
         FinishAsset.SetActive(true);
         FinishAsset.GetComponent<Animation>().Play("FinishFlagOpen");
     }

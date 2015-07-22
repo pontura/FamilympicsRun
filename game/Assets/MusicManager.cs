@@ -22,8 +22,13 @@ public class MusicManager : MonoBehaviour {
 
     void OnMusicChange(string soundName)
     {
+        if (soundName == "")
+        {
+            GetComponent<AudioSource>().Stop();
+            soundName = "";
+        }
         if (GetComponent<AudioSource>().clip && GetComponent<AudioSource>().clip.name == soundName) return;
-        GetComponent<AudioSource>().clip = Resources.Load("music/" + soundName) as AudioClip;
+        GetComponent<AudioSource>().clip = Resources.Load("audio/" + soundName) as AudioClip;
         GetComponent<AudioSource>().Play();
 
         if (soundName == "victoryMusic") 

@@ -20,7 +20,7 @@ public class LevelSelector : MonoBehaviour {
     private int buttonsSeparation = 300;
 
 	void Start () {
-
+        Events.OnMusicChange("menus");
         if(Data.Instance.OnlyMultiplayer)
         {
             Data.Instance.userData.mode = UserData.modes.MULTIPLAYER;

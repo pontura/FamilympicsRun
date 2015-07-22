@@ -12,10 +12,19 @@ public class CountDown : MonoBehaviour {
     {
         field.text = num.ToString();
         Invoke("nextNum", 1);
+        Events.OnSoundFX("3");
     }
     void nextNum()
     {
+        
+
         num--;
+
+        if (num > 0)
+            Events.OnSoundFX((num).ToString());
+        else
+            Events.OnSoundFX("go");
+
         field.text = num.ToString();
         if (num <= 0)
         {

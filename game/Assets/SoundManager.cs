@@ -19,7 +19,7 @@ public class SoundManager : MonoBehaviour
         if (Data.Instance.soundsVolume == 0) return;
 
         AudioSource audioSource = GetComponent<AudioSource>();
-        audioSource.PlayOneShot(Resources.Load("sound/" + soundName) as AudioClip);
+        audioSource.PlayOneShot(Resources.Load("audio/" + soundName) as AudioClip);
 
     }
 }
