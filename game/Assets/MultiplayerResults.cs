@@ -33,16 +33,30 @@ public class MultiplayerResults : MonoBehaviour {
     {
         panel.SetActive(true);
 
+        
+
         title.text = "LEVEL " + Data.Instance.levels.currentLevel  + " COMPLETED!";
 
         System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
         timeField.text = "TIME: " + string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+
+        MultiplayerData  multiplayerData = Data.Instance.multiplayerData;
+        List<MultiplayerData.PlayerData> playersData = multiplayerData.players.OrderBy(x => x.meters).ToList();
+
+        int numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
+        stars.Init(numStars);
+
+        if (multiplayerData.players.Count == 1)
+        {
+            puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + " Mts", playersData[0].color);
+            return;
+        }
         
         puesto2.gameObject.SetActive(false);
         puesto3.gameObject.SetActive(false);
         puesto4.gameObject.SetActive(false);
 
-        MultiplayerData  multiplayerData = Data.Instance.multiplayerData;
+        
 
         if (multiplayerData.players.Count > 1)
             puesto2.gameObject.SetActive(true);
@@ -51,7 +65,7 @@ public class MultiplayerResults : MonoBehaviour {
         if (multiplayerData.players.Count > 3)
             puesto4.gameObject.SetActive(true);
 
-         List<MultiplayerData.PlayerData> playersData = multiplayerData.players.OrderBy(x => x.meters).ToList();
+        
 
          playersData.Reverse();
 

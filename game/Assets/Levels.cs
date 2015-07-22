@@ -43,5 +43,30 @@ public class Levels : MonoBehaviour {
     {
         return levels[id];
     }
+    public int GetCurrentLevelStars(float time, int meters)
+    {
+        int stars = 0;
+        LevelData level = GetCurrentLevelData();
+        if (level.totalLaps > 0)
+        {
+            if (time < level.star3)
+                stars = 3;
+            else if (time < level.star2)
+                stars = 2;
+            else if (time < level.star1)
+                stars = 1;
+        }
+        else if (level.totalTime > 0)
+        {
+            if (meters > level.star3)
+                stars = 3;
+            else if (meters > level.star2)
+                stars = 2;
+            else if (meters > level.star1)
+                stars = 1;
+        }
+        print("_____GetCurrentLevelStars - time: " + time + "- meters: " + meters + " stars: "  + stars);
+        return stars;
+    }
 
 }
