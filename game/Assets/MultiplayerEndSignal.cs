@@ -1,0 +1,36 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class MultiplayerEndSignal : MonoBehaviour {
+
+    public CharacterFace characterFace;
+    public GameObject panel;
+    public Text field;
+    private int playerID;
+
+	void Start () {
+        Events.OnLevelComplete += OnLevelComplete;
+	}
+    void OnDestroy()
+    {
+        Events.OnLevelComplete -= OnLevelComplete;
+    }
+    void OnLevelComplete()
+    {        
+        Invoke("SetOn", 1f);
+    }
+    void SetOn()
+    {
+        playerID = Data.Instance.levelData.winnerID;
+        characterFace.Init(playerID);
+        string username = Data.Instance.multiplayerData.GetPlayer(playerID).username;
+        field.text = "THE WINNER IS " + username + "!";
+
+        Invoke("Reset", 3f);
+    }
+    void Reset()
+    {
+        Events.OpenSummary();
+    }
+}

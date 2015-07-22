@@ -29,7 +29,8 @@ public static class Events {
     public static System.Action OnRefreshHiscores = delegate { };
     public static System.Action<int> OnLoadParseScore = delegate { };  
     public static System.Action<int, float, int, string> OnAddMultiplayerScore = delegate { };
-    public static System.Action<UserData.modes> OnChangePlayMode = delegate { };  
+    public static System.Action<UserData.modes> OnChangePlayMode = delegate { };
+    public static System.Action OpenSummary = delegate { };
     
 
     public static System.Action<string> OnKeyDown = delegate { };
@@ -42,6 +43,7 @@ public static class Events {
     //playerID, laps Count
     public static System.Action<int, int> OnAvatarWinLap = delegate { };
 
+   
 
     public static System.Action<Enemy, int> OnAddEnemy = delegate { };
     public static System.Action OnPowerUpOn = delegate { };

@@ -11,7 +11,6 @@ public class CharacterFace : MonoBehaviour {
 
 	public void Init(int id)
     {
-        print("___________" + id);
         Image image = GetComponent<Image>();
         switch (id)
         {

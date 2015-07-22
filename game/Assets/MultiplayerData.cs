@@ -12,6 +12,7 @@ public class MultiplayerData : MonoBehaviour {
     {
         public int playerID;
         public string username;
+        public int meters;
         public Color color;
     }
     public List<PlayerData> players;
@@ -216,5 +217,11 @@ public class MultiplayerData : MonoBehaviour {
                 return data;
         return null;
         
+    }
+    public void SetMeters(int id, int meters)
+    {
+        foreach (PlayerData data in players)
+            if (data.playerID == id)
+                data.meters = meters;
     }
 }

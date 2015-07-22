@@ -63,9 +63,8 @@ public class Chronometer : MonoBehaviour {
     {
         if (timeReady) return;
         if (timeStarted)
-        {
             timer += Time.deltaTime;
-        }     
+
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
       
 

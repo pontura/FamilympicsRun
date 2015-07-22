@@ -62,6 +62,17 @@ public class UIPlayerButtons : MonoBehaviour {
         LoopStart();
         Events.OnAvatarDie += OnAvatarDie;
         Events.OnAvatarWinLap += OnAvatarWinLap;
+        Events.OnLevelComplete += OnLevelComplete;
+    }
+    void OnDestroy()
+    {
+        Events.OnAvatarDie -= OnAvatarDie;
+        Events.OnAvatarWinLap -= OnAvatarWinLap;
+        Events.OnLevelComplete -= OnLevelComplete;
+    }
+    void OnLevelComplete()
+    {
+        Data.Instance.multiplayerData.SetMeters(id, int.Parse(player.meters));
     }
     void LoopStart()
     {
@@ -83,11 +94,7 @@ public class UIPlayerButtons : MonoBehaviour {
             }
         }
     }
-    void OnDestroy()
-    {
-        Events.OnAvatarDie -= OnAvatarDie;
-        Events.OnAvatarWinLap -= OnAvatarWinLap;
-    }
+    
     void OnAvatarWinLap(int _id, int laps)
     {
         this.laps = laps;
