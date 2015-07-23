@@ -24,6 +24,7 @@ public class Chronometer : MonoBehaviour {
 
         Events.StartGame += StartGame;
         Events.OnLevelComplete += OnLevelComplete;
+        Events.GameOver += OnLevelComplete;
 
         ActivateChronometers();
 
@@ -51,6 +52,7 @@ public class Chronometer : MonoBehaviour {
     {
         Events.StartGame -= StartGame;
         Events.OnLevelComplete -= OnLevelComplete;
+        Events.GameOver -= OnLevelComplete;
     }
     void StartGame()
     {
