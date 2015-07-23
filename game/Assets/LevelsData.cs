@@ -213,20 +213,6 @@ public class LevelsData : MonoBehaviour {
         else
             return score.ToString();
     }
-    public int GetScoreStars(int levelID, float score)
-    {
-        int stars = 0;
-        Levels.LevelData data = Data.Instance.levels.levels[levelID];
-        if (data.totalLaps > 0)
-        {
-
-        }
-        else
-        {
-
-        }
-        return stars;
-    }
     private string GetTimer(float timer)
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);

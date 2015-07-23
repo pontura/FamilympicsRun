@@ -33,11 +33,10 @@ public class LevelButton : MonoBehaviour {
     }
     public void Init(LevelSelector levelSelector, int levelID, float myLastScore)
     {
+       // print("levelSelector: " + levelSelector + "levelID: " + levelID + "myLastScore: " + myLastScore + " levelScore: " + levelScore.scoreData1.score);
         image = GetComponent<Image>();
         this.id = levelID;
         levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
-
-        
         
         OnChangePlayMode(Data.Instance.userData.mode);
 
@@ -48,6 +47,9 @@ public class LevelButton : MonoBehaviour {
             labelNum.enabled = false;
             return;
         }
+
+       
+
         LockImage.enabled = false;
         
         labelNum.text = levelID.ToString();
@@ -75,7 +77,7 @@ public class LevelButton : MonoBehaviour {
         {
             
             string _score = Data.Instance.levelsData.GetScoreString(id, _myScore);
-            stars.Init(Data.Instance.levelsData.GetScoreStars(id, _myScore));
+           // stars.Init(Data.Instance.levelsData.GetScoreStars(id, _myScore));
 
             
 
@@ -122,6 +124,12 @@ public class LevelButton : MonoBehaviour {
 
         if (hiscoreData[0].score > 0)
         {
+
+            print("______LoadMultiplayerWinners: levelID: " + id + "hiscoreData[0].score: " + hiscoreData[0].score);
+            int numStars = Data.Instance.levels.GetCurrentLevelStarsByScore(id, hiscoreData[0].score);
+            stars.Init(numStars);
+
+
             user1.gameObject.SetActive(true);
             user1.Init(id, hiscoreData[0].username, hiscoreData[0].score.ToString(), "");
             user1.SetMultiplayerColor(hiscoreData[0].playerID);
@@ -145,6 +153,7 @@ public class LevelButton : MonoBehaviour {
 
     void OnChangePlayMode(UserData.modes mode)
     {
+        
         switch (mode)
         {
             case UserData.modes.MULTIPLAYER:
@@ -152,6 +161,7 @@ public class LevelButton : MonoBehaviour {
                 LoadMultiplayerWinners();
                 break;
             case UserData.modes.SINGLEPLAYER:
+                return;
                 button.image.color = Color.white;
                 LoadSinglePlayerWinners();
                 break;

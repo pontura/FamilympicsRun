@@ -43,6 +43,32 @@ public class Levels : MonoBehaviour {
     {
         return levels[id];
     }
+    public int GetCurrentLevelStarsByScore(int levelID, float score)
+    {
+        int stars = 0;
+        LevelData level = levels[levelID];
+        print(" _______levelID: " + levelID + " GetCurrentLevelStarsByScore totalLaps: " + level.totalLaps + " star3: " + level.star3 + " score: " + score);
+
+        if (level.totalLaps > 0)
+        {
+            if (score < level.star3)
+                stars = 3;
+            else if (score < level.star2)
+                stars = 2;
+            else if (score < level.star1)
+                stars = 1;
+        }
+        else if (level.totalTime > 0)
+        {
+            if (score > level.star3)
+                stars = 3;
+            else if (score > level.star2)
+                stars = 2;
+            else if (score > level.star1)
+                stars = 1;
+        }
+        return stars;
+    }
     public int GetCurrentLevelStars(float time, int meters)
     {
         int stars = 0;
@@ -65,7 +91,6 @@ public class Levels : MonoBehaviour {
             else if (meters > level.star1)
                 stars = 1;
         }
-        print("_____GetCurrentLevelStars - time: " + time + "- meters: " + meters + " stars: "  + stars);
         return stars;
     }
 

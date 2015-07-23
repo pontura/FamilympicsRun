@@ -68,8 +68,24 @@ public class MultiplayerData : MonoBehaviour {
     {
         Events.OnAddMultiplayerScore -= OnAddMultiplayerScore;
     }
+    public void Reset()
+    {
+        foreach (HiscoreLevel hiscoreLevel in hiscoreLevels)
+        {
+            hiscoreLevel.lastWinner = 0;
+            foreach (HiscoresData hiscoresData in hiscoreLevel.hiscores)
+            {
+                hiscoresData.levelID = 0;
+                hiscoresData.playerID = 0;
+                hiscoresData.score = 0;
+                hiscoresData.username = "";
+            }
+        }
+    }
     void OnAddMultiplayerScore(int levelID, float score, int playerID, string username)
     {
+        print("OnAddMultiplayerScore: " + levelID + " score:" + score + " playerID:" + playerID + " username:" + username);
+
         HiscoreLevel hiscoreLevel = hiscoreLevels[levelID];
         hiscoreLevel.lastWinner = playerID;
 

@@ -97,6 +97,7 @@ public class LevelSelector : MonoBehaviour {
         Data.Instance.userData.Reset();
         Data.Instance.Load("MainMenu");
         Data.Instance.loginManager.ParseFBLogout();
+        Data.Instance.multiplayerData.Reset();
     }
     void OnChangePlayMode(UserData.modes mode)
     {

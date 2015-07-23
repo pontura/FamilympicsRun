@@ -31,9 +31,7 @@ public class MultiplayerResults : MonoBehaviour {
     }
     public void SetOn()
     {
-        panel.SetActive(true);
-
-        
+        panel.SetActive(true);        
 
         title.text = "LEVEL " + Data.Instance.levels.currentLevel  + " COMPLETED!";
 
@@ -42,9 +40,19 @@ public class MultiplayerResults : MonoBehaviour {
 
         MultiplayerData  multiplayerData = Data.Instance.multiplayerData;
         List<MultiplayerData.PlayerData> playersData = multiplayerData.players.OrderBy(x => x.meters).ToList();
+        playersData.Reverse();
 
         int numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
         stars.Init(numStars);
+
+        float score = 0;
+        if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
+            score = Data.Instance.levelData.laps;
+        else
+            score = Data.Instance.levelData.time;
+
+        Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
+        Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, score, playersData[0].playerID, playersData[0].username);
 
         if (multiplayerData.players.Count == 1)
         {
@@ -56,8 +64,6 @@ public class MultiplayerResults : MonoBehaviour {
         puesto3.gameObject.SetActive(false);
         puesto4.gameObject.SetActive(false);
 
-        
-
         if (multiplayerData.players.Count > 1)
             puesto2.gameObject.SetActive(true);
         if (multiplayerData.players.Count > 2)
@@ -65,9 +71,6 @@ public class MultiplayerResults : MonoBehaviour {
         if (multiplayerData.players.Count > 3)
             puesto4.gameObject.SetActive(true);
 
-        
-
-         playersData.Reverse();
 
          puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + " Mts", playersData[0].color);
          if (playersData.Count>1)
@@ -79,6 +82,7 @@ public class MultiplayerResults : MonoBehaviour {
     }
     public void Ready()
     {
-
+        Data.Instance.Load("LevelSelector");
     }
+
 }

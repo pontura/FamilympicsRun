@@ -10,6 +10,7 @@ public class Stars : MonoBehaviour {
 
 	public void Init (int num) {
 
+        print("______________________Stars: " + num);
         setOff(stars1);
         setOff(stars2);
         setOff(stars3);
