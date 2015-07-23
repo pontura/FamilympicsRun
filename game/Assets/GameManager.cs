@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
     }
 
 	void Start () {
-        Events.OnMusicChange("");
+        Events.OnMusicChange("crowds");
 
         Levels.LevelData levelData = Data.Instance.GetComponent<Levels>().GetCurrentLevelData();
         targetSpeed = levelData.speed;
@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour {
         Events.OnAvatarDie += OnAvatarDie;
         Events.OnAvatarWinLap += OnAvatarWinLap;
         Events.OnTimeOver += OnTimeOver;
+        Events.GameOver += GameOver;
         Events.OpenSummary += OpenSummary;
 
         LaneSeparation /= scaleFactor;
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour {
         Events.OnAvatarDie -= OnAvatarDie;
         Events.OnAvatarWinLap -= OnAvatarWinLap;
         Events.OnTimeOver -= OnTimeOver;
+        Events.GameOver -= GameOver;
         Events.OpenSummary -= OpenSummary;
     }
     void OnPowerUp()
@@ -143,6 +145,11 @@ public class GameManager : MonoBehaviour {
     void OnLapsOver()
     {
         LevelComplete();
+    }
+    void GameOver()
+    {
+        print("__________GameOver");
+        state = states.READY;
     }
     void OnTimeOver()
     {

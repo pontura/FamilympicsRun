@@ -32,11 +32,13 @@ public class MultiplayerSelector : MonoBehaviour {
     }
     public void Edit(int id)
     {
+        Events.OnSoundFX("buttonPress");
         Data.Instance.multiplayerData.activePlayerId = id;
         Data.Instance.Load("NameEditor");
     }
     public void StartGame()
     {
+        Events.OnSoundFX("raceStart");
         if (numberOfPlayers > 1)
             Data.Instance.Load("Game");
         else
@@ -47,6 +49,7 @@ public class MultiplayerSelector : MonoBehaviour {
     }
     public void Back()
     {
+        Events.OnSoundFX("buttonPress");
         Data.Instance.Load("LevelSelector");
     }
 }

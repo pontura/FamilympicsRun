@@ -54,6 +54,7 @@ public class Player : MonoBehaviour {
         Events.OnAvatarJump += OnAvatarJump;
         Events.OnAvatarRun += OnAvatarRun;
         Events.OnLevelComplete += OnLevelComplete;
+        Events.GameOver += OnLevelComplete;
 
     }
     void OnDestroy()
@@ -62,6 +63,7 @@ public class Player : MonoBehaviour {
         Events.OnAvatarJump -= OnAvatarJump;
         Events.OnAvatarRun -= OnAvatarRun;
         Events.OnLevelComplete -= OnLevelComplete;
+        Events.GameOver -= OnLevelComplete;
     }
     void OnLevelComplete()
     {
@@ -155,6 +157,8 @@ public class Player : MonoBehaviour {
         if (state == states.READY) return;
         if (state == states.HURT) return;
 
+        Events.OnSoundFX("jump");
+
         if (state != states.IN_WIND_ZONE)
             state = states.JUMPING;
 
@@ -165,6 +169,8 @@ public class Player : MonoBehaviour {
     public void Hurt()
     {
         if (state == states.STARTING_NEXT_LAP) return;
+
+        Events.OnSoundFX("hurdleFall");
         state = states.HURT;
         speed = 0;
         GetComponent<Animation>().Play("playerHurt");

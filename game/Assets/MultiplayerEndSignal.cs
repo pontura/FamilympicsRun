@@ -26,7 +26,6 @@ public class MultiplayerEndSignal : MonoBehaviour {
         characterFace.Init(playerID);
         string username = Data.Instance.multiplayerData.GetPlayer(playerID).username;
         field.text = "THE WINNER IS " + username + "!";
-
         Invoke("Reset", 3f);
     }
     void Reset()

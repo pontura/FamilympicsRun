@@ -37,7 +37,7 @@ public class LevelSelector : MonoBehaviour {
             Data.Instance.levelData.ResetChallenge();
             OnChangePlayMode(Data.Instance.userData.mode);
             Events.OnChangePlayMode += OnChangePlayMode;
-            Positionate();
+            
         }        
 
         for (int a = 1; a < Data.Instance.levels.levels.Length; a++ )
@@ -54,10 +54,17 @@ public class LevelSelector : MonoBehaviour {
         }
         int scrollLevels = (Data.Instance.levels.levels.Length - 4) * -300;
         scrollLimit.SetLimit(new Vector2(0, scrollLevels));
+
+        Positionate();
 	}
     void Positionate()
     {
-        int positionX = Data.Instance.userData.levelProgressionId-2;
+        int positionX = 0;
+        if (Data.Instance.levels.currentLevel > 0)
+            positionX = Data.Instance.levels.currentLevel - 2;
+        else
+            positionX = Data.Instance.userData.levelProgressionId - 2;
+
         if (positionX > 0)
             positionX *= -buttonsSeparation;
         Vector3 pos = container.transform.localPosition;
@@ -74,6 +81,7 @@ public class LevelSelector : MonoBehaviour {
     }
     public void GotoLevel(int id)
     {
+       // Events.OnSoundFX("buttonPress");
         Events.OnLoadParseScore(id);
         if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
             Data.Instance.Load("SinglePlayer");

@@ -46,6 +46,7 @@ public class PlayerButton : MonoBehaviour {
 	}
     void Toogle()
     {
+        Events.OnSoundFX("buttonPress");
         if (!selected)
         {
             IsOn();

@@ -82,6 +82,7 @@ public class MultiplayerResults : MonoBehaviour {
     }
     public void Ready()
     {
+        Events.OnSoundFX("buttonPress");
         Data.Instance.Load("LevelSelector");
     }
 

@@ -31,6 +31,7 @@ public class Levels : MonoBehaviour {
         public float star1;
         public float star2;
         public float star3;
+        public float gameOverTime;
     }
 
     public LevelData[] levels;

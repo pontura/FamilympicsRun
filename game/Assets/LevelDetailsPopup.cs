@@ -17,10 +17,12 @@ public class LevelDetailsPopup : MonoBehaviour {
 	}
     public void StartRace()
     {
+        Events.OnSoundFX("buttonPress");
         GetComponent<LevelSelector>().GotoLevel(levelId);
     }
     public void Open(int levelId)
     {
+        Events.OnSoundFX("buttonPress");
         this.levelId = levelId;
         isActive = true;
         panel.SetActive(true);
@@ -35,6 +37,7 @@ public class LevelDetailsPopup : MonoBehaviour {
     }
     public void Close()
     {
+        Events.OnSoundFX("buttonPress");
         panel.GetComponent<Animation>().Play("PopupOff");
         Invoke("CloseOff", 0.2f);
     }
@@ -45,6 +48,7 @@ public class LevelDetailsPopup : MonoBehaviour {
     }
     public void Login()
     {
+        Events.OnSoundFX("buttonPress");
         Data.Instance.Load("Login");
     }
 }

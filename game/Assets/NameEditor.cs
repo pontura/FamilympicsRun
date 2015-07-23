@@ -25,6 +25,7 @@ public class NameEditor : MonoBehaviour {
 	
 	public void Send () {
 
+        Events.OnSoundFX("buttonPress");
         if(label.text != "")
             multiPlayerData.OnSaveName(label.text, multiPlayerData.activePlayerId);
 
