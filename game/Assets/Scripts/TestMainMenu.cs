@@ -249,22 +249,22 @@ public class TestMainMenu: MonoBehaviour {
 	private void showLoggedIn() {
 		foreach (Transform child in loggedOutUIElements.transform)
 		{
-			child.GetComponent<Renderer>().enabled = false;
+			child.renderer.enabled = false;
 		}
 		foreach (Transform child in loggedInUIElements.transform)
 		{
-			child.GetComponent<Renderer>().enabled = true;
+			child.renderer.enabled = true;
 		}
 	}
 
 	private void showLoggedOut() {
 		foreach (Transform child in loggedInUIElements.transform)
 		{
-			child.GetComponent<Renderer>().enabled = false;
+			child.renderer.enabled = false;
 		}
 		foreach (Transform child in loggedOutUIElements.transform)
 		{
-			child.GetComponent<Renderer>().enabled = true;
+			child.renderer.enabled = true;
 		}
 		profilePictureRenderer.materials[0].mainTexture = defaultProfilePictureTexture;
 	}

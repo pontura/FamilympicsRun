@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
             float realDistance = gameCamera.distance - playerDistance;
             if (gameCamera.distance - playerDistance > 20)
             {
-                Die();
+               // Die();
                 gameCamera.OnAvatarGotBorder();
             }
             else if (playerDistance - gameCamera.distance > 20)
@@ -225,6 +225,30 @@ public class Player : MonoBehaviour {
             transform.localPosition = pos;
         }
     }
+    void Die()
+    {
+        //SetOff();
+        //laps--;
+        //state = states.STARTING_NEXT_LAP;
+        //meters = laps + "000";
+        //Events.OnAvatarWinLap(id, laps);
+        //Invoke("PrevLap", 0.05f);
+        //Vector3 pos = transform.localPosition;
+        //pos.x -= 1;
+        //transform.localPosition = pos;
+        //GetComponent<TrailRenderer>().time = -1;
+    }
+    void PrevLap()
+    {
+        //if (gameManager.state == GameManager.states.READY) return;
+        //if (state == states.READY) return;
+
+        //GetComponent<TrailRenderer>().time = TrilRendererDefaultTime;
+        //state = states.RUNNING;
+        //Vector3 pos = transform.localPosition;
+        //pos.x += 40;
+        //transform.localPosition = pos;
+    }
     public void Win()
     {
         laps++;
@@ -263,10 +287,7 @@ public class Player : MonoBehaviour {
         if (other.GetComponent<Wind>())
             OnExitWindZone();
     }
-    void Die()
-    {
-        SetOff();
-    }
+    
     void SetOff()
     {
         Events.OnAvatarDie(this);

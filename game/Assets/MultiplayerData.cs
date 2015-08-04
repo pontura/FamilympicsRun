@@ -63,10 +63,17 @@ public class MultiplayerData : MonoBehaviour {
     void Start()
     {
         Events.OnAddMultiplayerScore += OnAddMultiplayerScore;
+        Events.StartGame += StartGame;
     }
     void OnDestroy()
     {
         Events.OnAddMultiplayerScore -= OnAddMultiplayerScore;
+        Events.StartGame -= StartGame;
+    }
+    void StartGame()
+    {
+        foreach (PlayerData data in players)
+            data.meters = 0;
     }
     public void Reset()
     {
