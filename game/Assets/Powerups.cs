@@ -25,6 +25,7 @@ public class Powerups : MonoBehaviour {
     }
 
 	void Start () {
+        return;
         if(Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
              Events.OnPowerUpOn += OnPowerUpOn;
 	}

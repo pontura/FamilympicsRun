@@ -5,6 +5,9 @@ public class InputManager : MonoBehaviour {
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Data.Instance.Load("LevelSelector");
+        }  
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             Events.OnAvatarRun(1);
@@ -56,27 +59,5 @@ public class InputManager : MonoBehaviour {
         {
             Events.OnAvatarJump(4);
         }
-
-        //RaycastHit hit;
-        //Ray ray;
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    ray = UICamera.ScreenPointToRay(Input.mousePosition);
-        //    if (Physics.Raycast(ray, out hit))
-        //    {
-        //        if (hit.collider != null)
-        //        {
-        //            Events.OnUIClicked(hit.collider.gameObject);
-        //            return;
-        //        }
-        //    }
-        //    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    if (Physics.Raycast(ray, out hit))
-        //    {
-        //        if (hit.collider.tag == "Hero")
-        //        { }
-        //        }
-
-        //}
     }
 }
