@@ -23,7 +23,10 @@ public class SettingsInGame : MonoBehaviour {
     public void Restart()
     {
         Time.timeScale = 1;
-        Data.Instance.Load("Game");
+        int totalPlayers = Data.Instance.multiplayerData.players.Count;
+        if (totalPlayers > 1)
+            Data.Instance.Load("Game");
+        else Data.Instance.Load("GameSingle");
     }
     public void ExitToMap()
     {

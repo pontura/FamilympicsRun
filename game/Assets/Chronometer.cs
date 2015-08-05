@@ -32,9 +32,6 @@ public class Chronometer : MonoBehaviour {
     void ActivateChronometers()
     {
         MultiplayerData md = Data.Instance.multiplayerData;
-
-        
-
         if (!singlePlayerMode)
         {
             label1.enabled = false;

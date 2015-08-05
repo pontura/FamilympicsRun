@@ -20,13 +20,16 @@ public class GameOverSignal : MonoBehaviour {
         panel.SetActive(true);
         panel.GetComponent<Animation>().Play("PopupOn");
         int levelId = Data.Instance.levels.currentLevel;
-        field.text = "LEVEL " +levelId+ "FAILED!";
+        field.text = "LEVEL " +levelId+ " FAIL!";
 
         Invoke("Reset", 3f);
     }
     public void Replay()
     {
-
+       int totalPlayers = Data.Instance.multiplayerData.players.Count;
+        if(totalPlayers>1)
+            Data.Instance.Load("Game");
+        else Data.Instance.Load("GameSingle");
     }
     public void GotoLevelSelector()
     {
