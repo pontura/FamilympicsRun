@@ -4,6 +4,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
+    public int position;
     public int id;
     public string meters;
     public states state;
@@ -11,6 +12,14 @@ public class Player : MonoBehaviour {
     public float realDistance;
     private float initialAacceleration;
     private float initialDeceleration;
+    private int totalPlayers;
+
+    public Sprite num1;
+    public Sprite num2;
+    public Sprite num3;
+    public Sprite num4;
+
+    public SpriteRenderer numSprite;
 
     private float maxSpeed;    
     private float speedJump;
@@ -38,6 +47,7 @@ public class Player : MonoBehaviour {
     {
         gameManager = GameObject.Find("Game").GetComponent<GameManager>();
         TrilRendererDefaultTime = GetComponent<TrailRenderer>().time;
+        totalPlayers = Data.Instance.multiplayerData.players.Count;
     }
     public void Init(GameCamera _gameCamera)
     {
@@ -50,6 +60,7 @@ public class Player : MonoBehaviour {
         gameCamera = _gameCamera;
         acceleration = initialAacceleration;
         deceleration = initialDeceleration;
+
         Events.OnPowerUpActive += OnPowerUpActive;
         Events.OnAvatarJump += OnAvatarJump;
         Events.OnAvatarRun += OnAvatarRun;
@@ -69,8 +80,13 @@ public class Player : MonoBehaviour {
     {
         state = states.READY;
     }
-    public void UpdatePosition()
+    void StartGame()
     {
+        state = states.PLAYING;
+    }
+    public void UpdatePosition(int position)
+    {
+        this.position = position;
         if (state == states.STARTING_NEXT_LAP) return;
         else if (state == states.READY) return;
         else if (state != Player.states.DEAD)
@@ -92,6 +108,18 @@ public class Player : MonoBehaviour {
                 if (meters.Length < 2) meters = "00" + meters;
                 else if (meters.Length < 3) meters = "0" + meters;
                 meters = laps + meters;
+
+                if (state == states.PLAYING) return;
+
+                if (totalPlayers == 1) return;
+
+                switch (position)
+                {
+                    case 1: numSprite.sprite = num1; break;
+                    case 2: numSprite.sprite = num2; break;
+                    case 3: numSprite.sprite = num3; break;
+                    case 4: numSprite.sprite = num4; break;
+                }
             }
         }
     }

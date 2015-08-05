@@ -10,6 +10,14 @@ public class CountDown : MonoBehaviour {
 
     void Start()
     {
+        Events.OnRaceStartReady += OnRaceStartReady;
+    }
+    void OnDestroy()
+    {
+        Events.OnRaceStartReady -= OnRaceStartReady;
+    }
+    void OnRaceStartReady()
+    {
         field.text = num.ToString();
         Invoke("nextNum", 1);
         Events.OnSoundFX("3");

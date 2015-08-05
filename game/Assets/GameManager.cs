@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GameManager : MonoBehaviour {
 
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour {
 
     public List<Lane> lanes;
     public List<Player> players;
+    public int totalPlayers;
 
     public List<GameObject> containers;
 
@@ -47,7 +49,7 @@ public class GameManager : MonoBehaviour {
         targetSpeed = levelData.speed;
         acceleration = levelData.acceleration;
 
-        int totalPlayers = 1;
+        totalPlayers = 1;
         if (ForceMultiplayer || Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             totalPlayers = Data.Instance.multiplayerData.players.Count;
 
@@ -100,6 +102,10 @@ public class GameManager : MonoBehaviour {
         if(!ForceMultiplayer)
             Invoke("OnPowerUp", Random.Range(3,6));
 	}
+    public void Restart()
+    {
+        Data.Instance.Load("Game");
+    }
     
     
     void OnDestroy()
@@ -125,6 +131,7 @@ public class GameManager : MonoBehaviour {
     {
         state = states.PLAYING;
     }
+    int checkPoitionsNum = 0;
     void Update()
     {
         if (state == states.READY) return;
@@ -139,8 +146,22 @@ public class GameManager : MonoBehaviour {
         foreach (Lane lane in lanes)
             lane.UpdatePosition();
 
+        int position = totalPlayers;
         foreach (Player player in players)
-            player.UpdatePosition();
+        {
+            player.UpdatePosition(position);
+            position--;
+        }
+        checkPoitionsNum++;
+        if (checkPoitionsNum > 6)
+        {
+            ArrangePlayersByMeters();
+            checkPoitionsNum = 0;
+        }
+    }
+    void ArrangePlayersByMeters()
+    {
+        players = players.OrderBy(player => player.meters).ToList();
     }
     void OnLapsOver()
     {

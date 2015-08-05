@@ -19,6 +19,8 @@ public static class Events {
     //The game:
     public static System.Action StartGame = delegate { };
     public static System.Action OnLevelComplete = delegate { };
+    public static System.Action OpenIngameMenu = delegate { };
+    
 
     public static System.Action<string> OpenPopUp = delegate { };
 
@@ -32,6 +34,8 @@ public static class Events {
     public static System.Action<int, float, int, string> OnAddMultiplayerScore = delegate { };
     public static System.Action<UserData.modes> OnChangePlayMode = delegate { };
     public static System.Action OpenSummary = delegate { };
+    public static System.Action OnRaceStartReady = delegate { };
+    
     
 
     public static System.Action<string> OnKeyDown = delegate { };

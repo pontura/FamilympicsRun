@@ -48,6 +48,12 @@ public class MusicManager : MonoBehaviour {
         GetComponent<AudioSource>().volume = value;
         volume = value;
     }
+    public void Turn(bool isACtive)
+    {
+        int value = 0;
+        if (isACtive) value = 1;
+        OnMusicVolumeChanged(value);
+    }
     void OnGamePaused(bool paused)
     {
         if(paused)

@@ -13,6 +13,16 @@ public class StartUpFailed : MonoBehaviour {
     {
         this.id = _id;
         characterFace.Init(id);
+        int totalPlayers = Data.Instance.multiplayerData.players.Count;
+
+        if (totalPlayers == 1) return;
+
+        if (id > 2)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = -scale.x;
+            transform.localScale = scale;
+        }
     }
     void OnDestroy()
     {

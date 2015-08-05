@@ -30,6 +30,8 @@ public class Data : MonoBehaviour
     public LoginManager loginManager;
     public string lastScene;
     public GameSettings gameSettings;
+    public MusicManager musicManager;
+    public SoundManager soundManager;
 
     public static Data Instance
     {
@@ -70,6 +72,8 @@ public class Data : MonoBehaviour
         levelsData = GetComponent<LevelsData>();
         multiplayerData = GetComponent<MultiplayerData>();
         energyManager = GetComponent<EnergyManager>();
+        musicManager = GetComponent<MusicManager>();
+        soundManager = GetComponentInChildren<SoundManager>();
        // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);

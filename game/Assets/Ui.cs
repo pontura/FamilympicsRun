@@ -8,8 +8,8 @@ public class Ui : MonoBehaviour {
 	
 	}
 
-    public void LevelSelector()
+    public void OpenInGameMenu()
     {
-        Data.Instance.Load("LevelSelector");
+        Events.OpenIngameMenu();
     }
 }
