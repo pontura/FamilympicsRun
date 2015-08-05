@@ -31,7 +31,7 @@ public class LevelDetailsPopup : MonoBehaviour {
 
         Levels.LevelData levelData = Data.Instance.levels.levels[levelId];
         if (levelData.totalLaps > 0)
-            goalText.text = (levelData.totalLaps * 100).ToString() + " MTS";
+            goalText.text = (levelData.totalLaps * 1000).ToString() + " MTS";
         else
             goalText.text = (levelData.totalTime).ToString() + " SECS";
     }

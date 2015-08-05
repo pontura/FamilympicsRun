@@ -123,6 +123,11 @@ public class UIPlayerButtons : MonoBehaviour {
     }
     public void MidButtonPressed()
     {
+        if (gameManager.state == GameManager.states.IDLE)
+        {
+            Events.OnFalseStart(id);
+            return;
+        }
         Events.OnAvatarJump(id);
     }
     public void PressedButton(int num)

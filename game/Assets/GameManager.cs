@@ -171,7 +171,22 @@ public class GameManager : MonoBehaviour {
     }
     void OnTimeOver()
     {
-        print("OnTimeOver");
+        float totalTime = Data.Instance.levels.GetCurrentLevelData().totalTime;
+        float gameOverTime = Data.Instance.levels.GetCurrentLevelData().gameOver;
+        bool somebodyWon = false;
+        if (totalTime > 0)
+        {
+            foreach (Player player in players)
+            {
+                if (float.Parse(player.meters) > gameOverTime * 1000)
+                    somebodyWon = true;
+            }
+            if (!somebodyWon)
+            {
+                Events.GameOver();
+                return;
+            }
+        }
         LevelComplete();
     }
     void LevelComplete()

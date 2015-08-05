@@ -31,7 +31,7 @@ public class Levels : MonoBehaviour {
         public float star1;
         public float star2;
         public float star3;
-        public float gameOverTime;
+        public float gameOver;
     }
 
     public LevelData[] levels;
@@ -85,11 +85,12 @@ public class Levels : MonoBehaviour {
         }
         else if (level.totalTime > 0)
         {
-            if (meters > level.star3)
+           // print("METERS::::::::::::   " + meters + "    level.star3 * 1000: " + level.star3 * 1000);
+            if (meters > level.star3 * 1000)
                 stars = 3;
-            else if (meters > level.star2)
+            else if (meters > level.star2 * 1000)
                 stars = 2;
-            else if (meters > level.star1)
+            else if (meters > level.star1 * 1000)
                 stars = 1;
         }
         return stars;

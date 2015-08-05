@@ -14,6 +14,8 @@ public class Chronometer : MonoBehaviour {
     public string timerFormatted;
     public int levelSeconds;
 
+    public float totalLaps;
+    public float totalTime;
     public float gameOverTime;
 
 
@@ -55,7 +57,11 @@ public class Chronometer : MonoBehaviour {
     {
         timeStarted = true;
         levelSeconds = Data.Instance.levels.GetCurrentLevelData().totalTime;
-        gameOverTime = Data.Instance.levels.GetCurrentLevelData().gameOverTime;
+
+        totalLaps = Data.Instance.levels.GetCurrentLevelData().totalLaps;
+        totalTime = Data.Instance.levels.GetCurrentLevelData().totalTime;
+        gameOverTime = Data.Instance.levels.GetCurrentLevelData().gameOver;
+
     }
     void OnLevelComplete()
     {
@@ -83,12 +89,12 @@ public class Chronometer : MonoBehaviour {
             if (label2.enabled)
                 label2.text = timerFormatted;
         }
-        if (gameOverTime > 0 && timer >= gameOverTime)
+        if (totalLaps > 0 && timer >= gameOverTime)
         {
             Events.GameOver();
             timeReady = true;
         } 
-        if (levelSeconds >0)
+        if (levelSeconds > 0)
           {
               if (timer >= levelSeconds)
               {
