@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour {
         Events.OnAvatarWinLap += OnAvatarWinLap;
         Events.OnTimeOver += OnTimeOver;
         Events.GameOver += GameOver;
-        Events.OpenSummary += OpenSummary;
 
         LaneSeparation /= scaleFactor;
 
@@ -115,7 +114,6 @@ public class GameManager : MonoBehaviour {
         Events.OnAvatarWinLap -= OnAvatarWinLap;
         Events.OnTimeOver -= OnTimeOver;
         Events.GameOver -= GameOver;
-        Events.OpenSummary -= OpenSummary;
     }
     void OnPowerUp()
     {
@@ -169,7 +167,6 @@ public class GameManager : MonoBehaviour {
     }
     void GameOver()
     {
-        print("__________GameOver");
         state = states.READY;
     }
     void OnTimeOver()
@@ -198,15 +195,6 @@ public class GameManager : MonoBehaviour {
         state = states.READY;
          float time = chronometer.timer;
          Data.Instance.levelData.SetResultValues(player.id, int.Parse(player.meters), time);
-    }
-    void OpenSummary()
-    {
-        //if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
-        //    Data.Instance.Load("SummaryMultiplayer");
-        //else if (Data.Instance.levelData.challenge_facebookID == "")
-        //    Data.Instance.Load("Summary");
-        //else
-        //    Data.Instance.Load("SummaryChallenge");
     }
     void OnAvatarDie(Player _player)
     {

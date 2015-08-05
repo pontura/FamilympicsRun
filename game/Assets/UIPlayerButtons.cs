@@ -59,23 +59,18 @@ public class UIPlayerButtons : MonoBehaviour {
     void Start()
     {
         gameManager = GameObject.Find("Game").GetComponent<GameManager>();
+
         LoopStart();
+
         Events.OnAvatarDie += OnAvatarDie;
         Events.OnAvatarWinLap += OnAvatarWinLap;
         Events.OnLevelComplete += OnLevelComplete;
-        Events.StartGame += StartGame;
     }
     void OnDestroy()
     {
         Events.OnAvatarDie -= OnAvatarDie;
         Events.OnAvatarWinLap -= OnAvatarWinLap;
         Events.OnLevelComplete -= OnLevelComplete;
-        Events.StartGame += StartGame;
-    }
-    void StartGame()
-    {
-        if(startUpFailed)
-            startUpFailed.gameObject.SetActive(false);
     }
     void OnLevelComplete()
     {
