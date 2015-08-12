@@ -95,8 +95,7 @@ public class Player : MonoBehaviour {
             float realDistance = gameCamera.distance - playerDistance;
             if (gameCamera.distance - playerDistance > 20)
             {
-               // Die();
-                gameCamera.OnAvatarGotBorder();
+                Die();
             }
             else if (playerDistance - gameCamera.distance > 20)
                 Win();
@@ -255,31 +254,43 @@ public class Player : MonoBehaviour {
     }
     void Die()
     {
-        //SetOff();
-        //laps--;
-        //state = states.STARTING_NEXT_LAP;
-        //meters = laps + "000";
-        //Events.OnAvatarWinLap(id, laps);
-        //Invoke("PrevLap", 0.05f);
-        //Vector3 pos = transform.localPosition;
-        //pos.x -= 1;
-        //transform.localPosition = pos;
-        //GetComponent<TrailRenderer>().time = -1;
+        if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
+        {
+            if (laps == 0)
+            {
+                SetOff();
+                return;
+            }
+            laps--;
+            state = states.STARTING_NEXT_LAP;
+            meters = laps + "000";
+            Events.OnAvatarWinLap(id, laps);
+            Invoke("PrevLap", 0.05f);
+            Vector3 pos = transform.localPosition;
+            pos.x -= 1;
+            transform.localPosition = pos;
+            GetComponent<TrailRenderer>().time = -1;
+        }
+        else
+        {
+            gameCamera.OnAvatarGotBorder();
+        }
     }
     void PrevLap()
     {
-        //if (gameManager.state == GameManager.states.READY) return;
-        //if (state == states.READY) return;
+        if (gameManager.state == GameManager.states.READY) return;
+        if (state == states.READY) return;
 
-        //GetComponent<TrailRenderer>().time = TrilRendererDefaultTime;
-        //state = states.RUNNING;
-        //Vector3 pos = transform.localPosition;
-        //pos.x += 40;
-        //transform.localPosition = pos;
+        GetComponent<TrailRenderer>().time = TrilRendererDefaultTime;
+        state = states.RUNNING;
+        Vector3 pos = transform.localPosition;
+        pos.x += 40;
+        transform.localPosition = pos;
     }
     public void Win()
     {
         laps++;
+        gameCamera.NewLap();
         state = states.STARTING_NEXT_LAP;
         meters = laps + "000";
         Events.OnAvatarWinLap(id, laps);        
@@ -318,6 +329,7 @@ public class Player : MonoBehaviour {
     
     void SetOff()
     {
+        state = states.DEAD;
         Events.OnAvatarDie(this);
     }
 }

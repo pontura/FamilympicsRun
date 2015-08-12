@@ -23,9 +23,13 @@ public class Levels : MonoBehaviour {
         [SerializeField]
         public float acceleration = 0.001f;
         [SerializeField]
+        public float lapAcceleration = 0;
+        [SerializeField]
         public int totalLaps;
         [SerializeField]
         public int totalTime;
+        [SerializeField]
+        public bool Sudden_Death;
         [SerializeField]
         public enemiesType enemies;
         public float star1;
@@ -59,7 +63,7 @@ public class Levels : MonoBehaviour {
             else if (score < level.star1)
                 stars = 1;
         }
-        else if (level.totalTime > 0)
+        else if (level.Sudden_Death ||  level.totalTime > 0)
         {
             if (score > level.star3)
                 stars = 3;
@@ -74,6 +78,15 @@ public class Levels : MonoBehaviour {
     {
         int stars = 0;
         LevelData level = GetCurrentLevelData();
+        if (level.Sudden_Death)
+        {
+            if (time > level.star3)
+                stars = 3;
+            else if (time > level.star2)
+                stars = 2;
+            else if (time > level.star1)
+                stars = 1;
+        }
         if (level.totalLaps > 0)
         {
             if (time < level.star3)
@@ -83,7 +96,7 @@ public class Levels : MonoBehaviour {
             else if (time < level.star1)
                 stars = 1;
         }
-        else if (level.totalTime > 0)
+        else if ( level.totalTime > 0)
         {
            // print("METERS::::::::::::   " + meters + "    level.star3 * 1000: " + level.star3 * 1000);
             if (meters > level.star3 * 1000)

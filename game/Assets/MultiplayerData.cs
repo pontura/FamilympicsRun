@@ -125,6 +125,8 @@ public class MultiplayerData : MonoBehaviour {
                 (Data.Instance.levels.GetCurrentLevelData().totalTime > 0 && hiscoresData.score < score)
                 ||
                 (Data.Instance.levels.GetCurrentLevelData().totalLaps > 0 && (hiscoresData.score > score || hiscoresData.score == 0))
+                ||
+                (Data.Instance.levels.GetCurrentLevelData().Sudden_Death && (hiscoresData.score < score))
                 )
             {
                 newHiscore = true;

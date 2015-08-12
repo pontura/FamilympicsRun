@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Data : MonoBehaviour
 {
-
+    public bool FreeLevels;
     public bool OnlyMultiplayer;
 
     public float musicVolume = 1;

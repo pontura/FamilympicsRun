@@ -56,7 +56,12 @@ public class MultiplayerResults : MonoBehaviour {
 
         if (multiplayerData.players.Count == 1)
         {
-            puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + " Mts", playersData[0].color);
+            string result = playersData[0].meters.ToString() + " Mts";
+
+            if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
+                result = "";
+
+            puesto1.Init(playersData[0].username, result, playersData[0].color);
             return;
         }
         

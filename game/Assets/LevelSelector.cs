@@ -47,6 +47,8 @@ public class LevelSelector : MonoBehaviour {
             newLevelButton.transform.localPosition = new Vector3(buttonsSeparation * (a-2), 0, 0);
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
+
+            if (Data.Instance.FreeLevels) lastLevelScore = 3;
             newLevelButton.Init(this, a, lastLevelScore);
 
             if(lastLevelScore>0)

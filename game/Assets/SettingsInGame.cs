@@ -20,6 +20,15 @@ public class SettingsInGame : MonoBehaviour {
         Time.timeScale = 1;
         GetComponent<Animation>().Play("SettingsClose");
     }
+    public void NextRace()
+    {
+        Data.Instance.levels.currentLevel++;
+        Time.timeScale = 1;
+        int totalPlayers = Data.Instance.multiplayerData.players.Count;
+        if (totalPlayers > 1)
+            Data.Instance.Load("Game");
+        else Data.Instance.Load("GameSingle");
+    }
     public void Restart()
     {
         Time.timeScale = 1;

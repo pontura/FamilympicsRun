@@ -36,6 +36,14 @@ public class SettingsMenu : MonoBehaviour {
             Data.Instance.loginManager.ParseFBLogout();
         }
     }
+    public void Rules()
+    {
+
+    }
+    public void Policy()
+    {
+        Data.Instance.Load("Policy");
+    }
     public void Open()
     {
         GetComponent<Animation>().Play("SettingsOpen");

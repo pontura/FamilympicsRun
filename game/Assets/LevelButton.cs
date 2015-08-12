@@ -78,9 +78,6 @@ public class LevelButton : MonoBehaviour {
             
             string _score = Data.Instance.levelsData.GetScoreString(id, _myScore);
            // stars.Init(Data.Instance.levelsData.GetScoreStars(id, _myScore));
-
-            
-
             myScore.text = _score;
         }        
 

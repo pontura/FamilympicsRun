@@ -7,6 +7,7 @@ public class GameCamera : MonoBehaviour {
     private states state;
     public float distance = 0;
     private float powerUpMultiplierSpeed = 1;
+    private float lapSpeedIncreased = 0;
     public float _y;
     
 
@@ -62,10 +63,10 @@ public class GameCamera : MonoBehaviour {
     {
         if (state == states.PAUSED || state == states.PAUSED_BY_AVATAR) return;
 
-        distance += speed * powerUpMultiplierSpeed;
+        distance += (speed * powerUpMultiplierSpeed) + lapSpeedIncreased;
 
         Vector3 pos = transform.localPosition;
-        pos.x -= speed * powerUpMultiplierSpeed;
+        pos.x -= (speed * powerUpMultiplierSpeed) + lapSpeedIncreased;
         transform.localPosition = pos;
 
         if (!enemy) return;
@@ -97,5 +98,11 @@ public class GameCamera : MonoBehaviour {
         pos.y = _y;
         
         newEnemy.Init(this, pos);
+    }
+    public void NewLap()
+    {
+        float lapAcceleration = Data.Instance.levels.GetCurrentLevelData().lapAcceleration;
+        if (lapAcceleration > 0)
+            lapSpeedIncreased += lapAcceleration;
     }
 }

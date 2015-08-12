@@ -122,7 +122,8 @@ public class GameManager : MonoBehaviour {
     }
     void OnAvatarWinLap(int playerID, int count)
     {
-        if (Data.Instance.levels.GetCurrentLevelData().totalLaps == count)
+        int totalLaps = Data.Instance.levels.GetCurrentLevelData().totalLaps;
+        if (totalLaps != 0 && totalLaps == count)
             OnLapsOver();
     }
     void StartGame()
@@ -220,6 +221,12 @@ public class GameManager : MonoBehaviour {
                 playersDead++;
         }
         if (playersDead == players.Count)
-            Data.Instance.Load("LevelSelector");
+        {
+            Levels.LevelData levelData = Data.Instance.levels.GetCurrentLevelData();
+            if (levelData.Sudden_Death && chronometer.timer < levelData.gameOver)
+                Events.GameOver();
+            else
+                LevelComplete();
+        }
     }
 }

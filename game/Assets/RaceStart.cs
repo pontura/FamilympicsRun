@@ -13,18 +13,25 @@ public class RaceStart : MonoBehaviour {
 
         float totalLaps = Data.Instance.levels.GetCurrentLevelData().totalLaps;
         float totalTime = Data.Instance.levels.GetCurrentLevelData().totalTime;
+        float gameOver = Data.Instance.levels.GetCurrentLevelData().gameOver;
+        bool Sudden_Death = Data.Instance.levels.GetCurrentLevelData().Sudden_Death;
 
         float gameOverTime = Data.Instance.levels.GetCurrentLevelData().gameOver;
 
         if (totalTime > 0)
         {
-            title1.text = "COMPLETE " + Data.Instance.levels.GetCurrentLevelData().gameOver * 1000 + " MTS";
-            title2.text = "IN LESS THAN " + totalTime + " SECONDS";
+            title1.text = "RUN AS MUCH AS YOU CAN";
+            title2.text = "IN " + totalTime + " SECONDS";
         }
         else if (totalLaps > 0)
         {
             title1.text = "COMPLETE " + Data.Instance.levels.GetCurrentLevelData().totalLaps * 1000 + " MTS";
             title2.text = "IN LESS THAN " + gameOverTime + " SECONDS";
+        }
+        else if (Sudden_Death)
+        {
+            title1.text = "SUDDEN DEATH!";
+            title2.text = "SURVIVE AT LEAST " + gameOver + " SECONDS";
         }
 
         panel.SetActive(true);

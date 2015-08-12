@@ -30,7 +30,9 @@ public class LevelDetailsPopup : MonoBehaviour {
         field.text = "LEVEL " + levelId;
 
         Levels.LevelData levelData = Data.Instance.levels.levels[levelId];
-        if (levelData.totalLaps > 0)
+        if (levelData.Sudden_Death)
+            goalText.text = "SUDDEN DEATH!";
+        else if (levelData.totalLaps > 0)
             goalText.text = (levelData.totalLaps * 1000).ToString() + " MTS";
         else
             goalText.text = (levelData.totalTime).ToString() + " SECS";

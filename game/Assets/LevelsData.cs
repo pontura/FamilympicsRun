@@ -206,7 +206,7 @@ public class LevelsData : MonoBehaviour {
     }
     public string GetScoreString(int levelID, float score)
     {
-        if (Data.Instance.levels.levels[levelID].totalLaps > 0)
+        if (Data.Instance.levels.levels[levelID].Sudden_Death || Data.Instance.levels.levels[levelID].totalLaps > 0)
         {
             return GetTimer(score);
         }
