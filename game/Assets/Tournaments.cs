@@ -45,9 +45,9 @@ public class Tournaments : MonoBehaviour {
         switch (id)
         {
             case 1: levelID = 1; break;
-            case 2: levelID = 9; break;
-            case 3: levelID = 17; break;
-            case 4: levelID = 25; break;
+            case 2: if (Data.Instance.userData.levelProgressionId < 8) return; break;
+            case 3: if (Data.Instance.userData.levelProgressionId < 16) return; break;
+            case 4: if (Data.Instance.userData.levelProgressionId < 24) return; break;
         }
         Events.OnLoadParseScore(levelID);
         if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
