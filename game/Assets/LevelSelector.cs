@@ -13,11 +13,14 @@ public class LevelSelector : MonoBehaviour {
 
     public GameObject loginButton;
     public GameObject container;
+    public GameObject buttonsContainer;
 
     [SerializeField]
     LevelButton levelButton;
 
-    private int buttonsSeparation = 300;
+    private int buttonsSeparation = 160;
+    private int offsetX = 90;
+    private int seasonWhiteSpace = 112;
 
 	void Start () {
         Events.OnMusicChange("menus");
@@ -38,13 +41,24 @@ public class LevelSelector : MonoBehaviour {
             OnChangePlayMode(Data.Instance.userData.mode);
             Events.OnChangePlayMode += OnChangePlayMode;
             
-        }        
-
+        }
+        int b = 0;
+        int _seasonWhiteSpace = 0;
         for (int a = 1; a < Data.Instance.levels.levels.Length; a++ )
         {
+            b++;            
+
             LevelButton newLevelButton = Instantiate(levelButton) as LevelButton;
-            newLevelButton.transform.SetParent(container.transform);
-            newLevelButton.transform.localPosition = new Vector3(buttonsSeparation * (a-2), 0, 0);
+            newLevelButton.transform.SetParent(buttonsContainer.transform);
+            int _x = (buttonsSeparation) * (a - 2) - offsetX + _seasonWhiteSpace;
+
+            if (b == 8)
+            {
+                _seasonWhiteSpace += seasonWhiteSpace;
+                b = 0;
+            }
+           
+            newLevelButton.transform.localPosition = new Vector3(_x, 0, 0);
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
 
@@ -53,9 +67,12 @@ public class LevelSelector : MonoBehaviour {
 
             if(lastLevelScore>0)
                 Data.Instance.userData.levelProgressionId = a;
+
+            if(Data.Instance.FreeLevels)
+                Data.Instance.userData.levelProgressionId = 100;
         }
-        int scrollLevels = (Data.Instance.levels.levels.Length - 4) * -300;
-        scrollLimit.SetLimit(new Vector2(0, scrollLevels));
+       // int scrollLevels = (Data.Instance.levels.levels.Length - 4) * -300;
+       // scrollLimit.SetLimit(new Vector2(0, scrollLevels));
 
         Positionate();
 	}
@@ -69,6 +86,9 @@ public class LevelSelector : MonoBehaviour {
 
         if (positionX > 0)
             positionX *= -buttonsSeparation;
+
+        positionX += 100;
+
         Vector3 pos = container.transform.localPosition;
         pos.x = positionX;
         container.transform.localPosition = pos;
@@ -121,4 +141,5 @@ public class LevelSelector : MonoBehaviour {
                 break;
         }
     }
+    
 }

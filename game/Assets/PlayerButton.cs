@@ -24,7 +24,8 @@ public class PlayerButton : MonoBehaviour {
             if (playerData.playerID == id)
             {
                 username = playerData.username;
-                field.text = username;
+                if(username != "")
+                    field.text = username;
                 IsOn();
                 return;
             }

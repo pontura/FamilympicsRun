@@ -52,7 +52,7 @@ public class Levels : MonoBehaviour {
     {
         int stars = 0;
         LevelData level = levels[levelID];
-        print(" _______levelID: " + levelID + " GetCurrentLevelStarsByScore totalLaps: " + level.totalLaps + " star3: " + level.star3 + " score: " + score);
+       // print(" _______levelID: " + levelID + " GetCurrentLevelStarsByScore totalLaps: " + level.totalLaps + " star3: " + level.star3 + " score: " + score);
 
         if (level.totalLaps > 0)
         {
