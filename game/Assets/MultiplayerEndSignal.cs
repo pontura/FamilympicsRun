@@ -24,8 +24,19 @@ public class MultiplayerEndSignal : MonoBehaviour {
     {
         playerID = Data.Instance.levelData.winnerID;
         characterFace.Init(playerID);
-        string username = Data.Instance.multiplayerData.GetPlayer(playerID).username;
-        field.text = "THE WINNER IS " + username + "!";
+
+        string username = "";
+
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+            username = Data.Instance.multiplayerData.GetPlayer(playerID).username;
+        else
+            username = Data.Instance.userData.username;
+
+        if(Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+            field.text = "LEVEL COMPLETE!";
+        else if (Data.Instance.multiplayerData.players.Count>1)
+            field.text = "THE WINNER IS " + username + "!";
+
         Invoke("Reset", 3f);
     }
     void Reset()

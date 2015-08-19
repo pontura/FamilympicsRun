@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Tournaments : MonoBehaviour {
 
+    public GameObject[] tournamentButtons;
     public ScrollLimit scrollLimit;
  
     public int limitScrollSeason1 = -926;
@@ -37,7 +38,12 @@ public class Tournaments : MonoBehaviour {
             Destroy(lock3);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason4));
         }
+        Events.OnChangePlayMode += OnChangePlayMode;
 	}
+    void OnDestroy()
+    {
+        Events.OnChangePlayMode -= OnChangePlayMode;
+    }
     public void PlayTournament(int id)
     {
         print("PlayTournament " + id);
@@ -56,5 +62,22 @@ public class Tournaments : MonoBehaviour {
             Data.Instance.Load("Players");
 
         Data.Instance.GetComponent<Levels>().currentLevel = levelID;
+    }
+    void OnChangePlayMode(UserData.modes mode)
+    {
+        switch (mode)
+        {
+            case UserData.modes.MULTIPLAYER:
+                SetTournamentButtons(true);
+                break;
+            case UserData.modes.SINGLEPLAYER:
+                SetTournamentButtons(false);
+                break;
+        }
+    }
+    void SetTournamentButtons(bool on)
+    {
+        foreach (GameObject button in tournamentButtons)
+            button.SetActive(on);
     }
 }

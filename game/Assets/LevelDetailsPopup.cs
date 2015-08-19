@@ -10,6 +10,7 @@ public class LevelDetailsPopup : MonoBehaviour {
     private bool isActive;
     public GameObject Logout;
     private int levelId;
+    public Stars stars;
 
 	void Start () {
         panel.SetActive(false);
@@ -30,6 +31,15 @@ public class LevelDetailsPopup : MonoBehaviour {
         field.text = "LEVEL " + levelId;
 
         Levels.LevelData levelData = Data.Instance.levels.levels[levelId];
+
+        float _myScore = PlayerPrefs.GetFloat("Run_Level_" + levelId);
+
+        if (_myScore == 0) 
+            stars.Reset();
+        else
+            stars.Init(Data.Instance.levels.GetCurrentLevelStarsByScore(levelId, _myScore));
+
+        
         if (levelData.Sudden_Death)
             goalText.text = "SUDDEN DEATH!";
         else if (levelData.totalLaps > 0)

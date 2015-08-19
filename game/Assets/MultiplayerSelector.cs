@@ -25,7 +25,7 @@ public class MultiplayerSelector : MonoBehaviour {
         {
             if (playerButton.selected) numberOfPlayers++;
         }
-        if (numberOfPlayers > 0)
+        if (numberOfPlayers > 1)
         {
             playButton.interactable = true;
             playButton.Select();

@@ -21,6 +21,8 @@ public class LevelButton : MonoBehaviour {
     public LevelsData.LevelsScore levelScore;
     private Image image;
     private MultiplayerData multiplayerData;
+    private float myLastScore;
+    private int levelID;
 
     void Start()
     {
@@ -33,10 +35,13 @@ public class LevelButton : MonoBehaviour {
     }
     public void Init(LevelSelector levelSelector, int levelID, float myLastScore)
     {
-       // print("levelSelector: " + levelSelector + "levelID: " + levelID + "myLastScore: " + myLastScore + " levelScore: " + levelScore.scoreData1.score);
+        this.levelID = levelID;
+        this.myLastScore = myLastScore;
+        levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
+     //   print("levelSelector: " + levelSelector + "levelID: " + levelID + " score: " + levelScore + " myLastScore: " + myLastScore + " levelScore: " + levelScore.scoreData1.score);
         image = GetComponent<Image>();
         this.id = levelID;
-        levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
+       
         
         OnChangePlayMode(Data.Instance.userData.mode);
 
@@ -77,7 +82,7 @@ public class LevelButton : MonoBehaviour {
         {
             
             string _score = Data.Instance.levelsData.GetScoreString(id, _myScore);
-           // stars.Init(Data.Instance.levelsData.GetScoreStars(id, _myScore));
+            stars.Init(Data.Instance.levels.GetCurrentLevelStarsByScore(id, _myScore));
             myScore.text = _score;
         }        
 
@@ -158,8 +163,10 @@ public class LevelButton : MonoBehaviour {
                 LoadMultiplayerWinners();
                 break;
             case UserData.modes.SINGLEPLAYER:
-                return;
-                button.image.color = Color.white;
+                if (myLastScore == 0 && levelID > 1)
+                    button.GetComponent<Image>().color = lockColor;
+                else
+                    button.image.color = Color.white;
                 LoadSinglePlayerWinners();
                 break;
         }

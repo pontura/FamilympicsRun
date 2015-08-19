@@ -52,7 +52,7 @@ public class Levels : MonoBehaviour {
     {
         int stars = 0;
         LevelData level = levels[levelID];
-       // print(" _______levelID: " + levelID + " GetCurrentLevelStarsByScore totalLaps: " + level.totalLaps + " star3: " + level.star3 + " score: " + score);
+      // print(" _______levelID: " + levelID + " GetCurrentLevelStarsByScore totalLaps: " + level.totalLaps + " star3: " + level.star3 + " score: " + score);
 
         if (level.totalLaps > 0)
         {
@@ -72,6 +72,8 @@ public class Levels : MonoBehaviour {
             else if (score > level.star1)
                 stars = 1;
         }
+        print("stars: " + stars);
+
         return stars;
     }
     public int GetCurrentLevelStars(float time, int meters)

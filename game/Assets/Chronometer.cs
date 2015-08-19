@@ -21,6 +21,8 @@ public class Chronometer : MonoBehaviour {
 
 	void Start () {
 
+        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+            singlePlayerMode = true;
         if (GameObject.Find("Game").GetComponent<GameManager>().ForceMultiplayer)
             singlePlayerMode = true;
 
@@ -82,7 +84,7 @@ public class Chronometer : MonoBehaviour {
         {
             label1.text = timerFormatted;
         }
-        else
+        else 
         {
             if (label1.enabled)
                 label1.text = timerFormatted;

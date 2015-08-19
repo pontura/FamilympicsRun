@@ -14,6 +14,7 @@ public class NameEditor : MonoBehaviour {
         
         multiPlayerData = Data.Instance.multiplayerData;
         string username =  multiPlayerData.GetPlayer(multiPlayerData.activePlayerId).username;
+
         if(username != "")
             input.text = username;
 
@@ -22,7 +23,10 @@ public class NameEditor : MonoBehaviour {
 
         input.characterLimit = 4;
 	}
-	
+    public void Back()
+    {
+        Data.Instance.Load("Players");
+    }
 	public void Send () {
 
         Events.OnSoundFX("buttonPress");

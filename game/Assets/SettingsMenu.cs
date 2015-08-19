@@ -16,19 +16,27 @@ public class SettingsMenu : MonoBehaviour {
         else{
             SetLoginButton(true);
         }
-	}
+        Events.OnFacebookLogin += OnFacebookLogin;
+    }
+    void OnDestroy()
+    {
+        Events.OnFacebookLogin -= OnFacebookLogin;
+    }
 
     void SetLoginButton(bool logged)
     {
         if(logged)
-            loginButton.GetComponentInChildren<Text>().text = "Log-out";
+            loginButton.GetComponentInChildren<Text>().text = "DISCONNECT";
         else
-            loginButton.GetComponentInChildren<Text>().text = "Log-in";
+            loginButton.GetComponentInChildren<Text>().text = "CONNECT FACEBOOK";
     }
     public void LoginOrOut()
     {
         if (!FB.IsLoggedIn)
-            Data.Instance.Load("Login");
+        {
+            FBLogin();
+            Close();
+        }
         else
         {
             Data.Instance.userData.Reset();
@@ -51,5 +59,13 @@ public class SettingsMenu : MonoBehaviour {
     public void Close()
     {
         GetComponent<Animation>().Play("SettingsClose");
+    }
+    void OnFacebookLogin()
+    {
+        Data.Instance.Load("LevelSelector");
+    }
+    void FBLogin()
+    {
+        Data.Instance.loginManager.FBLogin();
     }
 }

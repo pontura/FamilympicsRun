@@ -11,9 +11,7 @@ public class Stars : MonoBehaviour {
 	public void Init (int num) {
 
         print("______________________Stars: " + num);
-        setOff(stars1);
-        setOff(stars2);
-        setOff(stars3);
+        Reset();
 
         if (num == 3)
             setOn(stars3);
@@ -22,6 +20,12 @@ public class Stars : MonoBehaviour {
         else if (num == 1)
             setOn(stars1);
 	}
+    public void Reset()
+    {
+        setOff(stars1);
+        setOff(stars2);
+        setOff(stars3);
+    }
     void setOff(GameObject stars)
     {
         stars.SetActive(false);

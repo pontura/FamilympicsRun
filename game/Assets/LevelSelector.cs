@@ -106,7 +106,7 @@ public class LevelSelector : MonoBehaviour {
        // Events.OnSoundFX("buttonPress");
         Events.OnLoadParseScore(id);
         if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
-            Data.Instance.Load("SinglePlayer");
+            Data.Instance.Load("GameSingle");
         else
             Data.Instance.Load("Players");
 
@@ -141,5 +141,6 @@ public class LevelSelector : MonoBehaviour {
                 break;
         }
     }
+   
     
 }

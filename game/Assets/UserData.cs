@@ -75,5 +75,6 @@ public class UserData : MonoBehaviour {
         else mode = modes.SINGLEPLAYER;
         PlayerPrefs.SetString("mode", mode.ToString() );
         Events.OnChangePlayMode(mode);
+        print("ToogleMode mode: " + mode);
     }
 }
