@@ -149,11 +149,12 @@ public class Challenges : MonoBehaviour {
         }
     }
     
-    public void Confirm(string objectID, string facebookID, float op_score)
+    public void Confirm(string username, string objectID, string facebookID, float op_score)
     {
+        Data.Instance.levelData.challenge_username = username;
         Data.Instance.levelData.challenge_facebookID = facebookID;
         Data.Instance.levelData.challenge_objectID = objectID;
         Data.Instance.levelData.challenge_op_score = op_score;
-        Data.Instance.Load("Game");
+        Data.Instance.Load("GameSingle");
     }
 }

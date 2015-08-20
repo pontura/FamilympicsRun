@@ -31,7 +31,6 @@ public class ChallengersManager : MonoBehaviour {
     }
     public void OnChallengeClose(string objectID, string op_facebookID, string winner, float newScore)
     {
-
         var query = new ParseQuery<ParseObject>("Challenges")
             .WhereEqualTo("objectId", objectID);
 

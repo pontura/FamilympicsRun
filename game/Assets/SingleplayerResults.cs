@@ -6,7 +6,7 @@ using System.Linq;
 
 public class SingleplayerResults : MonoBehaviour
 {
-
+    public GameObject ChallengesResultPanel;
     public GameObject panel;
 
     public Text title;
@@ -17,6 +17,7 @@ public class SingleplayerResults : MonoBehaviour
 
 	void Start () {
         panel.SetActive(false);
+        ChallengesResultPanel.SetActive(false);
         Events.OnLevelComplete += OnLevelComplete;
 	}
     void OnDestroy()
@@ -28,6 +29,18 @@ public class SingleplayerResults : MonoBehaviour
         Invoke("SetOn", 4);
     }
     public void SetOn()
+    {
+        if(Data.Instance.levelData.challenge_facebookID == "")
+            SetOnSingleResult();
+        else
+            SetOnChallengeResult();
+    }
+    private void SetOnChallengeResult()
+    {
+        ChallengesResultPanel.SetActive(true);
+        ChallengesResultPanel.GetComponent<ChallengeResult>().Init();
+    }
+    public void SetOnSingleResult()
     {
         panel.SetActive(true);        
 

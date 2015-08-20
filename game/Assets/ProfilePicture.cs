@@ -10,7 +10,8 @@ public class ProfilePicture : MonoBehaviour
     //}
     public void setPicture(string facebookID)
     {
-        if(Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER && !Data.Instance.OnlyMultiplayer)
+        if (!this.gameObject.activeInHierarchy) return;
+        if(Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
             StartCoroutine(GetPicture(facebookID));
     }
     IEnumerator GetPicture(string facebookID)

@@ -6,6 +6,7 @@ public class ChallengesLine : MonoBehaviour
 {
     public string objectID;
     public string facebookID;
+    public string username;
     public float op_score;
     public Text usernameLabel;
     public Text scoreLabel;
@@ -57,6 +58,7 @@ public class ChallengesLine : MonoBehaviour
             this.objectID = challenges.userData[id].objectID;
             this.facebookID = challenges.userData[id].facebookID;
             usernameLabel.text = title + challenges.userData[id].playerName;
+            this.username = challenges.userData[id].playerName;
             scoreLabel.text = Data.Instance.levelsData.GetScoreString(challenges.userData[id].level, challenges.userData[id].score);
             op_score = challenges.userData[id].score;
             profilePicture.setPicture(challenges.userData[id].facebookID);
@@ -84,7 +86,7 @@ public class ChallengesLine : MonoBehaviour
     }
     public void Accept()
     {
-        challenges.Confirm(objectID, facebookID, op_score);
+        challenges.Confirm(username, objectID, facebookID, op_score);
     }
     public void Cancel()
     {
