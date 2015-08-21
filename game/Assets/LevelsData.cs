@@ -156,6 +156,7 @@ public class LevelsData : MonoBehaviour {
     private void LoadData(int _level)
     {
         Data.Instance.levelsData.levelsScore[_level].myScore = PlayerPrefs.GetFloat("Run_Level_" + _level);
+        print("SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
 
         Debug.Log("LoadData" + _level);
 

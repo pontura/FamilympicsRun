@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     public float realDistance;
     private float initialAacceleration;
     private float initialDeceleration;
-    private int totalPlayers;
+    public int totalPlayers;
 
     public Sprite num1;
     public Sprite num2;
@@ -110,7 +110,7 @@ public class Player : MonoBehaviour {
 
                 if (state == states.PLAYING) return;
 
-                if (totalPlayers == 1) return;
+                if (totalPlayers <2) return;
 
                 switch (position)
                 {

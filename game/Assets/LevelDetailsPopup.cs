@@ -4,6 +4,7 @@ using System.Collections;
 
 public class LevelDetailsPopup : MonoBehaviour {
 
+    public Button challengesButton;
     public Text field;
     public Text goalText;
     public GameObject panel;
@@ -11,6 +12,8 @@ public class LevelDetailsPopup : MonoBehaviour {
     public GameObject Logout;
     private int levelId;
     public Stars stars;
+    int starsInLevel;
+    
 
 	void Start () {
         panel.SetActive(false);
@@ -34,10 +37,18 @@ public class LevelDetailsPopup : MonoBehaviour {
 
         float _myScore = PlayerPrefs.GetFloat("Run_Level_" + levelId);
 
-        if (_myScore == 0) 
+        if (_myScore == 0)
             stars.Reset();
         else
-            stars.Init(Data.Instance.levels.GetCurrentLevelStarsByScore(levelId, _myScore));
+        {
+            starsInLevel = Data.Instance.levels.GetCurrentLevelStarsByScore(levelId, _myScore);
+            stars.Init(starsInLevel);
+        }
+
+        if(starsInLevel<1)
+            challengesButton.interactable = false;
+        else
+            challengesButton.interactable = true;
 
         
         if (levelData.Sudden_Death)
@@ -60,7 +71,12 @@ public class LevelDetailsPopup : MonoBehaviour {
     }
     public void Login()
     {
-        Events.OnSoundFX("buttonPress");
-        Data.Instance.Load("Login");
+        Close();
+        Data.Instance.loginManager.FBLogin();
+    }
+    public void Challenge()
+    {
+        Close();
+
     }
 }

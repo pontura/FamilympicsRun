@@ -56,9 +56,10 @@ public class Tournaments : MonoBehaviour {
             case 4: if (Data.Instance.userData.levelProgressionId < 24) return; break;
         }
         Events.OnLoadParseScore(levelID);
-        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
-            Data.Instance.Load("SinglePlayer");
-        else
+
+        //if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+        //    Data.Instance.Load("SinglePlayer");
+        //else
             Data.Instance.Load("Players");
 
         Data.Instance.GetComponent<Levels>().currentLevel = levelID;

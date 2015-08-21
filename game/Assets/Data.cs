@@ -104,6 +104,7 @@ public class Data : MonoBehaviour
     {
         lastScene = Application.loadedLevelName;
         if (nextScene == "") nextScene = "LevelSelector";
+        Debug.Log("Load Scene: " + nextScene);
         Application.LoadLevel(nextScene);
     }
     public void Back()
