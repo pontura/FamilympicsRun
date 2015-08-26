@@ -8,7 +8,6 @@ using System;
 
 public class Challenges : MonoBehaviour {
 
-    public Text title;
     [Serializable]
     public class PlayerData
     {
@@ -30,10 +29,11 @@ public class Challenges : MonoBehaviour {
     }
     public GameObject container;
 
+
     [SerializeField]
     ChallengesLine challengesLine;
 
-    private int buttonsSeparation = 55;
+    private int buttonsSeparation = 89;
     public List<PlayerData> userData;
     public bool infoLoaded;
 
@@ -43,19 +43,24 @@ public class Challenges : MonoBehaviour {
     }
     public void Back()
     {
-        Data.Instance.Load("LevelSelector");
+        Data.Instance.Back();
+    }
+    public void Switch()
+    {
+        if (type == types.MADE)
+            ChallengesReceived();
+        else
+            ChallengesMade();
     }
     public void ChallengesMade()
     {
         type = types.MADE;
         LoadData();
-        title.text = "Challenges Made";
     }
     public void ChallengesReceived()
     {
         type = types.RECEIVED;
         LoadData();
-        title.text = "Challenges Received";
     }
     private void LoadData()
     {
@@ -135,17 +140,21 @@ public class Challenges : MonoBehaviour {
     void Update() {
         if (infoLoaded) return;
 
+        print("infoLoaded: " + userData.Count);
         if (userData.Count > 0)
         {
+            print("carga qty: " + userData.Count);
             infoLoaded = true;
             for (int a = 0; a < userData.Count; a++)
             {
                 ChallengesLine newButton = Instantiate(challengesLine) as ChallengesLine;
                 newButton.transform.SetParent(container.transform);
                 newButton.transform.localPosition = new Vector3(0, buttonsSeparation * a * -1, 0);
-                newButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-                newButton.Init(this, a);
+                newButton.transform.localScale = Vector3.one;
+                newButton.Init(this, a);                
             }
+            float _h = buttonsSeparation * (userData.Count+2);
+            Events.OnScrollSizeRefresh(new Vector2(987.34f, _h));
         }
     }
     
@@ -155,6 +164,7 @@ public class Challenges : MonoBehaviour {
         Data.Instance.levelData.challenge_facebookID = facebookID;
         Data.Instance.levelData.challenge_objectID = objectID;
         Data.Instance.levelData.challenge_op_score = op_score;
+        Data.Instance.userData.mode = UserData.modes.SINGLEPLAYER;
         Data.Instance.Load("GameSingle");
     }
 }

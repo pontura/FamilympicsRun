@@ -76,7 +76,7 @@ public class LevelDetailsPopup : MonoBehaviour {
     }
     public void Challenge()
     {
-        Close();
-
+        Data.Instance.levels.currentLevel = levelId;
+        Data.Instance.Load("ChallengeCreator");
     }
 }

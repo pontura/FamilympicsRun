@@ -5,16 +5,15 @@ using System.Collections;
 public class ChallengeConfirm : MonoBehaviour {
 
     public Text usernameLabel;
+    public ProfilePicture profilePicture;
 
-	void Start () {
-        usernameLabel.text = Data.Instance.levelData.challenge_username;
+    private string username;
+    private string facebookId;
+
+	public void Init(string username, string facebookId) {
+        this.username = username;
+        this.facebookId = facebookId;
+        usernameLabel.text = username;
+        profilePicture.setPicture(facebookId);
 	}
-	
-	public void StartGame () {
-        Data.Instance.Load("Game");
-	}
-    public  void Back()
-    {
-        Data.Instance.Back();
-    }
 }

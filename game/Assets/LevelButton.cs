@@ -186,6 +186,11 @@ public class LevelButton : MonoBehaviour {
     }
     public void Challenge(RankingLine rankingLine)
     {
+
+        Data.Instance.Load("ChallengeCreator");
+        return;
+
+
         if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER) return;
 
         if (rankingLine.facebookID == Data.Instance.userData.facebookID) return;

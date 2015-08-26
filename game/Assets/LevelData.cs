@@ -32,4 +32,11 @@ public class LevelData : MonoBehaviour {
         challenge_objectID = "";
         challenge_op_score = 0;
     }
+    public void RematchChallenge()
+    {
+        winnerID = 0;
+        laps = 0;
+        time = 0;
+        score = 0;
+    }
 }

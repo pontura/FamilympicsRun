@@ -9,34 +9,24 @@ public class ChallengerCreatorButton : MonoBehaviour {
     public ProfilePicture profilePicture;
     public int id = 0;
     private ChallengerCreator creator;
-    public bool infoLoaded;
+    public GameObject SendButton;
 
-    public void Init(ChallengerCreator _creator,  int _id)
+    public void Init(ChallengerCreator _creator, int _id, string playerName, string facebookID, bool done)
     {
         this.creator = _creator;
         this.id = _id;
-        Vector3 pos = transform.localPosition;
-        pos.x = 1000;
-        transform.localPosition = pos;
-	}
-    void Update()
-    {
-        if (infoLoaded) return;
-        if (creator.userData[id].facebookID != "")
+
+        usernameLabel.text = playerName;
+        profilePicture.setPicture(facebookID);
+
+        if (done)
+            SendButton.SetActive(false);
+        else
         {
-            usernameLabel.text = creator.userData[id].playerName;
-            profilePicture.setPicture(creator.userData[id].facebookID);
-            infoLoaded = true;
-
-            Vector3 pos = transform.localPosition;
-            pos.x = 0;
-            transform.localPosition = pos;
-
             GetComponent<Button>().onClick.AddListener(() =>
             {
-                creator.Challenge(creator.userData[id].playerName, creator.userData[id].facebookID);
+                creator.Challenge(playerName, facebookID);
             });
-
         }
     }
 }

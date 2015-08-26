@@ -4,13 +4,18 @@ using System.Collections;
 
 public class ChallengesLine : MonoBehaviour
 {
+    public Color lostColor;
+    public Color WinColor;
+
     public string objectID;
     public string facebookID;
     public string username;
     public float op_score;
+    public int levelId;
     public Text usernameLabel;
     public Text scoreLabel;
     public Text result;
+    public Text level;
     public ProfilePicture profilePicture;
     public int id = 0;
     private Challenges challenges;
@@ -38,26 +43,34 @@ public class ChallengesLine : MonoBehaviour
             string title = "";
             if (challenges.type == Challenges.types.MADE)
             {
-                title = "To: ";
+               // title = "To: ";
                 InactiveButtons();
             }
             else
             {
-                title = "From: ";
+               // title = "From: ";
             }
 
             if (challenges.userData[id].winner != "")
             {
-                if(challenges.userData[id].winner == Data.Instance.userData.facebookID)
-                    result.text = "You won!";
+                if (challenges.userData[id].winner == Data.Instance.userData.facebookID)
+                {
+                    result.text = "YOU WON";
+                    result.color = WinColor;
+                }
                 else
-                    result.text = "You lose!";
+                {
+                    result.text = "YOU LOST";
+                    result.color = lostColor;
+                }
 
                 InactiveButtons();
             }
             this.objectID = challenges.userData[id].objectID;
             this.facebookID = challenges.userData[id].facebookID;
             usernameLabel.text = title + challenges.userData[id].playerName;
+            levelId = challenges.userData[id].level;
+            level.text = "LEVEL " + levelId;
             this.username = challenges.userData[id].playerName;
             scoreLabel.text = Data.Instance.levelsData.GetScoreString(challenges.userData[id].level, challenges.userData[id].score);
             op_score = challenges.userData[id].score;
@@ -86,6 +99,7 @@ public class ChallengesLine : MonoBehaviour
     }
     public void Accept()
     {
+        Data.Instance.levels.currentLevel = levelId;
         challenges.Confirm(username, objectID, facebookID, op_score);
     }
     public void Cancel()

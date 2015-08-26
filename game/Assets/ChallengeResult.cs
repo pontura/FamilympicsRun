@@ -4,6 +4,10 @@ using System.Collections;
 
 public class ChallengeResult : MonoBehaviour {
 
+    public string challenge_objectID;
+    public string winner;
+    public float myScore;
+
     public Text title1;
     public Text title2;
 
@@ -29,13 +33,13 @@ public class ChallengeResult : MonoBehaviour {
         username1.text = Data.Instance.userData.username;
         username2.text = Data.Instance.levelData.challenge_username;
 
-        float _score1 = Data.Instance.levelData.time;
+        myScore = Data.Instance.levelData.time;
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
-           _score1  = Data.Instance.levelData.laps;
+            myScore = Data.Instance.levelData.laps;
 
-        float _score2 = Data.Instance.levelData.challenge_op_score;      
+        float _score2 = Data.Instance.levelData.challenge_op_score;
 
-        score1.text = Data.Instance.levelsData.GetScoreString(levelID, _score1);
+        score1.text = Data.Instance.levelsData.GetScoreString(levelID, myScore);
         score2.text = Data.Instance.levelsData.GetScoreString(levelID, _score2); 
 
         profilePicture1.setPicture(Data.Instance.userData.facebookID);
@@ -43,18 +47,21 @@ public class ChallengeResult : MonoBehaviour {
 
         bool youWon = false;
 
-        if (Data.Instance.levels.GetCurrentLevelData().totalLaps > 0 && _score1 < _score2) youWon = true;
+        if (Data.Instance.levels.GetCurrentLevelData().totalLaps > 0 && myScore < _score2) youWon = true;
             else
-        if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0 && _score1 > _score2) youWon = true;
+            if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0 && myScore > _score2) youWon = true;
 
          string result = "";
+         winner = "";
          if (youWon)
          {
+             winner = Data.Instance.userData.facebookID;
              result = "YOU WON THE CHALLENGE";
              wonPanel.SetActive(true);
          }
          else
          {
+             winner = Data.Instance.levelData.challenge_facebookID;
              losePanel.SetActive(true);
              result = "YOU LOST THE CHALLENGE";
          }
@@ -62,22 +69,32 @@ public class ChallengeResult : MonoBehaviour {
         title1.text = result;
 
         title2.text = "LEVEL " + levelID;
+
+        challenge_objectID = Data.Instance.levelData.challenge_objectID;        
         
-    }	
+    }
+    
 	public void Share () 
     {
-	
+        //SHARE
+        print("SHARE");
+        Close();
 	}
     public void Dismiss()
     {
-
+        print("Dismiss");
+        Close();
     }
     public void Rematch()
     {
-
+        print("Rematch");
+        Data.Instance.levelData.RematchChallenge();
+        Data.Instance.Load("GameSingle");
     }
     public void Close()
     {
-
+        Events.OnChallengeClose(challenge_objectID, Data.Instance.levelData.challenge_facebookID, winner, myScore);
+        Data.Instance.Load("LevelSelector");
+        Data.Instance.levelData.ResetChallenge();
     }
 }
