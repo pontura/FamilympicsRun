@@ -23,6 +23,9 @@ public class LevelSelector : MonoBehaviour {
     private int seasonWhiteSpace = 112;
 
 	void Start () {
+
+        Events.CheckForNewNotifications();
+
         Events.OnMusicChange("menus");
         if(Data.Instance.OnlyMultiplayer)
         {
@@ -119,7 +122,24 @@ public class LevelSelector : MonoBehaviour {
     }
     public void Challenges()
     {
-        Data.Instance.Load("Challenges");
+        if (FB.IsLoggedIn)
+            Data.Instance.Load("Challenges");
+        else
+            FB.Login();
+    }
+    public void AskForEnergy()
+    {
+        if (FB.IsLoggedIn)
+            Data.Instance.Load("EnergyAskFor");
+        else
+            FB.Login();
+    }
+    public void Notifications()
+    {
+        if (FB.IsLoggedIn)
+            Data.Instance.Load("Notifications");
+        else
+            FB.Login();
     }
     public void ResetApp()
     {

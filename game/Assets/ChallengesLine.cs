@@ -68,7 +68,7 @@ public class ChallengesLine : MonoBehaviour
             }
             this.objectID = challenges.userData[id].objectID;
             this.facebookID = challenges.userData[id].facebookID;
-            usernameLabel.text = title + challenges.userData[id].playerName;
+            usernameLabel.text = title + challenges.userData[id].playerName.ToUpper();
             levelId = challenges.userData[id].level;
             level.text = "LEVEL " + levelId;
             this.username = challenges.userData[id].playerName;

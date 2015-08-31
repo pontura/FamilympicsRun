@@ -32,6 +32,7 @@ public class Data : MonoBehaviour
     public GameSettings gameSettings;
     public MusicManager musicManager;
     public SoundManager soundManager;
+    public Notifications notifications;
 
     public static Data Instance
     {
@@ -74,6 +75,7 @@ public class Data : MonoBehaviour
         energyManager = GetComponent<EnergyManager>();
         musicManager = GetComponent<MusicManager>();
         soundManager = GetComponentInChildren<SoundManager>();
+        notifications = GetComponent<Notifications>();
        // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);

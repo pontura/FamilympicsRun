@@ -2,16 +2,17 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class ChallengerCreatorButton : MonoBehaviour {
+public class EnergyAskButton : MonoBehaviour {
 
     public string facebookID;
     public Text usernameLabel;
     public ProfilePicture profilePicture;
     public int id = 0;
-    private ChallengerCreator creator;
-    public GameObject SendButton;
+    private EnergyAskFor creator;
+    public GameObject SendedButton;
+    private bool selected;
 
-    public void Init(ChallengerCreator _creator, int _id, string playerName, string facebookID, bool done)
+    public void Init(EnergyAskFor _creator, int _id, string playerName, string facebookID, bool done)
     {
         this.creator = _creator;
         this.id = _id;
@@ -20,12 +21,16 @@ public class ChallengerCreatorButton : MonoBehaviour {
         profilePicture.setPicture(facebookID);
 
         if (done)
-            SendButton.SetActive(false);
+            SendedButton.SetActive(true);
         else
         {
+            SendedButton.SetActive(false);
             GetComponent<Button>().onClick.AddListener(() =>
             {
-                creator.Challenge(playerName, facebookID);
+                if (selected) return;
+                selected = true;
+                SendedButton.SetActive(true);
+                creator.Select(facebookID);
             });
         }
     }

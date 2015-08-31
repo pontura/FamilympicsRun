@@ -5,14 +5,22 @@ using System.Collections;
 public class BoardMenu : MonoBehaviour {
 
     public Text energyField;
+    public Text notificationsField;
 
 	void Start () {
         SetEnergy();
         Events.OnEnergyWon += OnEnergyWon;
+        Events.OnRefreshNotifications += OnRefreshNotifications;
+        notificationsField.text = Data.Instance.notifications.totalRequestedNotifications.ToString();
 	}
     void OnDestroy()
     {
         Events.OnEnergyWon -= OnEnergyWon;
+        Events.OnRefreshNotifications -= OnRefreshNotifications;
+    }
+    void OnRefreshNotifications(int totalRequestedNotifications)
+    {
+        notificationsField.text = totalRequestedNotifications.ToString();
     }
     void OnEnergyWon()
     {

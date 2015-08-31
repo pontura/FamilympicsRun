@@ -4,6 +4,7 @@ using System.Collections;
 
 public class EnergyPopup : MonoBehaviour {
 
+    public Text dataField;
     public Text field;
     public GameObject panel;
     private bool isActive;
@@ -16,6 +17,7 @@ public class EnergyPopup : MonoBehaviour {
         isActive = true;
         panel.SetActive(true);
         panel.GetComponent<Animation>().Play("PopupOn");
+        dataField.text = Data.Instance.energyManager.energy + "/" + Data.Instance.energyManager.MAX_ENERGY;
     }
     public void Close()
     {

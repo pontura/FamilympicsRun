@@ -15,6 +15,9 @@ public class ChallengerCreator : MonoBehaviour {
     public string facebookFriendId;
     private int levelId;
     private float score;
+    public Animation anim;
+
+    public string lastSelectedFacebookId;
 
     public List<string> challengesMade;
 
@@ -30,6 +33,16 @@ public class ChallengerCreator : MonoBehaviour {
 
     void Start()
     {
+        Init();
+    }
+    void Init()
+    {
+        challengesMade.Clear();
+
+        foreach (Transform childTransform in container.transform)
+            Destroy(childTransform.gameObject);
+
+        //anim.gameObject.SetActive(false);
         confirmationPanel.SetActive(false);
         levelId = Data.Instance.levels.currentLevel;
         levelField.text = "LEVEL " + levelId;
@@ -80,18 +93,29 @@ public class ChallengerCreator : MonoBehaviour {
             ChallengerCreatorButton newButton = Instantiate(button) as ChallengerCreatorButton;
             newButton.transform.SetParent(container.transform);
             newButton.transform.localPosition = new Vector3(0, buttonsSeparation * a * -1, 0);
-            newButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+            newButton.transform.localScale = Vector2.one;
 
             string facebookID = data.facebookID;
             bool done = false;
-            foreach (string challengesMadeFBId in challengesMade)
+
+            //si es un recien elegido...
+            if (facebookID == lastSelectedFacebookId)
+                done = true;
+            else
             {
-                if (challengesMadeFBId == facebookID)
-                    done = true;
+                foreach (string challengesMadeFBId in challengesMade)
+                {
+                    if (challengesMadeFBId == facebookID)
+                        done = true;
+                }
             }
+            
 
             newButton.Init(this, a + 1, data.username, facebookID, done);
         }
+        float _h = buttonsSeparation * (Data.Instance.userData.FacebookFriends.Count + 2);
+        int container_width = 756;
+        Events.OnScrollSizeRefresh(new Vector2(container_width, _h));
     }
 
 
@@ -108,20 +132,14 @@ public class ChallengerCreator : MonoBehaviour {
         GetComponent<ChallengeConfirm>().Init(facebookFriendName, facebookFriendId );
         confirmationPanel.GetComponent<Animation>().Play("PopupOn");
     }
-    public void ShowParseFriends()
-    {
-        Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends = false;
-        Data.Instance.Load("ChallengeCreator");
-    }
-    public void ShowFacebookFriends()
-    {
-        Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends = true;
-        Data.Instance.Load("ChallengeCreator");
-    }
+
     public void Accept()
     {
+        anim.gameObject.SetActive(true);
+        anim.Play("FinishFlagOpen");
         Events.OnChallengeCreate(facebookFriendName, facebookFriendId, levelId, score);
-        CloseOff();
+        lastSelectedFacebookId = facebookFriendId;
+        Init();
     }
     public void CloseConfirmation()
     {
@@ -131,60 +149,6 @@ public class ChallengerCreator : MonoBehaviour {
     void CloseOff()
     {
         confirmationPanel.SetActive(false);
-        Data.Instance.Load("ChallengeCreator");
     }
-    //public void LoadFacebookFriends()
-    //{
-    //    FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
-    //}
-    //void FBFriendsCallback(FBResult result)
-    //{
-    //    Debug.Log("APICallback");
-    //    if (result.Error != null)
-    //    {
-    //        Debug.LogError(result.Error);
-    //        // Let's just try again
-    //        FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
-    //        return;
-    //    }
-    //    print("FBFriendsCallback");
-    //    List<object> friends = Util.DeserializeJSONFriends(result.Text);
-    //    int a = 0;
-    //    foreach (object friend in friends)
-    //    {
-    //        Dictionary<string, object> friendData = friend as Dictionary<string, object>;
-    //        FriendData newFriendData = new FriendData();
-    //        foreach (KeyValuePair<string, object> keyval in friendData)
-    //        {
-    //            if (keyval.Key == "id")
-    //                newFriendData.facebookID = keyval.Value.ToString();
-    //            else if (keyval.Key == "first_name")
-    //                newFriendData.playerName = keyval.Value.ToString();
-    //        }
-    //        friendsData.Add(newFriendData);
-    //        a++;
-    //    }
-    //    CreateList();
-    //}
-    //private void LoadParseUsers()
-    //{
-    //    ParseUser.Query
-    //     .Limit(userData.Length)
-    //     .FindAsync().ContinueWith(t =>
-    //     {
-    //         IEnumerable<ParseUser> result = t.Result;
-    //         int a = 0;
-    //         foreach (var item in result)
-    //         {
-    //             string facebookID = item.Get<string>("facebookID");
-    //             string playerName = item.Get<string>("playerName");
-    //             Debug.Log(facebookID + " " + playerName);
-    //            // CreateList(facebookID, playerName);
-    //             userData[a].facebookID = facebookID;
-    //             userData[a].playerName = playerName;
-    //             a++;
-    //         }
-    //     });      
-    //}
     
 }

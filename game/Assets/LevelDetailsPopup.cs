@@ -76,7 +76,14 @@ public class LevelDetailsPopup : MonoBehaviour {
     }
     public void Challenge()
     {
-        Data.Instance.levels.currentLevel = levelId;
-        Data.Instance.Load("ChallengeCreator");
+        if (FB.IsLoggedIn)
+        {
+            Data.Instance.levels.currentLevel = levelId;
+            Data.Instance.Load("ChallengeCreator");
+        }
+        else
+        {
+            Login();
+        }
     }
 }

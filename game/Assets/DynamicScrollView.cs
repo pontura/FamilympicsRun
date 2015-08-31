@@ -16,7 +16,7 @@ public class DynamicScrollView : MonoBehaviour
     }
     void OnDestroy()
     {
-        Events.OnScrollSizeRefresh += OnScrollSizeRefresh;
+        Events.OnScrollSizeRefresh -= OnScrollSizeRefresh;
     }
     void OnScrollSizeRefresh(Vector2 size)
     {

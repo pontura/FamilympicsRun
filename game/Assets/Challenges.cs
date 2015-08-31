@@ -139,8 +139,6 @@ public class Challenges : MonoBehaviour {
     }
     void Update() {
         if (infoLoaded) return;
-
-        print("infoLoaded: " + userData.Count);
         if (userData.Count > 0)
         {
             print("carga qty: " + userData.Count);
