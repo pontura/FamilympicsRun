@@ -85,8 +85,12 @@ public class NotificationsScene : MonoBehaviour {
             string username = "";
 
             foreach (UserData.FacebookUserData data in Data.Instance.userData.FacebookFriends)
+            {
+                print(data.facebookID + " --  " + notifications[a].facebookID);
+
                 if (data.facebookID == notifications[a].facebookID)
                     username = data.username;
+            }
 
             newButton.Init(this, username, notifications[a].facebookID, notifications[a].status);
         }

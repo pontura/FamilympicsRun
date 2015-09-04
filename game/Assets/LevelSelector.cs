@@ -102,6 +102,11 @@ public class LevelSelector : MonoBehaviour {
     }
     public void StartLevel(int id)
     {
+        if (Data.Instance.energyManager.energy <= 0)
+        {
+            Events.OnOpenEnergyPopup();
+            return;
+        }
         GetComponent<LevelDetailsPopup>().Open(id);
     }
     public void GotoLevel(int id)

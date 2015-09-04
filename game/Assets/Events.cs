@@ -35,7 +35,7 @@ public static class Events {
     public static System.Action<UserData.modes> OnChangePlayMode = delegate { };
     public static System.Action OpenSummary = delegate { };
     public static System.Action OnRaceStartReady = delegate { };
-    
+    public static System.Action OnOpenEnergyPopup = delegate { };   
     
 
     public static System.Action<string> OnKeyDown = delegate { };
@@ -68,6 +68,11 @@ public static class Events {
     public static System.Action<int> OnRefreshNotifications = delegate { };
 
     public static System.Action<Vector2> OnScrollSizeRefresh = delegate { };
+
+    public static System.Action<int> ReFillEnergy = delegate { };
+    public static System.Action<string> SendEnergyTo = delegate { };
+    public static System.Action<string> RejectEnergyTo = delegate { };
+    
     
 
 

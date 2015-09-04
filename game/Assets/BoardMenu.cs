@@ -32,4 +32,8 @@ public class BoardMenu : MonoBehaviour {
         int energy = Data.Instance.energyManager.energy;
         energyField.text = energy + "/" + totalEnergy;
     }
+    public void OpenEnergyPopup()
+    {
+        Events.OnOpenEnergyPopup();
+    }
 }

@@ -26,6 +26,7 @@ public class Player : MonoBehaviour {
 
     private float acceleration;
     private float deceleration;
+    private float decelerationJump;
     public int laps = 0;
 
     private float TrilRendererDefaultTime;
@@ -54,6 +55,7 @@ public class Player : MonoBehaviour {
         GameSettings gameSettigns = Data.Instance.gameSettings;
         initialAacceleration = gameSettigns.player.initialAacceleration;
         initialDeceleration = gameSettigns.player.initialDeceleration;
+        decelerationJump = gameSettigns.player.jumpDeceleration;
         maxSpeed = gameSettigns.player.maxSpeed;
         speedJump = gameSettigns.player.speedJump;
 
@@ -183,6 +185,7 @@ public class Player : MonoBehaviour {
         if (state == states.STARTING_NEXT_LAP) return;
         if (state == states.READY) return;
         if (state == states.HURT) return;
+        if (state == states.JUMPING) return;
 
         Events.OnSoundFX("jump");
 
@@ -215,7 +218,9 @@ public class Player : MonoBehaviour {
     //from animation
     public void EndJump()
     {
-        Idle();
+       // Idle();
+        state = states.PLAYING;
+        GetComponent<Animation>().Play("playerIdle");
     }
     public void EndHurt()
     {
@@ -234,9 +239,9 @@ public class Player : MonoBehaviour {
             state = states.PLAYING;
 
         if (state == states.RUNNING)
-            speed -= deceleration*Time.deltaTime;
-        else if (state == states.JUMPING)
             speed -= deceleration * Time.deltaTime;
+        else if (state == states.JUMPING)
+            speed -= (decelerationJump) * Time.deltaTime;
 
         
         if (speed < 0) speed = 0;

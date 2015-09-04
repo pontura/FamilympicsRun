@@ -43,6 +43,7 @@ public class Notifications : MonoBehaviour {
         LoadFromParse(
                  ParseObject.GetQuery("Notifications")
                 .WhereEqualTo("asked_facebookID", Data.Instance.userData.facebookID)
+                .WhereEqualTo("status", "0")
                 .Limit(90)
             );
     }

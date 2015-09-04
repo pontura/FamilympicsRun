@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
-using System;
+using Parse;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class EnergyManager : MonoBehaviour {
 
@@ -19,18 +22,26 @@ public class EnergyManager : MonoBehaviour {
     private string playerPref_ENERGY = "energy";
 
     private float SECONDS_TO_ENERGY;
+
     
 
 
     void Start () {
 
         Events.StartGame += StartGame;
+        Events.ReFillEnergy += ReFillEnergy;
+        Events.SendEnergyTo += SendEnergyTo;
+        Events.RejectEnergyTo += RejectEnergyTo;
+
         SECONDS_TO_ENERGY = MINUTES_TO_ENERGY * 60;
         lasTimeStamp = PlayerPrefs.GetInt(playerPref_TIME);
 
-        if(PlayerPrefs.HasKey(playerPref_ENERGY))
+        if (PlayerPrefs.HasKey(playerPref_ENERGY))
+        {
             energy = PlayerPrefs.GetInt(playerPref_ENERGY);
-        else 
+             print("energy grabada " + energy);
+        }
+        else
         {
             energy = ENERGY_TO_START;
             SaveEnergy();
@@ -38,6 +49,13 @@ public class EnergyManager : MonoBehaviour {
 
         Loop();
 	}
+    void OnDestroy()
+    {
+        Events.StartGame -= StartGame;
+        Events.ReFillEnergy -= ReFillEnergy;
+        Events.SendEnergyTo -= SendEnergyTo;
+        Events.RejectEnergyTo -= RejectEnergyTo;
+    }
 
     void StartGame()
     {
@@ -83,6 +101,9 @@ public class EnergyManager : MonoBehaviour {
     void SaveEnergy()
     {
         PlayerPrefs.SetInt(playerPref_ENERGY, energy);
+
+        print("GRABA playerPref_ENERGY:" +  energy);
+
         Events.OnEnergyWon();
     }
     void SaveNewTime()
@@ -90,5 +111,38 @@ public class EnergyManager : MonoBehaviour {
         var epochStart = new System.DateTime(2010, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
         lasTimeStamp = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         PlayerPrefs.SetInt(playerPref_TIME, lasTimeStamp);
+    }
+    public void ReFillEnergy(int qty)
+    {
+        energy += qty;
+        if (energy > MAX_ENERGY) energy = MAX_ENERGY;
+        SaveEnergy();
+        Data.Instance.Load("LevelSelector");
+    }
+    void SendEnergyTo(string facebookID)
+    {
+        OnChallengeUpdate(facebookID, "1");
+    }
+    void RejectEnergyTo(string facebookID)
+    {
+        OnChallengeUpdate(facebookID, "2");
+    }
+    void OnChallengeUpdate(string facebookID, string status)
+    {
+        var query = new ParseQuery<ParseObject>("Notifications")
+            .WhereEqualTo("facebookID", facebookID)
+            .WhereEqualTo("asked_facebookID", Data.Instance.userData.facebookID);
+
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerator<ParseObject> enumerator = t.Result.GetEnumerator();
+            enumerator.MoveNext();
+            var data = enumerator.Current;
+            data["status"] = status;
+            return data.SaveAsync();
+        }).Unwrap().ContinueWith(t =>
+        {
+            Debug.Log("OnChallengeUpdate to facebookID: " + facebookID + " status: " + status);
+        });
     }
 }

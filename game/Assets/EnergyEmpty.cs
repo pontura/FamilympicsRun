@@ -2,29 +2,27 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class EnergyPopup : MonoBehaviour {
-
-    public Text dataField;
-    public Text field;
+public class EnergyEmpty : MonoBehaviour
+{
     public GameObject panel;
     private bool isActive;
 
-	void Start () {
+    void Start()
+    {
         panel.SetActive(false);
         Events.OnOpenEnergyPopup += OnOpenEnergyPopup;
-	}
+    }
     void OnDestroy()
     {
         Events.OnOpenEnergyPopup -= OnOpenEnergyPopup;
     }
     public void OnOpenEnergyPopup()
     {
-        if (Data.Instance.energyManager.energy == 0) return;
+        if (Data.Instance.energyManager.energy > 0) return;
 
         isActive = true;
         panel.SetActive(true);
         panel.GetComponent<Animation>().Play("PopupOn");
-        dataField.text = Data.Instance.energyManager.energy + "/" + Data.Instance.energyManager.MAX_ENERGY;
     }
     public void Close()
     {
@@ -36,9 +34,8 @@ public class EnergyPopup : MonoBehaviour {
         isActive = false;
         panel.SetActive(false);
     }
-	public void Update () {
-        if (!isActive) return;
-
-        field.text = Data.Instance.energyManager.timerString;
-	}
+    public void Buy()
+    {
+        Events.ReFillEnergy(5);
+    }
 }
