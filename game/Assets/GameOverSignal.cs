@@ -5,9 +5,11 @@ using System.Collections;
 public class GameOverSignal : MonoBehaviour {
 
     public GameObject panel;
+    public GameObject panelTimeOver;
     public Text field;
 
 	void Start () {
+        panelTimeOver.SetActive(false);
         panel.SetActive(false);
         Events.GameOver += GameOver;
 	}
@@ -15,14 +17,30 @@ public class GameOverSignal : MonoBehaviour {
     {
         Events.GameOver -= GameOver;
     }
-    void GameOver()
+    public void Buy()
     {
-        panel.SetActive(true);
-        panel.GetComponent<Animation>().Play("PopupOn");
-        int levelId = Data.Instance.levels.currentLevel;
-        field.text = "LEVEL " +levelId+ " FAIL!";
+        Events.ReFillEnergy(5);
+        Replay();
+    }
+    void GameOver(bool byTime)
+    {
+        if (byTime)
+        {
+            print("GameOverByTime");
+            panelTimeOver.SetActive(true);
+        }
+        else
+        {
+            print("GameOver");
+            panel.SetActive(true);
+           
+            int levelId = Data.Instance.levels.currentLevel;
+            field.text = "LEVEL " + levelId + " FAIL!";
 
-        Invoke("Reset", 3f);
+            
+        }
+        panel.GetComponent<Animation>().Play("PopupOn");
+       // Invoke("Reset", 3f);
     }
     public void Replay()
     {

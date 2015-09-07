@@ -35,6 +35,7 @@ public class EnergyAskFor : MonoBehaviour {
         LoadFriends(
                  ParseObject.GetQuery("Notifications")
                 .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
+                .WhereEqualTo("status", "0")
                 .Limit(90)
             );
     }

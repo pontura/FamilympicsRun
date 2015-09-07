@@ -166,12 +166,13 @@ public class GameManager : MonoBehaviour {
     {
         LevelComplete();
     }
-    void GameOver()
+    void GameOver(bool byTime)
     {
         state = states.READY;
     }
     void OnTimeOver()
     {
+        print("OnTimeOverOnTimeOverOnTimeOver");
         float totalTime = Data.Instance.levels.GetCurrentLevelData().totalTime;
         float gameOverTime = Data.Instance.levels.GetCurrentLevelData().gameOver;
         bool somebodyWon = false;
@@ -184,7 +185,7 @@ public class GameManager : MonoBehaviour {
             }
             if (!somebodyWon)
             {
-                Events.GameOver();
+                Events.GameOver(false);
                 return;
             }
         }
@@ -224,7 +225,7 @@ public class GameManager : MonoBehaviour {
         {
             Levels.LevelData levelData = Data.Instance.levels.GetCurrentLevelData();
             if (levelData.Sudden_Death && chronometer.timer < levelData.gameOver)
-                Events.GameOver();
+                Events.GameOver(false);
             else
                 LevelComplete();
         }

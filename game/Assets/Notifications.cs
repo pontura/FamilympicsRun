@@ -7,7 +7,9 @@ using System;
 
 public class Notifications : MonoBehaviour {
 
+    public List<string> FriendsThatGaveYouEnergy;
     public List<string> FriendsThatRequestedYou;
+
     public int totalRequestedNotifications;
     private int lastNotificationsQty;
 
@@ -69,5 +71,23 @@ public class Notifications : MonoBehaviour {
             totalRequestedNotifications = lastNotificationsQty;
             Events.OnRefreshNotifications(totalRequestedNotifications);
         }
+    }
+    public void UpdateNotification(string asked_facebookID, string status)
+    {
+        var query = new ParseQuery<ParseObject>("Notifications")
+            .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
+            .WhereEqualTo("asked_facebookID", asked_facebookID);
+
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerator<ParseObject> enumerator = t.Result.GetEnumerator();
+            enumerator.MoveNext();
+            var data = enumerator.Current;
+            data["status"] = status;
+            return data.SaveAsync();
+        }).Unwrap().ContinueWith(t =>
+        {
+            Debug.Log("Notification updated!");
+        });
     }
 }

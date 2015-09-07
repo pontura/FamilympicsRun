@@ -48,10 +48,17 @@ public class NotificationButton : MonoBehaviour {
     }
     void SetResult(string status)
     {
-        if(status == "1")
-            result.text = "SENDED";
-        if (status == "2")
+        if (status == "1")
+        {
+            result.text = "SENDED NEW!";
+        } else if (status == "2")
+        {
             result.text = "REJECTED";
+        } else if (status == "3")
+        {
+            statusLabel.text = "SENT YOU ENERGY";
+            result.text = "";
+        }
     }
     public void SendAction()
     {

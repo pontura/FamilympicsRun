@@ -28,7 +28,7 @@ public class Chronometer : MonoBehaviour {
 
         Events.StartGame += StartGame;
         Events.OnLevelComplete += OnLevelComplete;
-        Events.GameOver += OnLevelComplete;
+        Events.GameOver += GameOver;
 
         ActivateChronometers();
 
@@ -53,7 +53,7 @@ public class Chronometer : MonoBehaviour {
     {
         Events.StartGame -= StartGame;
         Events.OnLevelComplete -= OnLevelComplete;
-        Events.GameOver -= OnLevelComplete;
+        Events.GameOver -= GameOver;
     }
     void StartGame()
     {
@@ -64,6 +64,10 @@ public class Chronometer : MonoBehaviour {
         totalTime = Data.Instance.levels.GetCurrentLevelData().totalTime;
         gameOverTime = Data.Instance.levels.GetCurrentLevelData().gameOver;
 
+    }
+    void GameOver(bool byTime)
+    {
+        OnLevelComplete();
     }
     void OnLevelComplete()
     {
@@ -93,7 +97,7 @@ public class Chronometer : MonoBehaviour {
         }
         if (totalLaps > 0 && timer >= gameOverTime)
         {
-            Events.GameOver();
+            Events.GameOver(true);
             timeReady = true;
         } 
         if (levelSeconds > 0)

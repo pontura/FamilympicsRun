@@ -4,12 +4,15 @@ using System.Collections;
 
 public class EnergyPopup : MonoBehaviour {
 
+    public GameObject outOfEnergyIcon;
+    public Text title;
     public Text dataField;
     public Text field;
     public GameObject panel;
     private bool isActive;
 
 	void Start () {
+        outOfEnergyIcon.SetActive(false);
         panel.SetActive(false);
         Events.OnOpenEnergyPopup += OnOpenEnergyPopup;
 	}
@@ -19,7 +22,15 @@ public class EnergyPopup : MonoBehaviour {
     }
     public void OnOpenEnergyPopup()
     {
-        if (Data.Instance.energyManager.energy == 0) return;
+        if (Data.Instance.energyManager.energy == 0)
+        {
+            outOfEnergyIcon.SetActive(true);
+            title.text = "OUT OF ENERGY!";
+        }
+        else
+        {
+            title.text = "MY ENERGY";
+        }
 
         isActive = true;
         panel.SetActive(true);
@@ -41,4 +52,9 @@ public class EnergyPopup : MonoBehaviour {
 
         field.text = Data.Instance.energyManager.timerString;
 	}
+    public void Refill()
+    {
+        Events.ReFillEnergy(5);
+        Data.Instance.Load("LevelSelector");
+    }
 }

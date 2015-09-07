@@ -9,10 +9,12 @@ using System;
 public class NotificationsScene : MonoBehaviour {
 
     public List<NotificationData> notifications;
+    public List<string> friendsIdsThatGaveYouEnergy;
 
     [Serializable]
     public class NotificationData
     {
+        public string asked_facebookID;
         public string facebookID;
         public string status;
     }    
@@ -48,11 +50,13 @@ public class NotificationsScene : MonoBehaviour {
             IEnumerable<ParseObject> results = t.Result;
             foreach (var result in results)
             {
+                string asked_facebookID = result.Get<string>("asked_facebookID");
                 string facebookID = result.Get<string>("facebookID");
                 string status = result.Get<string>("status");
 
                 NotificationData notification = new NotificationData();
 
+                notification.asked_facebookID = asked_facebookID;
                 notification.facebookID = facebookID;
                 notification.status = status;
 
@@ -72,8 +76,28 @@ public class NotificationsScene : MonoBehaviour {
     }
     public void CreateList()
     {
+        //ya te dieron energia:
+        foreach (string asked_facebookId in Data.Instance.notifications.FriendsThatGaveYouEnergy)
+        {
+            NotificationButton newButton = Instantiate(button) as NotificationButton;
+
+            newButton.transform.SetParent(container.transform);
+            newButton.transform.localScale = Vector3.one;
+
+            string username = "";
+
+            foreach (UserData.FacebookUserData data in Data.Instance.userData.FacebookFriends)
+            {
+                if (data.facebookID == asked_facebookId)
+                    username = data.username;
+            }
+            newButton.Init(this, username, asked_facebookId, "3");
+        }
         for (int a = 0; a < notifications.Count; a++)
         {
+            if (notifications[a].facebookID == Data.Instance.userData.facebookID && notifications[a].status == "1")
+                friendsIdsThatGaveYouEnergy.Add(notifications[a].asked_facebookID);
+
             NotificationButton newButton = Instantiate(button) as NotificationButton;
 
             newButton.transform.SetParent(container.transform);
@@ -90,15 +114,25 @@ public class NotificationsScene : MonoBehaviour {
 
                 if (data.facebookID == notifications[a].facebookID)
                     username = data.username;
-            }
-
+            }            
             newButton.Init(this, username, notifications[a].facebookID, notifications[a].status);
         }
+        if (friendsIdsThatGaveYouEnergy.Count > 0)
+            SetNewEnergyAccepted();
+
         float _h = buttonsSeparation * (Data.Instance.userData.FacebookFriends.Count + 2);
         int container_width = 948;
         Events.OnScrollSizeRefresh(new Vector2(container_width, _h));
     }
-
+    private void SetNewEnergyAccepted()
+    {
+        Events.ReFillEnergy(friendsIdsThatGaveYouEnergy.Count);
+       // print("new Energy qty: " + friendsIdsThatGaveYouEnergy.Count);
+        foreach (string asked_facebookID in friendsIdsThatGaveYouEnergy)
+        {
+            Data.Instance.notifications.UpdateNotification(asked_facebookID, "3");
+        }
+    }
 
     public void Back()
     {

@@ -117,17 +117,17 @@ public class EnergyManager : MonoBehaviour {
         energy += qty;
         if (energy > MAX_ENERGY) energy = MAX_ENERGY;
         SaveEnergy();
-        Data.Instance.Load("LevelSelector");
+       // Data.Instance.Load("LevelSelector");
     }
     void SendEnergyTo(string facebookID)
     {
-        OnChallengeUpdate(facebookID, "1");
+        UpdataNotification(facebookID, "1");
     }
     void RejectEnergyTo(string facebookID)
     {
-        OnChallengeUpdate(facebookID, "2");
+        UpdataNotification(facebookID, "2");
     }
-    void OnChallengeUpdate(string facebookID, string status)
+    void UpdataNotification(string facebookID, string status)
     {
         var query = new ParseQuery<ParseObject>("Notifications")
             .WhereEqualTo("facebookID", facebookID)
@@ -142,7 +142,7 @@ public class EnergyManager : MonoBehaviour {
             return data.SaveAsync();
         }).Unwrap().ContinueWith(t =>
         {
-            Debug.Log("OnChallengeUpdate to facebookID: " + facebookID + " status: " + status);
+            Debug.Log("On Notifications to facebookID: " + facebookID + " status: " + status);
         });
     }
 }

@@ -67,7 +67,7 @@ public class Player : MonoBehaviour {
         Events.OnAvatarJump += OnAvatarJump;
         Events.OnAvatarRun += OnAvatarRun;
         Events.OnLevelComplete += OnLevelComplete;
-        Events.GameOver += OnLevelComplete;
+        Events.GameOver += GameOver;
 
     }
     void OnDestroy()
@@ -76,7 +76,11 @@ public class Player : MonoBehaviour {
         Events.OnAvatarJump -= OnAvatarJump;
         Events.OnAvatarRun -= OnAvatarRun;
         Events.OnLevelComplete -= OnLevelComplete;
-        Events.GameOver -= OnLevelComplete;
+        Events.GameOver -= GameOver;
+    }
+    void GameOver(bool byTime)
+    {
+        OnLevelComplete();
     }
     void OnLevelComplete()
     {

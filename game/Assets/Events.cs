@@ -25,7 +25,10 @@ public static class Events {
     public static System.Action<string> OpenPopUp = delegate { };
 
     public static System.Action OnEnergyWon = delegate { };
-    public static System.Action GameOver = delegate { };
+
+    //bool = bytime
+    public static System.Action<bool> GameOver = delegate { };
+    
     public static System.Action OnTimeOver = delegate { };
     public static System.Action<bool> OnGamePaused = delegate { };
     public static System.Action<int, float> OnSaveScore = delegate { };

@@ -17,7 +17,19 @@ public class LevelDetailsPopup : MonoBehaviour {
 
 	void Start () {
         panel.SetActive(false);
-        if (Data.Instance.OnlyMultiplayer || FB.IsLoggedIn) Logout.SetActive(false);
+        if (Data.Instance.OnlyMultiplayer || FB.IsLoggedIn)
+        {
+            Logout.SetActive(false);
+            Vector3 pos = panel.transform.localPosition;
+            pos.y = -41;
+            panel.transform.localPosition = pos;
+        }
+        else
+        {
+            Vector3 pos = panel.transform.localPosition;
+            pos.y = 0;
+            panel.transform.localPosition = pos;
+        }
 	}
     public void StartRace()
     {
