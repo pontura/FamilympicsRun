@@ -47,26 +47,37 @@ public class SingleplayerResults : MonoBehaviour
         title.text = "LEVEL " + Data.Instance.levels.currentLevel  + " COMPLETED!";
 
         System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
-        timeField.text = "TIME: " + string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+        string time =  string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+        
 
         int numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
         stars.Init(numStars);
 
         float score = 0;
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
+        {
             score = Data.Instance.levelData.laps;
+
+            resultField.text = score + " MT";
+            timeField.text = time; 
+        }
         else
+        {
             score = Data.Instance.levelData.time;
+
+            string result = Data.Instance.levelData.laps + " MT";
+
+            if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
+                result = "";
+
+            resultField.text = time;
+            timeField.text = result; 
+        }
 
         Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
        // Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, score, playersData[0].playerID, playersData[0].username);
 
-        string result = Data.Instance.levelData.laps + " Mts";
-
-        if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
-            result = "";
-
-        resultField.text = result;
+        
     }
     public void Ready()
     {

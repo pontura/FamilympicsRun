@@ -26,12 +26,19 @@ public class Data : MonoBehaviour
     [HideInInspector]
     public EnergyManager energyManager;
 
+     [HideInInspector]
     public UserData userData;
+     [HideInInspector]
     public LoginManager loginManager;
+     [HideInInspector]
     public string lastScene;
+     [HideInInspector]
     public GameSettings gameSettings;
+     [HideInInspector]
     public MusicManager musicManager;
+     [HideInInspector]
     public SoundManager soundManager;
+     [HideInInspector]
     public Notifications notifications;
 
     public static Data Instance

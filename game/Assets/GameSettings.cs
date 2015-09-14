@@ -16,4 +16,8 @@ public class GameSettings : MonoBehaviour  {
 
     public Player player;
     public float LaneSeparation = 2.1f;
+
+    public int stars_for_tournament_2;
+    public int stars_for_tournament_3;
+    public int stars_for_tournament_4;
 }

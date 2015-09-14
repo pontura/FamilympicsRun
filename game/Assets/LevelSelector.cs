@@ -122,7 +122,8 @@ public class LevelSelector : MonoBehaviour {
     }
     public void Refresh()
     {
-        Data.Instance.levelsData.Refresh();
+        Data.Instance.FreeLevels = true;
+       // Data.Instance.levelsData.Refresh();
         Data.Instance.Load("LevelSelector");        
     }
     public void Challenges()

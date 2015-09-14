@@ -193,8 +193,8 @@ public class Player : MonoBehaviour {
 
         Events.OnSoundFX("jump");
 
-        if (state != states.IN_WIND_ZONE)
-            state = states.JUMPING;
+       // if (state != states.IN_WIND_ZONE)
+        state = states.JUMPING;
 
         gameCamera.OnAvatarMoved();
         if (speed < speedJump) speed = speedJump;
@@ -203,6 +203,10 @@ public class Player : MonoBehaviour {
     public void Hurt()
     {
         if (state == states.STARTING_NEXT_LAP) return;
+
+        Vector3 pos = transform.localPosition;
+        pos.x += 1;
+        transform.localPosition = pos;
 
         Events.OnSoundFX("hurdleFall");
         state = states.HURT;
@@ -296,14 +300,16 @@ public class Player : MonoBehaviour {
         pos.x += 40;
         transform.localPosition = pos;
     }
+    private states lastState;
     public void Win()
     {
         laps++;
         gameCamera.NewLap();
+        lastState = state;
         state = states.STARTING_NEXT_LAP;
         meters = laps + "000";
         Events.OnAvatarWinLap(id, laps);        
-        Invoke("NextLap", 0.05f);
+        Invoke("NextLap", 0.02f);
         Vector3 pos = transform.localPosition;
         pos.x += 1;
         transform.localPosition = pos;
@@ -315,25 +321,32 @@ public class Player : MonoBehaviour {
         if (state == states.READY) return;
 
         GetComponent<TrailRenderer>().time = TrilRendererDefaultTime;
-        state = states.RUNNING;
+        state = lastState;
         Vector3 pos = transform.localPosition;
         pos.x -= 40;
         transform.localPosition = pos;
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "enemy" && state != states.JUMPING)
+        if (state == states.STARTING_NEXT_LAP) return;
+        if (state == states.JUMPING) return;
+        if (other.tag == "enemy")
         {
             if(other.GetComponent<Hurdle>())
                 Hurt();
             else if (other.GetComponent<Wind>())
-                OnEnterWindZone(); 
+                OnEnterWindZone();
+
         }
     }
     void OnTriggerExit2D(Collider2D other)
     {
+        if (state == states.STARTING_NEXT_LAP) return;
+        if (state == states.JUMPING) return;
+
         if (other.GetComponent<Wind>())
             OnExitWindZone();
+        
     }
     
     void SetOff()

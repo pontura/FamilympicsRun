@@ -6,7 +6,14 @@ public class InputManager : MonoBehaviour {
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            Data.Instance.Load("LevelSelector");
+            if (Data.Instance.lastScene == "LevelSelector")
+            {
+                Application.Quit();
+            }
+            else
+            {
+                Data.Instance.Load("LevelSelector");
+            }
         }  
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {

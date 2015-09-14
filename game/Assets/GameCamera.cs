@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameCamera : MonoBehaviour {
 
@@ -9,6 +10,11 @@ public class GameCamera : MonoBehaviour {
     private float powerUpMultiplierSpeed = 1;
     private float lapSpeedIncreased = 0;
     public float _y;
+
+
+    private int lastEnemyAddedDistance;
+    private int distanceToAddEnemy;
+    public List<Enemy> enemies;
     
 
     private enum states
@@ -69,7 +75,7 @@ public class GameCamera : MonoBehaviour {
         pos.x -= (speed * powerUpMultiplierSpeed) + lapSpeedIncreased;
         transform.localPosition = pos;
 
-        if (!enemy) return;
+        if (enemies.Count == 0) return;
 
         if (distance > lastEnemyAddedDistance)
         {
@@ -78,18 +84,24 @@ public class GameCamera : MonoBehaviour {
         }
     }
 
-    private int lastEnemyAddedDistance;
-    private int distanceToAddEnemy;
-    private Enemy enemy;
+    
     void OnAddEnemy(Enemy enemy, int _distance)
     {
         lastEnemyAddedDistance = 0;
         distanceToAddEnemy = _distance;
-        this.enemy = enemy;
+        enemies.Add(enemy);
+    }
+    int rand = 0;
+    Enemy GetRandomEnemy()
+    {
+        rand++;
+        if (rand % enemies.Count == 0)
+        return enemies[0];
+        else return enemies[1];
     }
     void AddEnemy()
     {
-        Enemy newEnemy = Instantiate(enemy) as Enemy;
+        Enemy newEnemy = Instantiate( GetRandomEnemy() ) as Enemy;
         newEnemy.transform.SetParent (transform);        
         newEnemy.transform.localScale = Vector3.one;
 

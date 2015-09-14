@@ -36,7 +36,8 @@ public class MultiplayerResults : MonoBehaviour {
         title.text = "LEVEL " + Data.Instance.levels.currentLevel  + " COMPLETED!";
 
         System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
-        timeField.text = "TIME: " + string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+        string time = string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+      //  timeField.text = "TIME: " + time;
 
         MultiplayerData  multiplayerData = Data.Instance.multiplayerData;
         List<MultiplayerData.PlayerData> playersData = multiplayerData.players.OrderBy(x => x.meters).ToList();
@@ -46,44 +47,68 @@ public class MultiplayerResults : MonoBehaviour {
         stars.Init(numStars);
 
         float score = 0;
+        //si es por tiempo:
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
-            score = Data.Instance.levelData.laps;
-        else
-            score = Data.Instance.levelData.time;
-
-        Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
-        Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, score, playersData[0].playerID, playersData[0].username);
-
-        if (multiplayerData.players.Count == 1)
         {
-            string result = playersData[0].meters.ToString() + " Mts";
+            score = Data.Instance.levelData.laps;
+            timeField.text = "TIME: " + time;
+            puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + " MT", playersData[0].color);
 
+            if (playersData.Count > 1)
+                puesto2.Init(playersData[1].username, playersData[1].meters.ToString() + " MT", playersData[1].color);
+            if (playersData.Count > 2)
+                puesto3.Init(playersData[2].username, playersData[2].meters.ToString() + " MT", playersData[2].color);
+            if (playersData.Count > 3)
+                puesto4.Init(playersData[3].username, playersData[3].meters.ToString() + " MT", playersData[3].color);
+        }
+        else
+        {
+            score = Data.Instance.levelData.time;
+            puesto1.Init(playersData[0].username, time, playersData[0].color);
+
+            string result = playersData[0].meters.ToString() + " MT";
             if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
                 result = "";
 
-            puesto1.Init(playersData[0].username, result, playersData[0].color);
-            return;
+            timeField.text = result;
+
+            if (playersData.Count > 1)
+                puesto2.Init(playersData[1].username, "---", playersData[1].color);
+            if (playersData.Count > 2)
+                puesto3.Init(playersData[2].username, "---", playersData[2].color);
+            if (playersData.Count > 3)
+                puesto4.Init(playersData[3].username, "---", playersData[3].color);
         }
+
+        Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
+        Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, score, playersData[0].playerID, playersData[0].username);      
+
+
+        //if (multiplayerData.players.Count == 1)
+        //{
+        //    string result = playersData[0].meters.ToString() + " Mts";
+
+        //    if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
+        //        result = "";
+
+        //    puesto1.Init(playersData[0].username, result, playersData[0].color);
+        //    return;
+        //}
         
-        puesto2.gameObject.SetActive(false);
+        //puesto2.gameObject.SetActive(false);
         puesto3.gameObject.SetActive(false);
         puesto4.gameObject.SetActive(false);
 
-        if (multiplayerData.players.Count > 1)
-            puesto2.gameObject.SetActive(true);
+       // if (multiplayerData.players.Count > 1)
+          //  puesto2.gameObject.SetActive(true);
         if (multiplayerData.players.Count > 2)
             puesto3.gameObject.SetActive(true);
         if (multiplayerData.players.Count > 3)
             puesto4.gameObject.SetActive(true);
 
 
-         puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + " Mts", playersData[0].color);
-         if (playersData.Count>1)
-             puesto2.Init(playersData[1].username, playersData[1].meters.ToString() + " Mts", playersData[1].color);
-         if (playersData.Count > 2)
-             puesto3.Init(playersData[2].username, playersData[2].meters.ToString() + " Mts", playersData[2].color);
-         if (playersData.Count > 3)
-             puesto4.Init(playersData[3].username, playersData[3].meters.ToString() + " Mts", playersData[3].color);
+
+         
     }
     public void Ready()
     {

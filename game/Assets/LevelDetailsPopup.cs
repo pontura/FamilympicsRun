@@ -6,6 +6,7 @@ public class LevelDetailsPopup : MonoBehaviour {
 
     public Button challengesButton;
     public Text field;
+    public Text subTitle;
     public Text goalText;
     public GameObject panel;
     private bool isActive;
@@ -13,23 +14,12 @@ public class LevelDetailsPopup : MonoBehaviour {
     private int levelId;
     public Stars stars;
     int starsInLevel;
-    
+    public GameObject singlePanel;
+    public GameObject multiPanel;
+    public Ranking ranking;
 
 	void Start () {
         panel.SetActive(false);
-        if (Data.Instance.OnlyMultiplayer || FB.IsLoggedIn)
-        {
-            Logout.SetActive(false);
-            Vector3 pos = panel.transform.localPosition;
-            pos.y = -41;
-            panel.transform.localPosition = pos;
-        }
-        else
-        {
-            Vector3 pos = panel.transform.localPosition;
-            pos.y = 0;
-            panel.transform.localPosition = pos;
-        }
 	}
     public void StartRace()
     {
@@ -38,14 +28,35 @@ public class LevelDetailsPopup : MonoBehaviour {
     }
     public void Open(int levelId)
     {
+        
+
+        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+        {
+            ranking.LoadSinglePlayerWinners(levelId);
+
+            if (FB.IsLoggedIn)
+                Logout.SetActive(false);
+            else
+                Logout.SetActive(true);
+
+            singlePanel.SetActive(true);
+            multiPanel.SetActive(false);
+        }
+        else
+        {
+            ranking.LoadMultiplayerWinners(levelId);
+
+            singlePanel.SetActive(false);
+            multiPanel.SetActive(true);
+            Logout.SetActive(false);
+        }
+
         Events.OnSoundFX("buttonPress");
         this.levelId = levelId;
         isActive = true;
         panel.SetActive(true);
         panel.GetComponent<Animation>().Play("PopupOn");
         field.text = "LEVEL " + levelId;
-
-        Levels.LevelData levelData = Data.Instance.levels.levels[levelId];
 
         float _myScore = PlayerPrefs.GetFloat("Run_Level_" + levelId);
 
@@ -56,6 +67,15 @@ public class LevelDetailsPopup : MonoBehaviour {
             starsInLevel = Data.Instance.levels.GetCurrentLevelStarsByScore(levelId, _myScore);
             stars.Init(starsInLevel);
         }
+
+        string _score = Data.Instance.levelsData.GetScoreString(levelId, _myScore);
+
+        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+            subTitle.text = "MY BEST: " + _score;
+        else
+            subTitle.text = "";
+
+        Levels.LevelData levelData = Data.Instance.levels.levels[levelId];       
 
         if(starsInLevel<1)
             challengesButton.interactable = false;
@@ -82,9 +102,9 @@ public class LevelDetailsPopup : MonoBehaviour {
         panel.SetActive(false);
     }
     public void Login()
-    {
-        Close();
+    {        
         Data.Instance.loginManager.FBLogin();
+        Close();
     }
     public void Challenge()
     {
