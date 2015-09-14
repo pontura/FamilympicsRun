@@ -15,23 +15,28 @@ public class Tournaments : MonoBehaviour {
     public GameObject lock2;
     public GameObject lock3;
 
-	void Start () {
-	    if(Data.Instance.userData.levelProgressionId < 8 )
-        {
-            scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason1));
-        }
-        else if (Data.Instance.userData.levelProgressionId < 16)
+    void Start()
+    {
+        Invoke("CheckForStarsAndThenStart", 0.5f);
+    }
+    void CheckForStarsAndThenStart()
+    {
+        int stars = Data.Instance.userData.starsCount;
+        
+        scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason1));
+
+        if (Data.Instance.userData.levelProgressionId < 16 && stars >= Data.Instance.gameSettings.stars_for_tournament_2)
         {
             Destroy(lock1);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason2));
         }
-        else if (Data.Instance.userData.levelProgressionId < 32)
+        else if (Data.Instance.userData.levelProgressionId < 32 && stars >= Data.Instance.gameSettings.stars_for_tournament_3)
         {
             Destroy(lock1);
             Destroy(lock2);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason3));
         }
-        else
+        else if (stars >= Data.Instance.gameSettings.stars_for_tournament_4)
         {
             Destroy(lock1);
             Destroy(lock2);

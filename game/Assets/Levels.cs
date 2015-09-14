@@ -48,6 +48,30 @@ public class Levels : MonoBehaviour {
     {
         return levels[id];
     }
+    public bool CanPlayNext()
+    {
+        bool result = true;
+        int stars = Data.Instance.userData.starsCount;
+        if (currentLevel == 8 && stars < Data.Instance.gameSettings.stars_for_tournament_2)
+            result = false;
+        else if (currentLevel == 16 && stars < Data.Instance.gameSettings.stars_for_tournament_3)
+            result = false;
+        else if (currentLevel == 32 && stars < Data.Instance.gameSettings.stars_for_tournament_4)
+            result = false;
+        return result;
+    }
+    public bool CanPlay(int levelID)
+    {
+        bool result = true;
+        int stars = Data.Instance.userData.starsCount;
+        if (levelID > 8 && stars < Data.Instance.gameSettings.stars_for_tournament_2)
+            result = false;
+        else if (levelID > 16 && stars < Data.Instance.gameSettings.stars_for_tournament_3)
+            result = false;
+        else if (levelID > 32 && stars < Data.Instance.gameSettings.stars_for_tournament_4)
+            result = false;
+        return result;
+    }
     public int GetCurrentLevelStarsByScore(int levelID, float score)
     {
         int stars = 0;
@@ -72,7 +96,7 @@ public class Levels : MonoBehaviour {
             else if (score > level.star1)
                 stars = 1;
         }
-        print("stars: " + stars);
+      //  print("stars: " + stars);
 
         return stars;
     }

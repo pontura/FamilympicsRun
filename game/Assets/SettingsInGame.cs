@@ -22,6 +22,11 @@ public class SettingsInGame : MonoBehaviour {
     }
     public void NextRace()
     {
+        if ( !Data.Instance.levels.CanPlayNext() )
+        {
+            ExitToMap();
+            return;
+        }
         Data.Instance.levels.currentLevel++;
         Time.timeScale = 1;
         int totalPlayers = Data.Instance.multiplayerData.players.Count;

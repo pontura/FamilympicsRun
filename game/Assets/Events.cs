@@ -13,10 +13,14 @@ public static class Events {
     public static System.Action<string> OnMusicChange = delegate { };
     public static System.Action<GameObject> OnUIClicked = delegate { };
     public static System.Action OnFacebookFriends = delegate { };
-    public static System.Action OnFacebookLogin = delegate { };   
+    public static System.Action OnFacebookLogin = delegate { };
+    public static System.Action OnParseLogin = delegate { };
+    public static System.Action<string, float, int> OnParseLoadedScore = delegate { };   
     
 
     //The game:
+
+    
     public static System.Action StartGame = delegate { };
     public static System.Action OnLevelComplete = delegate { };
     public static System.Action OpenIngameMenu = delegate { };
@@ -28,6 +32,7 @@ public static class Events {
 
     //bool = bytime
     public static System.Action<bool> GameOver = delegate { };
+    public static System.Action<int> AddStarsToCount = delegate { };
     
     public static System.Action OnTimeOver = delegate { };
     public static System.Action<bool> OnGamePaused = delegate { };

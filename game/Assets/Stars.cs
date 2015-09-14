@@ -10,7 +10,7 @@ public class Stars : MonoBehaviour {
 
 	public void Init (int num) {
 
-        print("______________________Stars: " + num);
+      //  print("______________________Stars: " + num);
         Reset();
 
         if (num == 3)

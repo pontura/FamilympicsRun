@@ -60,7 +60,10 @@ public class LevelButton : MonoBehaviour {
         labelNum.text = levelID.ToString();
         button.onClick.AddListener(() =>
         {
-            levelSelector.StartLevel(id);
+            if( Data.Instance.levels.CanPlay(id))
+            {
+                levelSelector.StartLevel(id);
+            }
         });
         
     }
@@ -82,7 +85,9 @@ public class LevelButton : MonoBehaviour {
         {
             
             string _score = Data.Instance.levelsData.GetScoreString(id, _myScore);
-            stars.Init(Data.Instance.levels.GetCurrentLevelStarsByScore(id, _myScore));
+            int _stars = Data.Instance.levels.GetCurrentLevelStarsByScore(id, _myScore);
+            Events.AddStarsToCount(_stars);
+            stars.Init(_stars);
             myScore.text = _score;
         }        
 
@@ -127,7 +132,7 @@ public class LevelButton : MonoBehaviour {
         if (hiscoreData[0].score > 0)
         {
 
-            print("______LoadMultiplayerWinners: levelID: " + id + "hiscoreData[0].score: " + hiscoreData[0].score);
+           // print("______LoadMultiplayerWinners: levelID: " + id + "hiscoreData[0].score: " + hiscoreData[0].score);
             int numStars = Data.Instance.levels.GetCurrentLevelStarsByScore(id, hiscoreData[0].score);
             stars.Init(numStars);
 

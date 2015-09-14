@@ -24,6 +24,7 @@ public class LevelSelector : MonoBehaviour {
 
 	void Start () {
 
+        Data.Instance.userData.starsCount = 0;
         Events.CheckForNewNotifications();
 
         Events.OnMusicChange("menus");
@@ -74,11 +75,17 @@ public class LevelSelector : MonoBehaviour {
             if(Data.Instance.FreeLevels)
                 Data.Instance.userData.levelProgressionId = 100;
         }
+        if (Data.Instance.FreeLevels == true)
+            Data.Instance.userData.starsCount = 1000;
        // int scrollLevels = (Data.Instance.levels.levels.Length - 4) * -300;
        // scrollLimit.SetLimit(new Vector2(0, scrollLevels));
-
+        Events.AddStarsToCount += AddStarsToCount;
         Positionate();
 	}
+    void AddStarsToCount(int qty)
+    {
+        Data.Instance.userData.starsCount += qty;
+    }
     void Positionate()
     {
         int positionX = 0;
@@ -99,6 +106,7 @@ public class LevelSelector : MonoBehaviour {
     void OnDestroy()
     {
         Events.OnChangePlayMode -= OnChangePlayMode;
+        Events.AddStarsToCount -= AddStarsToCount;
     }
     public void StartLevel(int id)
     {
