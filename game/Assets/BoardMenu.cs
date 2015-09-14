@@ -11,7 +11,7 @@ public class BoardMenu : MonoBehaviour {
         SetEnergy();
         Events.OnEnergyWon += OnEnergyWon;
         Events.OnRefreshNotifications += OnRefreshNotifications;
-        notificationsField.text = Data.Instance.notifications.totalRequestedNotifications.ToString();
+        OnRefreshNotifications( Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
 	}
     void OnDestroy()
     {

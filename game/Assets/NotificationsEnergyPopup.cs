@@ -65,18 +65,12 @@ public class NotificationsEnergyPopup : MonoBehaviour {
             Data.Instance.notifications.FriendsThatGaveYouEnergy = FriendsThatGaveYouEnergy;
             ready = true;
             SetNewEnergyAccepted();
+            Events.OnRefreshNotifications(FriendsThatGaveYouEnergy.Count);
         }
     }
     private void SetNewEnergyAccepted()
     {
-        panel.SetActive(true);
-        Events.ReFillEnergy(Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
-
-        print("new Energy qty: " + Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
-        foreach (string asked_facebookID in Data.Instance.notifications.FriendsThatGaveYouEnergy)
-        {
-            Data.Instance.notifications.UpdateNotification(asked_facebookID, "3");
-        }
+        //panel.SetActive(true);
     }    
     public void Notifications()
     {

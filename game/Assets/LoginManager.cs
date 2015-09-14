@@ -68,9 +68,13 @@ public class LoginManager : MonoBehaviour
         if (FB.IsLoggedIn)
         {
             // Logging in with Parse
+           // print("______________________" + FB.UserId + " " + FB.AccessToken + " " + DateTime.Now);
+
+            System.Threading.CancellationToken s = new System.Threading.CancellationToken();
+
             var loginTask = ParseFacebookUtils.LogInAsync(FB.UserId,
                                                           FB.AccessToken,
-                                                          DateTime.Now);
+                                                          DateTime.Now, s);
             while (!loginTask.IsCompleted) yield return null;
             // Login completed, check results
             if (loginTask.IsFaulted || loginTask.IsCanceled)
@@ -81,7 +85,9 @@ public class LoginManager : MonoBehaviour
                     ParseException parseException = (ParseException)e;
                     Debug.Log("ParseLogin: error message " + parseException.Message);
                     Debug.Log("ParseLogin: error code: " + parseException.Code);
+
                 }
+
             }
             else
             {
@@ -190,9 +196,14 @@ public class LoginManager : MonoBehaviour
         }
     }
 
+    private bool profileLoaded;
     private void UpdateProfile()
     {
+        print("UpdateProfile");
+        if (profileLoaded) return;
         var user = ParseUser.CurrentUser;
+        Events.OnParseLogin();
+        profileLoaded = true;
     }
 
     // Wrap text by line height
@@ -236,8 +247,9 @@ public class LoginManager : MonoBehaviour
         // Remove first " " char
         return result.Substring(1, result.Length - 1);
     }
-    public void GetFriends()
+    void GetFriends()
     {
+      //  print("GetFriendsGetFriendsGetFriendsGetFriendsGetFriendsGetFriends");
         FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
     }
     void FBFriendsCallback(FBResult result)

@@ -38,7 +38,7 @@ public class LevelSelector : MonoBehaviour {
             {
                 if (Data.Instance.userData.FacebookFriends != null && Data.Instance.userData.FacebookFriends.Count == 0)
                 {
-                    Data.Instance.loginManager.GetFriends();
+                   // Data.Instance.loginManager.GetFriends();
                 }
             }
             Data.Instance.levelData.ResetChallenge();

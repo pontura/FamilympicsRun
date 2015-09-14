@@ -14,6 +14,7 @@ public class NotificationButton : MonoBehaviour {
     private NotificationsScene creator;
     public GameObject Send;
     public GameObject Cancel;
+    public GameObject accept;
     private bool selected;
 
     public void Init(NotificationsScene _creator, string playerName, string facebookID, string status)
@@ -29,6 +30,7 @@ public class NotificationButton : MonoBehaviour {
         if (status == "0")
         {
             Send.SetActive(true);
+            accept.SetActive(false);
 
             Send.GetComponent<Button>().onClick.AddListener(() =>
             {
@@ -43,6 +45,10 @@ public class NotificationButton : MonoBehaviour {
         {
             Send.SetActive(false);
             Cancel.SetActive(false);
+            if (status == "1")
+            {
+                accept.SetActive(true);
+            }
         }
         SetResult(status);
     }
@@ -76,5 +82,11 @@ public class NotificationButton : MonoBehaviour {
     {
         Send.SetActive(false);
         Cancel.SetActive(false);
+    }
+    public void Accept()
+    {
+        accept.SetActive(false);
+        result.text = "ACCEPTED";
+        Events.OnAcceptEnergyFrom(facebookID);
     }
 }

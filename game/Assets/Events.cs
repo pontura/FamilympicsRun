@@ -73,6 +73,7 @@ public static class Events {
     public static System.Action CheckForNewNotifications = delegate { };
     public static System.Action<string> OnNotificationReceived = delegate { };
     public static System.Action<string> SendNotificationTo = delegate { };
+    public static System.Action<string> OnAcceptEnergyFrom = delegate { };
     public static System.Action<int> OnRefreshNotifications = delegate { };
 
     public static System.Action<Vector2> OnScrollSizeRefresh = delegate { };

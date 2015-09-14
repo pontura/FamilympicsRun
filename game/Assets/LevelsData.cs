@@ -41,26 +41,27 @@ public class LevelsData : MonoBehaviour {
     }
     void OnParseLoadedScore(string facebookID, float score, int levelID)
     {
-        print("__________________________OnParseLoadedScore" + facebookID + " score: " + score + " levelID: " + levelID);
+      //  print("__________________________OnParseLoadedScore" + facebookID + " score: " + score + " levelID: " + levelID);
     }
     int loadFriendsAndParseLogged = 0;
     public void OnParseLogin()
     {
-        print("________________________OnParseLogin::::::::::::::::::::::::");
+        ///print("________________________OnParseLogin::::::::::::::::::::::::");
         loadFriendsAndParseLogged++;
         CheckIfBothAreReady();
     }
     public void OnFacebookFriends()
     {
-        print("________________________OnFacebookFriends::::::::::::::::::::::::");
+      //  print("________________________OnFacebookFriends::::::::::::::::::::::::");
         loadFriendsAndParseLogged++;
         CheckIfBothAreReady();
     }
     void CheckIfBothAreReady()
     {
+       // return;
         if (loadFriendsAndParseLogged < 2) return;
 
-        print("_________________________CheckIfBothAreReady");
+       // print("_________________________CheckIfBothAreReady");
         i = 0;
       // levelsScore = new LevelsScore[Data.Instance.levels.levels.Length];
        totalLevels = Data.Instance.levels.levels.Length;
@@ -69,7 +70,7 @@ public class LevelsData : MonoBehaviour {
     }
     public void Refresh()
     {
-       // OnFacebookFriends();
+        OnFacebookFriends();
     }
     void OnLoadParseScore(int levelID)
     {

@@ -17,12 +17,14 @@ public class Notifications : MonoBehaviour {
         Events.CheckForNewNotifications += CheckForNewNotifications;
         Events.OnNotificationReceived += OnNotificationReceived;
         Events.SendNotificationTo += SendNotificationTo;
+        Events.OnAcceptEnergyFrom += OnAcceptEnergyFrom;
 	}
     void OnDestroy()
     {
         Events.CheckForNewNotifications -= CheckForNewNotifications;
         Events.OnNotificationReceived -= OnNotificationReceived;
         Events.SendNotificationTo += SendNotificationTo;
+        Events.OnAcceptEnergyFrom -= OnAcceptEnergyFrom;
     }
     void OnNotificationReceived(string facebookId)
     {
@@ -88,6 +90,41 @@ public class Notifications : MonoBehaviour {
         }).Unwrap().ContinueWith(t =>
         {
             Debug.Log("Notification updated!");
+        });
+    }
+    public void OnAcceptEnergyFrom(string facebookID)
+    {
+        Events.ReFillEnergy(Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
+
+        print("AcceptEnergyFrom" + facebookID);
+
+        Data.Instance.notifications.UpdateNotification(facebookID, "3");
+
+        int id = 0;
+        for (int a = 0; a<Data.Instance.notifications.FriendsThatGaveYouEnergy.Count; a++)
+        {
+            if (Data.Instance.notifications.FriendsThatGaveYouEnergy[a] == facebookID)
+                id = a;
+        }
+        Data.Instance.notifications.FriendsThatGaveYouEnergy.RemoveAt(id);
+    }
+    public void DeleteNotification(string asked_facebookID)
+    {
+        print("DeleteNotification");
+        var query = new ParseQuery<ParseObject>("Notifications")
+            .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
+            .WhereEqualTo("asked_facebookID", asked_facebookID);
+
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerator<ParseObject> enumerator = t.Result.GetEnumerator();
+            enumerator.MoveNext();
+            var data = enumerator.Current;
+            //data["status"] = "3";
+            return data.DeleteAsync();
+        }).Unwrap().ContinueWith(t =>
+        {
+            Debug.Log("Notification deleted!");
         });
     }
 }
