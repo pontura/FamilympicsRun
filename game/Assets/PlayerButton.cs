@@ -41,7 +41,7 @@ public class PlayerButton : MonoBehaviour {
         if (username != "")
             field.text = username;
         else
-            field.text = "PLAYER " + id;    
+            field.text = "RUN" + id;    
 
         IsOff();
 	}

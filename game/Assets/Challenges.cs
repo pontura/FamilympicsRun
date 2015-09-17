@@ -147,12 +147,9 @@ public class Challenges : MonoBehaviour {
             {
                 ChallengesLine newButton = Instantiate(challengesLine) as ChallengesLine;
                 newButton.transform.SetParent(container.transform);
-                newButton.transform.localPosition = new Vector3(0, buttonsSeparation * a * -1, 0);
                 newButton.transform.localScale = Vector3.one;
                 newButton.Init(this, a);                
             }
-            float _h = buttonsSeparation * (userData.Count+2);
-            Events.OnScrollSizeRefresh(new Vector2(987.34f, _h));
         }
     }
     

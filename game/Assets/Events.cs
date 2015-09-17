@@ -13,9 +13,11 @@ public static class Events {
     public static System.Action<string> OnMusicChange = delegate { };
     public static System.Action<GameObject> OnUIClicked = delegate { };
     public static System.Action OnFacebookFriends = delegate { };
+    public static System.Action OnFacebookNotConnected = delegate { };
     public static System.Action OnFacebookLogin = delegate { };
     public static System.Action OnParseLogin = delegate { };
-    public static System.Action<string, float, int> OnParseLoadedScore = delegate { };   
+    public static System.Action<string, float, int> OnParseLoadedScore = delegate { };
+    public static System.Action<int, float> OnNewHiscore = delegate { };   
     
 
     //The game:
@@ -75,8 +77,6 @@ public static class Events {
     public static System.Action<string> SendNotificationTo = delegate { };
     public static System.Action<string> OnAcceptEnergyFrom = delegate { };
     public static System.Action<int> OnRefreshNotifications = delegate { };
-
-    public static System.Action<Vector2> OnScrollSizeRefresh = delegate { };
 
     public static System.Action<int> ReFillEnergy = delegate { };
     public static System.Action<string> SendEnergyTo = delegate { };

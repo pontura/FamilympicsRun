@@ -29,15 +29,19 @@ public class MultiplayerResults : MonoBehaviour {
     {
         Invoke("SetOn", 4);
     }
+    private string GetTimeFormat(float timer)
+    {
+        System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
+        string time = string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+        return time;
+    }
     public void SetOn()
     {
         panel.SetActive(true);        
 
         title.text = "LEVEL " + Data.Instance.levels.currentLevel  + " COMPLETED!";
 
-        System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
-        string time = string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
-      //  timeField.text = "TIME: " + time;
+        string time = GetTimeFormat(Data.Instance.levelData.time);
 
         MultiplayerData  multiplayerData = Data.Instance.multiplayerData;
         List<MultiplayerData.PlayerData> playersData = multiplayerData.players.OrderBy(x => x.meters).ToList();
@@ -52,23 +56,38 @@ public class MultiplayerResults : MonoBehaviour {
         {
             score = Data.Instance.levelData.laps;
             timeField.text = "TIME: " + time;
-            puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + " MT", playersData[0].color);
+            puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + "m", playersData[0].color);
 
             if (playersData.Count > 1)
-                puesto2.Init(playersData[1].username, playersData[1].meters.ToString() + " MT", playersData[1].color);
+                puesto2.Init(playersData[1].username, playersData[1].meters.ToString() + "m", playersData[1].color);
             if (playersData.Count > 2)
-                puesto3.Init(playersData[2].username, playersData[2].meters.ToString() + " MT", playersData[2].color);
+                puesto3.Init(playersData[2].username, playersData[2].meters.ToString() + "m", playersData[2].color);
             if (playersData.Count > 3)
-                puesto4.Init(playersData[3].username, playersData[3].meters.ToString() + " MT", playersData[3].color);
+                puesto4.Init(playersData[3].username, playersData[3].meters.ToString() + "m", playersData[3].color);
+        }
+        else if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
+        {
+            playersData = multiplayerData.players.OrderBy(x => x.time).ToList();
+            playersData.Reverse();
+
+            timeField.text = "SUDDEN DEATH";
+
+            puesto1.Init(playersData[0].username, GetTimeFormat(playersData[0].time), playersData[0].color);
+
+            if (playersData.Count > 1)
+                puesto2.Init(playersData[1].username, GetTimeFormat(playersData[1].time), playersData[1].color);
+            if (playersData.Count > 2)
+                puesto3.Init(playersData[2].username, GetTimeFormat(playersData[2].time), playersData[2].color);
+            if (playersData.Count > 3)
+                puesto4.Init(playersData[3].username, GetTimeFormat(playersData[3].time), playersData[3].color);
         }
         else
         {
             score = Data.Instance.levelData.time;
             puesto1.Init(playersData[0].username, time, playersData[0].color);
 
-            string result = playersData[0].meters.ToString() + " MT";
-            if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
-                result = "";
+            string result = playersData[0].meters.ToString() + "m";
+
 
             timeField.text = result;
 

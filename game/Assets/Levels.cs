@@ -134,5 +134,17 @@ public class Levels : MonoBehaviour {
         }
         return stars;
     }
+    public int GetTotalLevelsInUnblockedSeasons()
+    {
+        int levelProgressionId = Data.Instance.userData.levelProgressionId;
+        int total = levels.Length;
+        if (levelProgressionId < 8)
+            return 10;
+        else if (levelProgressionId < 16)
+            return 18;
+        else if (levelProgressionId < 32)
+            return 34;
+        return total;
+    }
 
 }

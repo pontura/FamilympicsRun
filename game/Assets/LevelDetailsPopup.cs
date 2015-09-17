@@ -86,9 +86,9 @@ public class LevelDetailsPopup : MonoBehaviour {
         if (levelData.Sudden_Death)
             goalText.text = "SUDDEN DEATH!";
         else if (levelData.totalLaps > 0)
-            goalText.text = (levelData.totalLaps * 1000).ToString() + " MTS";
+            goalText.text = (levelData.totalLaps * 1000).ToString() + "m";
         else
-            goalText.text = (levelData.totalTime).ToString() + " SECS";
+            goalText.text = (levelData.totalTime).ToString() + " secs";
     }
     public void Close()
     {

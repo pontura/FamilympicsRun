@@ -29,15 +29,33 @@ public class LevelsData : MonoBehaviour {
     public LevelsScore[] levelsScore;
     private int i;
     private int totalLevels;
+    public IList<string> myList;
 
     void Start()
     {
+        myList = new List<string>();
+
+        Events.OnFacebookLogin += OnFacebookLogin;
         Events.OnFacebookFriends += OnFacebookFriends;
         Events.OnParseLogin += OnParseLogin;
         Events.OnSaveScore += OnSaveScore;
         Events.OnRefreshHiscores += OnRefreshHiscores;
         Events.OnLoadParseScore += OnLoadParseScore;
         Events.OnParseLoadedScore += OnParseLoadedScore;
+    }
+    void OnFacebookLogin()
+    {
+        //resetea tu score local para poder grabar nuevos scores:
+        Reset();
+    }
+    public void Reset()
+    {
+        print("__________________RESET HISCORES_____________________");
+        foreach (LevelsData.LevelsScore levelScore in levelsScore)
+        {
+            levelScore.myScore = 0;
+            levelScore.myScoreInParse = 0;
+        }
     }
     void OnParseLoadedScore(string facebookID, float score, int levelID)
     {
@@ -46,13 +64,25 @@ public class LevelsData : MonoBehaviour {
     int loadFriendsAndParseLogged = 0;
     public void OnParseLogin()
     {
-        ///print("________________________OnParseLogin::::::::::::::::::::::::");
+        StartCoroutine("WaitUntilUserLoaded");
+    }
+    IEnumerator WaitUntilUserLoaded()
+    {
+        while (Data.Instance.userData.facebookID == "")
+            yield return null; 
+
+        print("________________________OnParseLogin::::::::::::::::::::::::");
+        myList.Add(Data.Instance.userData.facebookID);
         loadFriendsAndParseLogged++;
         CheckIfBothAreReady();
     }
     public void OnFacebookFriends()
     {
-      //  print("________________________OnFacebookFriends::::::::::::::::::::::::");
+        print("________________________OnFacebookFriends::::::::::::::::::::::::");
+        
+        foreach (UserData.FacebookUserData facebookUserData in Data.Instance.userData.FacebookFriends)
+            myList.Add(facebookUserData.facebookID);
+
         loadFriendsAndParseLogged++;
         CheckIfBothAreReady();
     }
@@ -64,7 +94,7 @@ public class LevelsData : MonoBehaviour {
        // print("_________________________CheckIfBothAreReady");
         i = 0;
       // levelsScore = new LevelsScore[Data.Instance.levels.levels.Length];
-       totalLevels = Data.Instance.levels.levels.Length;
+        totalLevels = Data.Instance.levels.GetTotalLevelsInUnblockedSeasons();
        
        Invoke("LoadNextData", 0.5f);
     }
@@ -85,6 +115,7 @@ public class LevelsData : MonoBehaviour {
             IEnumerable<ParseObject> results = t.Result;
             foreach (var result in results)
             {
+                levelsScore[levelID].myScore = float.Parse(result["score"].ToString());
                 levelsScore[levelID].myScoreInParse = float.Parse(result["score"].ToString());
             }
             CompareLocalScoresWithParseScores();
@@ -102,9 +133,9 @@ public class LevelsData : MonoBehaviour {
     }
     void OnRefreshHiscores()
     {
-        print("_________OnRefreshHiscores");
-        if (levelsScore != null && levelsScore[0] != null && levelsScore[0].scoreData1 != null && levelsScore[0].scoreData1.score < 0)
+        if (levelsScore != null)
         {
+            print("_________OnRefreshHiscores");
             i = 0;
             Invoke("LoadNextData", 0.5f);
         }
@@ -140,6 +171,8 @@ public class LevelsData : MonoBehaviour {
         
         levelsScore[level].myScoreInParse = score;
         levelsScore[level].myScore = score;
+
+        Events.OnNewHiscore(level, score);
     }
     
 
@@ -195,13 +228,12 @@ public class LevelsData : MonoBehaviour {
       //  print("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
         ParseQuery<ParseObject> query;
 
+        print("LoadDATA: " + myList.Count);
 
-        IList<string> myList = new List<string>();
-        foreach (UserData.FacebookUserData facebookUserData in Data.Instance.userData.FacebookFriends)
+        foreach(string n in myList)
         {
-            myList.Add(facebookUserData.facebookID);
+          //  print("n: " + n);
         }
-        myList.Add(Data.Instance.userData.facebookID);
 
         if (Data.Instance.levels.levels[_level].totalLaps > 0)
         {
@@ -225,7 +257,9 @@ public class LevelsData : MonoBehaviour {
                 int a = 1;
                 foreach (var result in results)
                 {
+
                     ScoreData sd = levelsScore[_level].scoreData3;
+
                     switch (a)
                     {
                         case 1: sd = levelsScore[_level].scoreData1; break;

@@ -42,6 +42,7 @@ public class MultiplayerSelector : MonoBehaviour {
     public void StartGame()
     {
         Events.OnSoundFX("raceStart");
+
         if (numberOfPlayers > 1)
             Data.Instance.Load("Game");
         else

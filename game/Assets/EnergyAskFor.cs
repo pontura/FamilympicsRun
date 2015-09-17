@@ -69,7 +69,6 @@ public class EnergyAskFor : MonoBehaviour {
 
             EnergyAskButton newButton = Instantiate(button) as EnergyAskButton;
             newButton.transform.SetParent(container.transform);
-            newButton.transform.localPosition = new Vector3(0, buttonsSeparation * a * -1, 0);
             newButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
             string facebookID = data.facebookID;
@@ -82,9 +81,6 @@ public class EnergyAskFor : MonoBehaviour {
 
             newButton.Init(this, a + 1, data.username, facebookID, done);
         }
-        float _h = buttonsSeparation * (Data.Instance.userData.FacebookFriends.Count + 2);
-        int container_width = 756;
-        Events.OnScrollSizeRefresh(new Vector2(container_width, _h));
     }
 
 

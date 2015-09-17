@@ -85,8 +85,15 @@ public class NotificationButton : MonoBehaviour {
     }
     public void Accept()
     {
-        accept.SetActive(false);
-        result.text = "ACCEPTED";
-        Events.OnAcceptEnergyFrom(facebookID);
+        if (Data.Instance.energyManager.energy < 10)
+        {
+            accept.SetActive(false);
+            result.text = "ACCEPTED";
+            Events.OnAcceptEnergyFrom(facebookID);
+        }
+        else
+        {
+            creator.AcceptFail();
+        }
     }
 }

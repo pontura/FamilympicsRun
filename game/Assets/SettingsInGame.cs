@@ -20,8 +20,16 @@ public class SettingsInGame : MonoBehaviour {
         Time.timeScale = 1;
         GetComponent<Animation>().Play("SettingsClose");
     }
+    public void Challenge()
+    {
+        Time.timeScale = 1;
+        Data.Instance.Load("ChallengeCreator");
+    }
     public void NextRace()
     {
+        // si no hay suficiente energia
+        if ( !Data.Instance.energyManager.ReplayCheck()) return;
+
         if ( !Data.Instance.levels.CanPlayNext() )
         {
             ExitToMap();
@@ -36,6 +44,9 @@ public class SettingsInGame : MonoBehaviour {
     }
     public void Restart()
     {
+        // si no hay suficiente energia
+        if ( !Data.Instance.energyManager.ReplayCheck()) return;
+
         Time.timeScale = 1;
         int totalPlayers = Data.Instance.multiplayerData.players.Count;
         if (totalPlayers > 1)

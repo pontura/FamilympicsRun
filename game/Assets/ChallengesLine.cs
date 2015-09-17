@@ -74,7 +74,7 @@ public class ChallengesLine : MonoBehaviour
             this.username = challenges.userData[id].playerName;
             scoreLabel.text = Data.Instance.levelsData.GetScoreString(challenges.userData[id].level, challenges.userData[id].score);
             op_score = challenges.userData[id].score;
-            profilePicture.setPicture(challenges.userData[id].facebookID);
+            profilePicture.setPicture(facebookID);
             infoLoaded = true;
 
             show();

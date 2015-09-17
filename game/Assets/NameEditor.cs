@@ -17,6 +17,8 @@ public class NameEditor : MonoBehaviour {
 
         if(username != "")
             input.text = username;
+        else
+            label.text = "RUN" + multiPlayerData.activePlayerId;
 
         Color color = multiPlayerData.GetPlayer(multiPlayerData.activePlayerId).color;
         background.color = color;

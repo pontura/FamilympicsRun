@@ -81,6 +81,7 @@ public class LevelSelector : MonoBehaviour {
        // scrollLimit.SetLimit(new Vector2(0, scrollLevels));
         Events.AddStarsToCount += AddStarsToCount;
         Positionate();
+        Events.OnRefreshHiscores();
 	}
     void AddStarsToCount(int qty)
     {
@@ -139,25 +140,19 @@ public class LevelSelector : MonoBehaviour {
         if (FB.IsLoggedIn)
             Data.Instance.Load("Challenges");
         else
-            FB.Login();
-    }
-    public void AskForEnergy()
-    {
-        if (FB.IsLoggedIn)
-            Data.Instance.Load("EnergyAskFor");
-        else
-            FB.Login();
+            Events.OnFacebookNotConnected();
     }
     public void Notifications()
     {
         if (FB.IsLoggedIn)
             Data.Instance.Load("Notifications");
         else
-            FB.Login();
+            Events.OnFacebookNotConnected();
     }
     public void ResetApp()
     {
         PlayerPrefs.DeleteAll();
+        Data.Instance.levelsData.Reset();
         Data.Instance.userData.Reset();
         Data.Instance.Load("MainMenu");
         Data.Instance.loginManager.ParseFBLogout();

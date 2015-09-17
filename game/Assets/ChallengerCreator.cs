@@ -91,9 +91,7 @@ public class ChallengerCreator : MonoBehaviour {
             UserData.FacebookUserData data = Data.Instance.userData.FacebookFriends[a];
             
             ChallengerCreatorButton newButton = Instantiate(button) as ChallengerCreatorButton;
-            newButton.transform.SetParent(container.transform);
-            newButton.transform.localPosition = new Vector3(0, buttonsSeparation * a * -1, 0);
-            
+            newButton.transform.SetParent(container.transform);            
 
             string facebookID = data.facebookID;
             bool done = false;
@@ -114,9 +112,6 @@ public class ChallengerCreator : MonoBehaviour {
             newButton.Init(this, a + 1, data.username, facebookID, done);
             newButton.transform.localScale = new Vector3(0.74f, 0.74f, 0.74f);
         }
-        float _h = buttonsSeparation * (Data.Instance.userData.FacebookFriends.Count + 2);
-        int container_width = 756;
-        Events.OnScrollSizeRefresh(new Vector2(container_width, _h));
     }
 
 

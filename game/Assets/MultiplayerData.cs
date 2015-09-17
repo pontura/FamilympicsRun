@@ -13,6 +13,7 @@ public class MultiplayerData : MonoBehaviour {
         public int playerID;
         public string username;
         public int meters;
+        public float time;
         public Color color;
     }
     public List<PlayerData> players;
@@ -64,11 +65,18 @@ public class MultiplayerData : MonoBehaviour {
     {
         Events.OnAddMultiplayerScore += OnAddMultiplayerScore;
         Events.StartGame += StartGame;
+        Events.OnAvatarDie += OnAvatarDie;
     }
     void OnDestroy()
     {
         Events.OnAddMultiplayerScore -= OnAddMultiplayerScore;
         Events.StartGame -= StartGame;
+        Events.OnAvatarDie -= OnAvatarDie;
+    }
+    void OnAvatarDie(Player player)
+    {
+        float timer = GameObject.Find("UICanvas").GetComponent<Chronometer>().timer;
+        GetPlayer(player.id).time = timer;
     }
     void StartGame()
     {
@@ -167,6 +175,7 @@ public class MultiplayerData : MonoBehaviour {
     public void OnSaveName(string username, int id)
     {
         username = username.ToUpper();
+        if (username == "") username = "RUN" + id;
 
         foreach (PlayerData data in players)
         {
@@ -221,7 +230,7 @@ public class MultiplayerData : MonoBehaviour {
             case 3: data.username = playerName3; break;
             case 4: data.username = playerName4; break;
         }
-
+        if(data.username == "") data.username = "RUN" + id;
         players.Add(data);
     }
     public void DeletePlayer(int id)

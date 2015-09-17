@@ -10,6 +10,10 @@ public class NotificationsScene : MonoBehaviour {
 
     public List<NotificationData> notifications;
     public List<string> friendsIdsThatGaveYouEnergy;
+    public GameObject empty;
+    public Text title;
+    public GameObject scrollbars;
+    public GameObject popup;
 
     [Serializable]
     public class NotificationData
@@ -31,6 +35,8 @@ public class NotificationsScene : MonoBehaviour {
 
     void Start()
     {
+        title.text = "";
+        empty.SetActive(false);
       //  CreateList();
         FilterChellengers();
     }
@@ -54,13 +60,16 @@ public class NotificationsScene : MonoBehaviour {
                 string facebookID = result.Get<string>("facebookID");
                 string status = result.Get<string>("status");
 
-                NotificationData notification = new NotificationData();
+                if (status != "3")
+                {
+                    NotificationData notification = new NotificationData();
 
-                notification.asked_facebookID = asked_facebookID;
-                notification.facebookID = facebookID;
-                notification.status = status;
-
-                notifications.Add(notification);
+                    notification.asked_facebookID = asked_facebookID;
+                    notification.facebookID = facebookID;
+                    notification.status = status;
+                
+                    notifications.Add(notification);
+                }
             }
             filterReady = true;
         }
@@ -101,7 +110,6 @@ public class NotificationsScene : MonoBehaviour {
             NotificationButton newButton = Instantiate(button) as NotificationButton;
 
             newButton.transform.SetParent(container.transform);
-            newButton.transform.localPosition = new Vector3(0, buttonsSeparation * a * -1, 0);
             newButton.transform.localScale = Vector3.one;
 
             bool done = false;
@@ -120,9 +128,20 @@ public class NotificationsScene : MonoBehaviour {
         if (friendsIdsThatGaveYouEnergy.Count > 0)
             SetNewEnergyAccepted();
 
-        float _h = buttonsSeparation * (Data.Instance.userData.FacebookFriends.Count + 2);
-        int container_width = 948;
-        Events.OnScrollSizeRefresh(new Vector2(container_width, _h));
+        if (Data.Instance.notifications.FriendsThatGaveYouEnergy.Count == 0 && notifications.Count == 0)
+        {
+            ShowEmpty();
+        }
+        else
+        {
+            title.text = "NOTIFICATIONS";
+        }
+    }
+    void ShowEmpty()
+    {
+        empty.SetActive(true);
+        
+        scrollbars.SetActive(false);
     }
     private void SetNewEnergyAccepted()
     {
@@ -133,7 +152,24 @@ public class NotificationsScene : MonoBehaviour {
             Data.Instance.notifications.DeleteNotification(asked_facebookID);
         }
     }
-
+    public void AcceptFail()
+    {
+        OpenPopup();
+    } 
+    public void OpenPopup()
+    {
+        popup.SetActive(true);
+        popup.GetComponent<Animation>().Play("PopupOn");
+    }
+    public void ClosePopup()
+    {
+        popup.GetComponent<Animation>().Play("PopupOff");
+        Invoke("CloseOff", 0.2f);
+    }
+    void CloseOff()
+    {
+        popup.SetActive(false);
+    }
     public void Back()
     {
         Data.Instance.Load("LevelSelector");
@@ -148,9 +184,5 @@ public class NotificationsScene : MonoBehaviour {
         Data.Instance.GetComponent<ChallengersManager>().showFacebookFriends = true;
         Data.Instance.Load("ChallengeCreator");
     }
-    public void Accept()
-    {
-       // Events.OnChallengeCreate(facebookFriendName, facebookFriendId, levelId, score);
-        //CloseOff();
-    }  
+     
 }

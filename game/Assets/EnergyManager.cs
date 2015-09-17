@@ -60,9 +60,23 @@ public class EnergyManager : MonoBehaviour {
     void StartGame()
     {
         if (energy == 0) return;
+            ConsumeEnergy();
+    }
+    void ConsumeEnergy()
+    {
         energy--;
         SaveEnergy();
         SaveNewTime();
+    }
+    public bool ReplayCheck()
+    {
+        if (energy < 1)
+        {
+            Data.Instance.Load("LevelSelector");
+            return false;
+        }
+        ConsumeEnergy();
+        return true;
     }
     void Loop()
     {
@@ -101,9 +115,7 @@ public class EnergyManager : MonoBehaviour {
     void SaveEnergy()
     {
         PlayerPrefs.SetInt(playerPref_ENERGY, energy);
-
         print("GRABA playerPref_ENERGY:" +  energy);
-
         Events.OnEnergyWon();
     }
     void SaveNewTime()
@@ -145,4 +157,5 @@ public class EnergyManager : MonoBehaviour {
             Debug.Log("On Notifications to facebookID: " + facebookID + " status: " + status);
         });
     }
+    
 }

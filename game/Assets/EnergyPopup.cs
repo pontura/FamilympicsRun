@@ -37,6 +37,16 @@ public class EnergyPopup : MonoBehaviour {
         panel.GetComponent<Animation>().Play("PopupOn");
         dataField.text = Data.Instance.energyManager.energy + "/" + Data.Instance.energyManager.MAX_ENERGY;
     }
+    public void AskForEnergy()
+    {
+        if (FB.IsLoggedIn)
+            Data.Instance.Load("EnergyAskFor");
+        else
+        {
+            CloseOff();
+            Events.OnFacebookNotConnected();
+        }
+    }
     public void Close()
     {
         panel.GetComponent<Animation>().Play("PopupOff");
@@ -55,6 +65,6 @@ public class EnergyPopup : MonoBehaviour {
     public void Refill()
     {
         Events.ReFillEnergy(5);
-        Data.Instance.Load("LevelSelector");
+        Close();
     }
 }

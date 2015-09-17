@@ -49,6 +49,10 @@ public class Player : MonoBehaviour {
         gameManager = GameObject.Find("Game").GetComponent<GameManager>();
         TrilRendererDefaultTime = GetComponent<TrailRenderer>().time;
         totalPlayers = Data.Instance.multiplayerData.players.Count;
+
+        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+            totalPlayers = 1;
+        numSprite.sprite = null;
     }
     public void Init(GameCamera _gameCamera)
     {
@@ -68,6 +72,8 @@ public class Player : MonoBehaviour {
         Events.OnAvatarRun += OnAvatarRun;
         Events.OnLevelComplete += OnLevelComplete;
         Events.GameOver += GameOver;
+
+        
 
     }
     void OnDestroy()
