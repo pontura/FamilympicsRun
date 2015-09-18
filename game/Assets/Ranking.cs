@@ -39,12 +39,10 @@ public class Ranking : MonoBehaviour {
 
         List<MultiplayerData.HiscoresData> hiscoreData = multiplayerData.hiscoreLevels[id].hiscores;
 
-        if (hiscoreData[0].score > 0)
-            AddPlayer(hiscoreData[0].username, hiscoreData[0].score.ToString(), hiscoreData[0].playerID);
-        if (hiscoreData[1].score > 0)
-            AddPlayer(hiscoreData[1].username, hiscoreData[1].score.ToString(), hiscoreData[1].playerID);
-        if (hiscoreData[2].score > 0)
-            AddPlayer(hiscoreData[2].username, hiscoreData[2].score.ToString(), hiscoreData[2].playerID);
+        foreach (MultiplayerData.HiscoresData data in hiscoreData)
+        {
+            AddPlayer(data.username, data.score.ToString(), data.playerID);
+        }
     }
 
 

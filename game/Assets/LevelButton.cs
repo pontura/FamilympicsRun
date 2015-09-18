@@ -128,28 +128,27 @@ public class LevelButton : MonoBehaviour {
         myScore.text = "";
         multiplayerData = Data.Instance.GetComponent<MultiplayerData>();
         List<MultiplayerData.HiscoresData> hiscoreData =  multiplayerData.hiscoreLevels[id].hiscores;
-
-        if (hiscoreData[0].score > 0)
+        if (hiscoreData == null) return;
+        if (hiscoreData.Count == 0) return;
+        if (hiscoreData.Count > 0)
         {
-
            // print("______LoadMultiplayerWinners: levelID: " + id + "hiscoreData[0].score: " + hiscoreData[0].score);
             int numStars = Data.Instance.levels.GetCurrentLevelStarsByScore(id, hiscoreData[0].score);
             stars.Init(numStars);
-
 
             user1.gameObject.SetActive(true);
             user1.Init(id, hiscoreData[0].username, hiscoreData[0].score.ToString(), "");
             user1.SetMultiplayerColor(hiscoreData[0].playerID);
         }
         else user1.gameObject.SetActive(false);
-        if (hiscoreData[1].score > 0)
+        if (hiscoreData.Count > 1)
         {
             user2.gameObject.SetActive(true);
             user2.Init(id, hiscoreData[1].username, hiscoreData[1].score.ToString(), "");
             user2.SetMultiplayerColor(hiscoreData[1].playerID);
         }
         else user2.gameObject.SetActive(false);
-        if (hiscoreData[2].score > 0)
+        if (hiscoreData.Count > 2)
         {
             user3.gameObject.SetActive(true);
             user3.Init(id, hiscoreData[2].username, hiscoreData[2].score.ToString(), "");

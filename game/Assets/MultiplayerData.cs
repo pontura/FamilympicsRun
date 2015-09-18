@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
-
+using System.Linq;
 
 public class MultiplayerData : MonoBehaviour {
 
@@ -53,11 +53,12 @@ public class MultiplayerData : MonoBehaviour {
             HiscoreLevel hiscoreLevel = new HiscoreLevel();
             hiscoreLevels.Add(hiscoreLevel);
             hiscoreLevel.hiscores = new List<HiscoresData>();
-            for (int a = 0; a < 3; a++)
-            {
-                HiscoresData hiscoresData = new HiscoresData();
-                hiscoreLevel.hiscores.Add( hiscoresData );
-            }
+           // hiscoreLevel.hiscores = new List<HiscoresData>();
+            //for (int a = 0; a < 3; a++)
+            //{
+            //    HiscoresData hiscoresData = new HiscoresData();
+            //    hiscoreLevel.hiscores.Add( hiscoresData );
+            //}
         }
         LeadPlayerPrefs();
 	}
@@ -85,6 +86,7 @@ public class MultiplayerData : MonoBehaviour {
     }
     public void Reset()
     {
+        print("RESET");
         foreach (HiscoreLevel hiscoreLevel in hiscoreLevels)
         {
             hiscoreLevel.lastWinner = 0;
@@ -104,73 +106,56 @@ public class MultiplayerData : MonoBehaviour {
         HiscoreLevel hiscoreLevel = hiscoreLevels[levelID];
         hiscoreLevel.lastWinner = playerID;
 
-        bool newHiscore = false;
-        HiscoresData newHiscoresData = null;
-
-        print(levelID + " multi: " + score);
-
         int num = 1;
-        foreach (HiscoresData hiscoresData in hiscoreLevel.hiscores)
-        {
-            print("newHiscore " + newHiscoresData);
-            if (newHiscoresData != null)
-            {
-                HiscoresData hiscoresDataToReplace = new HiscoresData();
-                hiscoresDataToReplace.levelID = hiscoresData.levelID;
-                hiscoresDataToReplace.score = hiscoresData.score;
-                hiscoresDataToReplace.username = hiscoresData.username;
-                hiscoresDataToReplace.playerID = hiscoresData.playerID;
 
-                hiscoresData.levelID = newHiscoresData.levelID;
-                hiscoresData.score = newHiscoresData.score;
-                hiscoresData.username = newHiscoresData.username;
-                hiscoresData.playerID = newHiscoresData.playerID;
-                SavePlayerPrefs(levelID, num, newHiscoresData.playerID, newHiscoresData.username, newHiscoresData.score);
+        HiscoresData hiscoresData = new HiscoresData();
+        hiscoresData.levelID = levelID;
+        hiscoresData.score = score;
+        hiscoresData.username = username;
+        hiscoresData.playerID = playerID;
+        
+        hiscoreLevel.hiscores.Add(hiscoresData);
+        ArrengeListByScore(levelID);
 
-                newHiscoresData = hiscoresDataToReplace;
-            } else 
-            if (
-                (Data.Instance.levels.GetCurrentLevelData().totalTime > 0 && hiscoresData.score < score)
-                ||
-                (Data.Instance.levels.GetCurrentLevelData().totalLaps > 0 && (hiscoresData.score > score || hiscoresData.score == 0))
-                ||
-                (Data.Instance.levels.GetCurrentLevelData().Sudden_Death && (hiscoresData.score < score))
-                )
-            {
-                newHiscore = true;
-                newHiscoresData = new HiscoresData();
-
-                newHiscoresData.levelID = hiscoresData.levelID;
-                newHiscoresData.score = hiscoresData.score;
-                newHiscoresData.username = hiscoresData.username;
-                newHiscoresData.playerID = hiscoresData.playerID;
-
-                SavePlayerPrefs(levelID, num, playerID, username, score);
-
-                hiscoresData.levelID = levelID;
-                hiscoresData.score = score;
-                hiscoresData.username = username;
-                hiscoresData.playerID = playerID;
-            }
-            num++;
-        }
+        SavePlayerPrefs();
     }
-    void SavePlayerPrefs(int levelID, int num, int playerID, string username, float score)
+    void SavePlayerPrefs()
     {
-        string strName = "Multi_" + levelID + "_" + num;
-        string strValue = playerID + "_" + username + "_" + score;
-        PlayerPrefs.SetString(strName, strValue);
-        print("______________" + strName + "   strValue: " + strValue);
+        foreach (HiscoreLevel hiscoreLevel in hiscoreLevels)
+        {
+            int a = 1;
+            foreach (HiscoresData hiscoresData in hiscoreLevel.hiscores)
+            {
+                if (a <= 10)
+                {
+                    string strName = "Multi_" + hiscoresData.levelID + "_" + a;
+                    string strValue = hiscoresData.playerID + "_" + hiscoresData.username + "_" + hiscoresData.score;
+                    PlayerPrefs.SetString(strName, strValue);
+                    print("______________" + strName + "   strValue: " + strValue);
+                }
+                a++;
+            }
+        }
     }
     void LeadPlayerPrefs()
     {
         for (int i = 0; i < Data.Instance.levels.levels.Length; i++)
         {
-            for (int a = 0; a < 3; a++)
+            for (int a = 0; a < 10; a++)
             {
-                LeadPlayerPrefData( i + 1, a+1);
+                HiscoresData newHiscoresData = LeadPlayerPrefData( i+1, a+1);
+                if (newHiscoresData != null)
+                {
+                    hiscoreLevels[i+1].hiscores.Add(newHiscoresData);
+                }
             }
+            ArrengeListByScore(i);
         }
+    }
+    void ArrengeListByScore(int levelId)
+    {
+        hiscoreLevels[levelId].hiscores = hiscoreLevels[levelId].hiscores.OrderBy(x => x.score).ToList();
+        if (Data.Instance.levels.levels[levelId].totalTime > 0) hiscoreLevels[levelId].hiscores.Reverse();
     }
     public void OnSaveName(string username, int id)
     {
@@ -193,22 +178,25 @@ public class MultiplayerData : MonoBehaviour {
 
     //llega esto:
     //Multi_1_1   strValue:1_xcv_2.799766
-    void LeadPlayerPrefData(int levelID, int num)
+    HiscoresData LeadPlayerPrefData(int levelID, int num)
     {
+        HiscoresData hiscoresData = new HiscoresData();
         string result = PlayerPrefs.GetString("Multi_" + levelID + "_" + num);
 
-        if (result.Length < 2) return;
+        if (result.Length < 2) return null;
         string[] nameArr = Regex.Split(result, "_");
-        if (nameArr.Length < 1) return;
+        if (nameArr.Length < 1) return null;
 
         int playerID = int.Parse(nameArr[0]);
         string username = nameArr[1];
         float score = float.Parse(nameArr[2]);
 
-        hiscoreLevels[levelID].hiscores[num - 1].levelID = levelID;
-        hiscoreLevels[levelID].hiscores[num - 1].playerID = playerID;
-        hiscoreLevels[levelID].hiscores[num - 1].username = username;
-        hiscoreLevels[levelID].hiscores[num - 1].score = score;
+        hiscoresData.levelID = levelID;
+        hiscoresData.playerID = playerID;
+        hiscoresData.username = username;
+        hiscoresData.score = score;
+
+        return hiscoresData;
     }
 
 
