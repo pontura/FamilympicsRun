@@ -13,7 +13,7 @@ public class ChallengeConfirm : MonoBehaviour {
 	public void Init(string username, string facebookId) {
         this.username = username;
         this.facebookId = facebookId;
-        usernameLabel.text = username;
+        usernameLabel.text = username.ToUpper();
         profilePicture.setPicture(facebookId);
 	}
 }

@@ -17,6 +17,7 @@ public static class Events {
     public static System.Action OnFacebookLogin = delegate { };
     public static System.Action OnParseLogin = delegate { };
     public static System.Action<string, float, int> OnParseLoadedScore = delegate { };
+    public static System.Action OnLoadLocalData = delegate { };    
     public static System.Action<int, float> OnNewHiscore = delegate { };   
     
 

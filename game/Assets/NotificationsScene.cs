@@ -35,114 +35,101 @@ public class NotificationsScene : MonoBehaviour {
 
     void Start()
     {
-        title.text = "";
-        empty.SetActive(false);
-      //  CreateList();
-        FilterChellengers();
-    }
-    
-    void FilterChellengers()
-    {
-        LoadFriends(
-                 ParseObject.GetQuery("Notifications")
-                .WhereEqualTo("asked_facebookID", Data.Instance.userData.facebookID)
-                .Limit(90)
-            );
-    }
-    void LoadFriends(ParseQuery<ParseObject> query)
-    {
-        query.FindAsync().ContinueWith(t =>
-        {
-            IEnumerable<ParseObject> results = t.Result;
-            foreach (var result in results)
-            {
-                string asked_facebookID = result.Get<string>("asked_facebookID");
-                string facebookID = result.Get<string>("facebookID");
-                string status = result.Get<string>("status");
-
-                if (status != "3")
-                {
-                    NotificationData notification = new NotificationData();
-
-                    notification.asked_facebookID = asked_facebookID;
-                    notification.facebookID = facebookID;
-                    notification.status = status;
-                
-                    notifications.Add(notification);
-                }
-            }
-            filterReady = true;
-        }
-        );
-    }
-    void Update()
-    {
-        if (filterReady)
-        {
-            filterReady = false;
-            CreateList();
-        }
-    }
-    public void CreateList()
-    {
-        //ya te dieron energia:
-        foreach (string asked_facebookId in Data.Instance.notifications.FriendsThatGaveYouEnergy)
-        {
-            NotificationButton newButton = Instantiate(button) as NotificationButton;
-
-            newButton.transform.SetParent(container.transform);
-            newButton.transform.localScale = Vector3.one;
-
-            string username = "";
-
-            foreach (UserData.FacebookUserData data in Data.Instance.userData.FacebookFriends)
-            {
-                if (data.facebookID == asked_facebookId)
-                    username = data.username;
-            }
-            newButton.Init(this, username, asked_facebookId, "3");
-        }
-        for (int a = 0; a < notifications.Count; a++)
-        {
-            if (notifications[a].facebookID == Data.Instance.userData.facebookID && notifications[a].status == "1")
-                friendsIdsThatGaveYouEnergy.Add(notifications[a].asked_facebookID);
-
-            NotificationButton newButton = Instantiate(button) as NotificationButton;
-
-            newButton.transform.SetParent(container.transform);
-            newButton.transform.localScale = Vector3.one;
-
-            bool done = false;
-
-            string username = "";
-
-            foreach (UserData.FacebookUserData data in Data.Instance.userData.FacebookFriends)
-            {
-                print(data.facebookID + " --  " + notifications[a].facebookID);
-
-                if (data.facebookID == notifications[a].facebookID)
-                    username = data.username;
-            }            
-            newButton.Init(this, username, notifications[a].facebookID, notifications[a].status);
-        }
-        if (friendsIdsThatGaveYouEnergy.Count > 0)
-            SetNewEnergyAccepted();
-
-        if (Data.Instance.notifications.FriendsThatGaveYouEnergy.Count == 0 && notifications.Count == 0)
-        {
+        if (Data.Instance.notifications.notifications.Count == 0 && Data.Instance.notifications.notificationsReceived.Count == 0)
             ShowEmpty();
-        }
         else
         {
-            title.text = "NOTIFICATIONS";
+            empty.SetActive(false);
+            CreateList();
         }
     }
     void ShowEmpty()
     {
         empty.SetActive(true);
-        
+        title.text = "";
         scrollbars.SetActive(false);
     }
+    //void FilterChellengers()
+    //{
+    //    LoadFriends(
+    //             ParseObject.GetQuery("Notifications")
+    //            .WhereEqualTo("asked_facebookID", Data.Instance.userData.facebookID)
+    //            .Limit(90)
+    //        );
+    //}
+    //void LoadFriends(ParseQuery<ParseObject> query)
+    //{
+    //    query.FindAsync().ContinueWith(t =>
+    //    {
+    //        IEnumerable<ParseObject> results = t.Result;
+    //        foreach (var result in results)
+    //        {
+    //            string asked_facebookID = result.Get<string>("asked_facebookID");
+    //            string facebookID = result.Get<string>("facebookID");
+    //            string status = result.Get<string>("status");
+
+    //            if (status != "3")
+    //            {
+    //                NotificationData notification = new NotificationData();
+
+    //                notification.asked_facebookID = asked_facebookID;
+    //                notification.facebookID = facebookID;
+    //                notification.status = status;
+                
+    //                notifications.Add(notification);
+    //            }
+    //        }
+    //        filterReady = true;
+    //    }
+    //    );
+    //}
+    //void Update()
+    //{
+    //    if (filterReady)
+    //    {
+    //        filterReady = false;
+    //        CreateList();
+    //    }
+    //}
+    public void CreateList()
+    {
+        //ya te dieron energia:
+        foreach (Notifications.NotificationData data in Data.Instance.notifications.notifications)
+        {
+            NotificationButton newButton = Instantiate(button) as NotificationButton;
+
+            newButton.transform.SetParent(container.transform);
+            newButton.transform.localScale = Vector3.one;
+
+            string username = "";
+
+            foreach (UserData.FacebookUserData facebookData in Data.Instance.userData.FacebookFriends)
+            {
+                if (facebookData.facebookID == data.facebookID)
+                    username = facebookData.username;
+            }
+            newButton.Init(this, username, data.facebookID, data.status);
+        }
+
+        //ya te dieron energia:
+        foreach (Notifications.NotificationData data in Data.Instance.notifications.notificationsReceived)
+        {
+            NotificationButton newButton = Instantiate(button) as NotificationButton;
+
+            newButton.transform.SetParent(container.transform);
+            newButton.transform.localScale = Vector3.one;
+
+            string username = "";
+
+            foreach (UserData.FacebookUserData facebookData in Data.Instance.userData.FacebookFriends)
+            {
+                if (facebookData.facebookID == data.asked_facebookID)
+                    username = facebookData.username;
+            }
+            newButton.Init(this, username, data.asked_facebookID, data.status);
+        }
+    }
+    
     private void SetNewEnergyAccepted()
     {
         Events.ReFillEnergy(friendsIdsThatGaveYouEnergy.Count);

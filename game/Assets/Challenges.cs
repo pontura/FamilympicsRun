@@ -102,8 +102,9 @@ public class Challenges : MonoBehaviour {
                 string facebookID = result.Get<string>("facebookID");
                 string op_playerName = result.Get<string>("op_playerName");
                 string playerName = result.Get<string>("playerName");
+                int level = result.Get<int>("level");                
                 float score = result.Get<float>("score");
-                int level = result.Get<int>("level");
+                
 
                 float score2 = 0;
                 string winner = "";

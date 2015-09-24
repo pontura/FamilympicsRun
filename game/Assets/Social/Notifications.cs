@@ -7,10 +7,17 @@ using System;
 
 public class Notifications : MonoBehaviour {
 
-    public List<string> FriendsThatGaveYouEnergy;
-    public List<string> FriendsThatRequestedYou;
+    [Serializable]
+    public class NotificationData
+    {
+        public string asked_facebookID;
+        public string facebookID;
+        public string status;
+    }
 
-    public int totalRequestedNotifications;
+    public List<NotificationData> notifications;
+    public List<NotificationData> notificationsReceived;
+
     private int lastNotificationsQty;
 
 	void Start () {
@@ -53,27 +60,58 @@ public class Notifications : MonoBehaviour {
     }
     void LoadFromParse(ParseQuery<ParseObject> query)
     {
-        FriendsThatRequestedYou.Clear();
+        notifications.Clear();
         query.FindAsync().ContinueWith(t =>
         {
             IEnumerable<ParseObject> results = t.Result;
             foreach (var result in results)
             {
-                string facebookID = result.Get<string>("facebookID");
-                FriendsThatRequestedYou.Add(facebookID);
+                NotificationData data = new NotificationData();
+                data.asked_facebookID = result.Get<string>("asked_facebookID");
+                data.facebookID = result.Get<string>("facebookID");
+                data.status = result.Get<string>("status");
+                notifications.Add(data);
             }
-            lastNotificationsQty = FriendsThatRequestedYou.Count;
+        }
+       );
+       CheckForNewNotificationsReceived();
+    }
+    void CheckForNewNotificationsReceived()
+    {
+        print("CheckForNewNotificationsReceived");
+
+        LoadFromParseReceived(
+                 ParseObject.GetQuery("Notifications")
+                .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
+                .WhereNotEqualTo("status", "0")
+                .Limit(90)
+            );
+    }
+    void LoadFromParseReceived(ParseQuery<ParseObject> query)
+    {
+        notificationsReceived.Clear();
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerable<ParseObject> results = t.Result;
+            foreach (var result in results)
+            {
+                NotificationData data = new NotificationData();
+                data.asked_facebookID = result.Get<string>("asked_facebookID");
+                data.facebookID = result.Get<string>("facebookID");
+                data.status = result.Get<string>("status");
+                notificationsReceived.Add(data);
+            }
         }
        );
     }
-    void Update()
-    {
-        if (lastNotificationsQty != totalRequestedNotifications)
-        {
-            totalRequestedNotifications = lastNotificationsQty;
-            Events.OnRefreshNotifications(totalRequestedNotifications);
-        }
-    }
+    //void Update()
+    //{
+    //    if (lastNotificationsQty != totalRequestedNotifications)
+    //    {
+    //        totalRequestedNotifications = lastNotificationsQty;
+    //        //Events.OnRefreshNotifications(totalRequestedNotifications);
+    //    }
+    //}
     public void UpdateNotification(string asked_facebookID, string status)
     {
         var query = new ParseQuery<ParseObject>("Notifications")
@@ -94,19 +132,17 @@ public class Notifications : MonoBehaviour {
     }
     public void OnAcceptEnergyFrom(string facebookID)
     {
-        Events.ReFillEnergy(Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
-
-        print("AcceptEnergyFrom" + facebookID);
-
-        Data.Instance.notifications.UpdateNotification(facebookID, "3");
+        Events.ReFillEnergy(1);
+        print("OnAcceptEnergyFrom : " + facebookID);
 
         int id = 0;
-        for (int a = 0; a<Data.Instance.notifications.FriendsThatGaveYouEnergy.Count; a++)
+        for (int a = 0; a < notificationsReceived.Count; a++)
         {
-            if (Data.Instance.notifications.FriendsThatGaveYouEnergy[a] == facebookID)
+            if (notificationsReceived[a].asked_facebookID == facebookID)
                 id = a;
         }
-        Data.Instance.notifications.FriendsThatGaveYouEnergy.RemoveAt(id);
+        notificationsReceived.RemoveAt(id);
+        DeleteNotification(facebookID);
     }
     public void DeleteNotification(string asked_facebookID)
     {

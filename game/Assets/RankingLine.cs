@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 
 public class RankingLine : MonoBehaviour {
 
+    public float score_float;
     public Image circleImage;
     public Text username;
     public Text score;
@@ -15,6 +16,7 @@ public class RankingLine : MonoBehaviour {
 
     public void Init(int levelID, string _username, string _score, string _facebookID)
     {
+        this.score_float = float.Parse(_score);
         if (_username == null) return;
 
         this.facebookID = _facebookID;

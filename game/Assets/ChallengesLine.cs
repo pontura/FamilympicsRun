@@ -73,6 +73,16 @@ public class ChallengesLine : MonoBehaviour
             level.text = "LEVEL " + levelId;
             this.username = challenges.userData[id].playerName;
             scoreLabel.text = Data.Instance.levelsData.GetScoreString(challenges.userData[id].level, challenges.userData[id].score);
+
+            Levels.LevelData data = Data.Instance.levels.GetData(levelId);
+            string addToScore = "";
+            if (data.totalTime > 0)
+                addToScore = "m in " + Data.Instance.levelsData.GetTimer(data.totalTime);
+            else
+                addToScore = "in " + data.totalLaps  + " m";
+
+            scoreLabel.text += addToScore;
+
             op_score = challenges.userData[id].score;
             profilePicture.setPicture(facebookID);
             infoLoaded = true;

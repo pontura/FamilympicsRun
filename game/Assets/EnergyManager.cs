@@ -133,17 +133,17 @@ public class EnergyManager : MonoBehaviour {
     }
     void SendEnergyTo(string facebookID)
     {
-        UpdataNotification(facebookID, "1");
+        UpdataNotification(facebookID, Data.Instance.userData.facebookID, "1");
     }
     void RejectEnergyTo(string facebookID)
     {
-        UpdataNotification(facebookID, "2");
+        UpdataNotification(facebookID, Data.Instance.userData.facebookID , "2");
     }
-    void UpdataNotification(string facebookID, string status)
+    void UpdataNotification(string facebookID, string asked_facebookID, string status)
     {
         var query = new ParseQuery<ParseObject>("Notifications")
             .WhereEqualTo("facebookID", facebookID)
-            .WhereEqualTo("asked_facebookID", Data.Instance.userData.facebookID);
+            .WhereEqualTo("asked_facebookID", asked_facebookID);
 
         query.FindAsync().ContinueWith(t =>
         {
@@ -154,7 +154,7 @@ public class EnergyManager : MonoBehaviour {
             return data.SaveAsync();
         }).Unwrap().ContinueWith(t =>
         {
-            Debug.Log("On Notifications to facebookID: " + facebookID + " status: " + status);
+            Debug.Log("On Notifications to facebookID: " + facebookID + " asked_facebookID : " + asked_facebookID + " status: " + status);
         });
     }
     

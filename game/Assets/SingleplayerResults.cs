@@ -31,9 +31,30 @@ public class SingleplayerResults : MonoBehaviour
         Events.OnLevelComplete -= OnLevelComplete;
         Events.OnNewHiscore -= OnNewHiscore;
     }
+
+    string time;
+    int numStars;
+
     void OnLevelComplete()
     {
-        Invoke("SetOn", 4);
+        title.text = "LEVEL " + Data.Instance.levels.currentLevel;
+        Invoke("SaveScore", 1);
+    }
+    void SaveScore()
+    {
+        System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
+        time = string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+
+        numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
+
+        float score = 0;
+        if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
+            score = Data.Instance.levelData.laps;
+        else
+            score = Data.Instance.levelData.time;
+
+        Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
+        Invoke("SetOn", 3);
     }
     public void SetOn()
     {
@@ -53,15 +74,7 @@ public class SingleplayerResults : MonoBehaviour
     }
     public void SetOnSingleResult()
     {
-        panel.SetActive(true);        
-
-        title.text = "LEVEL " + Data.Instance.levels.currentLevel;
-
-        System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
-        string time =  string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
-        
-
-        int numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
+        panel.SetActive(true);
         stars.Init(numStars);
 
         float lastScore = Data.Instance.levelsData.GetLevelScores(Data.Instance.levels.currentLevel).myScore;
@@ -79,7 +92,7 @@ public class SingleplayerResults : MonoBehaviour
             score = Data.Instance.levelData.time;
             System.TimeSpan lastT = System.TimeSpan.FromSeconds(lastScore);
             string lastTime = string.Format("{0:00}:{1:00}:{2:00}", lastT.Minutes, lastT.Seconds, lastT.Milliseconds / 10);
-            hiscoreField.text = "BEST " + lastTime ;
+            hiscoreField.text = "BEST " + lastTime;
 
             string result = time;
 
@@ -89,8 +102,8 @@ public class SingleplayerResults : MonoBehaviour
             resultField.text = result;
         }
         if (lastScore == 0) hiscoreField.text = "NEW HISCORE";
-        
-        Events.OnSaveScore(Data.Instance.levels.currentLevel, score);        
+
+       // Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
     }
     void OnNewHiscore(int levelId, float score)
     {

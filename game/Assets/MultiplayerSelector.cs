@@ -27,11 +27,20 @@ public class MultiplayerSelector : MonoBehaviour {
         }
         if (numberOfPlayers > 1)
         {
-            playButton.interactable = true;
-            playButton.Select();
+            if (playButton.interactable == false)
+            {
+                playButton.animation.Play("PlayButtonOn");
+                playButton.interactable = true;
+                playButton.Select();
+            }
+
         }
         else
+        {
+            playButton.animation.Stop();
+           playButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             playButton.interactable = false;
+        }
     }
     public void Edit(int id)
     {

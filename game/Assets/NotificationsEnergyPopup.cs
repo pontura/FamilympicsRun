@@ -62,7 +62,7 @@ public class NotificationsEnergyPopup : MonoBehaviour {
         if (ready) return;
         if (FriendsThatGaveYouEnergy.Count > 0)
         {
-            Data.Instance.notifications.FriendsThatGaveYouEnergy = FriendsThatGaveYouEnergy;
+           // Data.Instance.notifications.FriendsThatGaveYouEnergy = FriendsThatGaveYouEnergy;
             ready = true;
             SetNewEnergyAccepted();
             Events.OnRefreshNotifications(FriendsThatGaveYouEnergy.Count);

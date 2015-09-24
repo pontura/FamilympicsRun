@@ -19,17 +19,22 @@ public class Ranking : MonoBehaviour {
         }
 
         if (!FB.IsLoggedIn) return;
-        
-        LevelsData.LevelsScore levelScore = Data.Instance.levelsData.levelsScore[levelID];
 
-        if (levelScore.scoreData1.playerName != "")
-            AddPlayer(levelScore.scoreData1.playerName, levelScore.scoreData1.score.ToString(), -1);
-        if (levelScore.scoreData2.playerName != "")
-            AddPlayer(levelScore.scoreData2.playerName, levelScore.scoreData2.score.ToString(), -1);
-        if (levelScore.scoreData3.playerName != "")
-            AddPlayer(levelScore.scoreData3.playerName, levelScore.scoreData3.score.ToString(), -1);
+        //List<LevelsData.ScoreData> scoresData = Data.Instance.levelsData.LoadFacebookHiscores(levelID);
 
+        //foreach(LevelsData.ScoreData scoreData in scoresData)
+        //{
+        //      AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1);
+        //}
+
+        List<LevelsData.ScoreData> scoresData = Data.Instance.levelsData.levelsScore[levelID].scoreData;
+
+        foreach (LevelsData.ScoreData scoreData in scoresData)
+        {
+            AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1);
+        }
     }
+
     public void LoadMultiplayerWinners(int id)
     {
         foreach (Transform child in container.transform)

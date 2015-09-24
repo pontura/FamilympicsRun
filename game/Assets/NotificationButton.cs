@@ -56,21 +56,35 @@ public class NotificationButton : MonoBehaviour {
     {
         if (status == "1")
         {
-            result.text = "SENDED NEW!";
+            statusLabel.text = "SENT YOU ENERGY";
         } else if (status == "2")
         {
-            result.text = "REJECTED";
+            statusLabel.text = "REJECTED";
+            Cancel.SetActive(true);
+            Send.SetActive(false);
+            accept.SetActive(false);
+            Cancel.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                DeleteRejectedEnergyRequest();
+            });
+
+
         } else if (status == "3")
         {
-            statusLabel.text = "SENT YOU ENERGY";
+            statusLabel.text = "ready....";
             result.text = "";
         }
     }
     public void SendAction()
     {
-        result.text = "SENDED";
+        result.text = "SENT";
         ResetButtons();
         Events.SendEnergyTo(facebookID);
+    }
+    public void DeleteRejectedEnergyRequest()
+    {
+        Data.Instance.notifications.DeleteNotification(facebookID);
+        Destroy(gameObject);
     }
     public void CancelAction()
     {

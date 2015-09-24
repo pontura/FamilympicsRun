@@ -28,6 +28,7 @@ public class LevelSelector : MonoBehaviour {
         Events.CheckForNewNotifications();
 
         Events.OnMusicChange("menus");
+        
         if(Data.Instance.OnlyMultiplayer)
         {
             Data.Instance.userData.mode = UserData.modes.MULTIPLAYER;
@@ -43,15 +44,22 @@ public class LevelSelector : MonoBehaviour {
             }
             Data.Instance.levelData.ResetChallenge();
             OnChangePlayMode(Data.Instance.userData.mode);
-            Events.OnChangePlayMode += OnChangePlayMode;
-            
+            Events.OnChangePlayMode += OnChangePlayMode;            
         }
+        LoadButtons();
+        Events.AddStarsToCount += AddStarsToCount;
+        Positionate();
+        Events.OnLoadLocalData();
+	}
+    void LoadButtons()
+    {
         int b = 0;
         int _seasonWhiteSpace = 0;
-        for (int a = 1; a < Data.Instance.levels.levels.Length; a++ )
-        {
-            b++;            
 
+        for (int a = 1; a < Data.Instance.levels.levels.Length; a++)
+        {
+            b++;
+            Data.Instance.levelsData.ArrengeListByScore(a);
             LevelButton newLevelButton = Instantiate(levelButton) as LevelButton;
             newLevelButton.transform.SetParent(buttonsContainer.transform);
             int _x = (buttonsSeparation) * (a - 2) - offsetX + _seasonWhiteSpace;
@@ -61,7 +69,7 @@ public class LevelSelector : MonoBehaviour {
                 _seasonWhiteSpace += seasonWhiteSpace;
                 b = 0;
             }
-           
+
             newLevelButton.transform.localPosition = new Vector3(_x, 0, 0);
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
@@ -69,20 +77,15 @@ public class LevelSelector : MonoBehaviour {
             if (Data.Instance.FreeLevels) lastLevelScore = 3;
             newLevelButton.Init(this, a, lastLevelScore);
 
-            if(lastLevelScore>0)
+            if (lastLevelScore > 0)
                 Data.Instance.userData.levelProgressionId = a;
 
-            if(Data.Instance.FreeLevels)
+            if (Data.Instance.FreeLevels)
                 Data.Instance.userData.levelProgressionId = 100;
         }
         if (Data.Instance.FreeLevels == true)
             Data.Instance.userData.starsCount = 1000;
-       // int scrollLevels = (Data.Instance.levels.levels.Length - 4) * -300;
-       // scrollLimit.SetLimit(new Vector2(0, scrollLevels));
-        Events.AddStarsToCount += AddStarsToCount;
-        Positionate();
-        Events.OnRefreshHiscores();
-	}
+    }
     void AddStarsToCount(int qty)
     {
         Data.Instance.userData.starsCount += qty;
@@ -128,6 +131,7 @@ public class LevelSelector : MonoBehaviour {
             Data.Instance.Load("Players");
 
         Data.Instance.GetComponent<Levels>().currentLevel = id;
+        Events.OnRefreshHiscores();
     }
     public void Refresh()
     {

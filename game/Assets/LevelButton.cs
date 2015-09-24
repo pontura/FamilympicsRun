@@ -38,7 +38,6 @@ public class LevelButton : MonoBehaviour {
         this.levelID = levelID;
         this.myLastScore = myLastScore;
         levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
-     //   print("levelSelector: " + levelSelector + "levelID: " + levelID + " score: " + levelScore + " myLastScore: " + myLastScore + " levelScore: " + levelScore.scoreData1.score);
         image = GetComponent<Image>();
         this.id = levelID;
        
@@ -65,17 +64,37 @@ public class LevelButton : MonoBehaviour {
                 levelSelector.StartLevel(id);
             }
         });
-        
+        StartCoroutine("LoopToCheckChanges");
     }
-    void Update()
+    IEnumerator LoopToCheckChanges()
     {
-        if (infoLoaded) return;
-        
-        if (levelScore != null && levelScore.scoreData1.score > 0 )
+        // se fija si cambio en el medio...
+        yield return new WaitForSeconds(1);
+
+        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
         {
-            infoLoaded = true;
-            OnChangePlayMode(Data.Instance.userData.mode);
+
+            LevelsData.LevelsScore ls = Data.Instance.levelsData.GetLevelScores(levelID);
+            int a = 0;
+            bool refresh = false;
+            foreach (LevelsData.ScoreData sd in ls.scoreData)
+            {
+                if (user1.score_float != sd.score)
+                    refresh = true;
+            }
+            if (refresh) Refresh();
+            if (!infoLoaded) Refresh();
         }
+        StartCoroutine("LoopToCheckChanges");
+    }
+    void Refresh()
+    {
+        infoLoaded = true;
+        Invoke("WaitToLoadAllScoresInLevel", 0.5f);
+    }
+    void WaitToLoadAllScoresInLevel()
+    {
+        OnChangePlayMode(Data.Instance.userData.mode);
     }
     void LoadSinglePlayerWinners()
     {
@@ -99,24 +118,27 @@ public class LevelButton : MonoBehaviour {
             return;
         }
 
-        if (levelScore.scoreData1.playerName != "")
+        if (levelScore.scoreData.Count>0)
         {
             user1.gameObject.SetActive(true);
-            user1.Init(id, levelScore.scoreData1.playerName, levelScore.scoreData1.score.ToString(), levelScore.scoreData1.facebookID);
+            LevelsData.ScoreData scoreData = levelScore.scoreData[0];
+            user1.Init(id, scoreData.playerName, scoreData.score.ToString(), scoreData.facebookID);
             user1.SetSinglePlayer();
         }
         else user1.gameObject.SetActive(false);
-        if (levelScore.scoreData2.playerName != "")
+        if (levelScore.scoreData.Count > 1)
         {
             user2.gameObject.SetActive(true);
-            user2.Init(id, levelScore.scoreData2.playerName, levelScore.scoreData2.score.ToString(), levelScore.scoreData2.facebookID);
+            LevelsData.ScoreData scoreData = levelScore.scoreData[1];
+            user2.Init(id, scoreData.playerName, scoreData.score.ToString(), scoreData.facebookID);
             user2.SetSinglePlayer();
         }
         else user2.gameObject.SetActive(false);
-        if (levelScore.scoreData3.playerName != "")
+        if (levelScore.scoreData.Count > 2)
         {
             user3.gameObject.SetActive(true);
-            user3.Init(id, levelScore.scoreData3.playerName, levelScore.scoreData3.score.ToString(), levelScore.scoreData3.facebookID);
+            LevelsData.ScoreData scoreData = levelScore.scoreData[2];
+            user3.Init(id, scoreData.playerName, scoreData.score.ToString(), scoreData.facebookID);
             user3.SetSinglePlayer();
         }
         else user3.gameObject.SetActive(false);
@@ -125,8 +147,13 @@ public class LevelButton : MonoBehaviour {
     //TODO:::::::::::
     void LoadMultiplayerWinners()
     {
+        user1.gameObject.SetActive(false);
+        user2.gameObject.SetActive(false);
+        user3.gameObject.SetActive(false);
+
         myScore.text = "";
         multiplayerData = Data.Instance.GetComponent<MultiplayerData>();
+
         List<MultiplayerData.HiscoresData> hiscoreData =  multiplayerData.hiscoreLevels[id].hiscores;
         if (hiscoreData == null) return;
         if (hiscoreData.Count == 0) return;
@@ -140,21 +167,18 @@ public class LevelButton : MonoBehaviour {
             user1.Init(id, hiscoreData[0].username, hiscoreData[0].score.ToString(), "");
             user1.SetMultiplayerColor(hiscoreData[0].playerID);
         }
-        else user1.gameObject.SetActive(false);
         if (hiscoreData.Count > 1)
         {
             user2.gameObject.SetActive(true);
             user2.Init(id, hiscoreData[1].username, hiscoreData[1].score.ToString(), "");
             user2.SetMultiplayerColor(hiscoreData[1].playerID);
         }
-        else user2.gameObject.SetActive(false);
         if (hiscoreData.Count > 2)
         {
             user3.gameObject.SetActive(true);
             user3.Init(id, hiscoreData[2].username, hiscoreData[2].score.ToString(), "");
             user3.SetMultiplayerColor(hiscoreData[2].playerID);
         }
-        else user3.gameObject.SetActive(false);
     }
 
     void OnChangePlayMode(UserData.modes mode)
@@ -191,7 +215,7 @@ public class LevelButton : MonoBehaviour {
     public void Challenge(RankingLine rankingLine)
     {
 
-        Data.Instance.Load("ChallengeCreator");
+        //Data.Instance.Load("ChallengeCreator");
         return;
 
 

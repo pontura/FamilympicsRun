@@ -10,18 +10,28 @@ public class BoardMenu : MonoBehaviour {
 	void Start () {
         SetEnergy();
         Events.OnEnergyWon += OnEnergyWon;
-        Events.OnRefreshNotifications += OnRefreshNotifications;
-        OnRefreshNotifications( Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
+     //   Events.OnRefreshNotifications += OnRefreshNotifications;
+        //OnRefreshNotifications( Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
 	}
     void OnDestroy()
     {
         Events.OnEnergyWon -= OnEnergyWon;
-        Events.OnRefreshNotifications -= OnRefreshNotifications;
+       // Events.OnRefreshNotifications -= OnRefreshNotifications;
     }
-    void OnRefreshNotifications(int totalRequestedNotifications)
+
+    private int totalRequestedNotifications = 0;
+    void Update()
     {
-        notificationsField.text = totalRequestedNotifications.ToString();
+        if ((Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count) != totalRequestedNotifications)
+        {
+            totalRequestedNotifications = Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count;
+            notificationsField.text = totalRequestedNotifications.ToString();
+        }
     }
+    //void OnRefreshNotifications(int totalRequestedNotifications)
+    //{
+    //    notificationsField.text = totalRequestedNotifications.ToString();
+    //}
     void OnEnergyWon()
     {
         SetEnergy();

@@ -5,6 +5,7 @@ using Parse;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 public class LevelsData : MonoBehaviour {
 
@@ -19,14 +20,12 @@ public class LevelsData : MonoBehaviour {
     [Serializable]
     public class LevelsScore
     {
-        public ScoreData scoreData1;
-        public ScoreData scoreData2;
-        public ScoreData scoreData3;
+        public List<ScoreData> scoreData;
         public float myScore;
         public float myScoreInParse;
     }
 
-    public LevelsScore[] levelsScore;
+    public List<LevelsScore> levelsScore;
     private int i;
     private int totalLevels;
     public IList<string> myList;
@@ -42,11 +41,21 @@ public class LevelsData : MonoBehaviour {
         Events.OnRefreshHiscores += OnRefreshHiscores;
         Events.OnLoadParseScore += OnLoadParseScore;
         Events.OnParseLoadedScore += OnParseLoadedScore;
+        Events.OnLoadLocalData += OnLoadLocalData;
     }
     void OnFacebookLogin()
     {
         //resetea tu score local para poder grabar nuevos scores:
         Reset();
+    }
+    void OnLoadLocalData()
+    {
+        int a = 0;
+        foreach(Levels.LevelData data in Data.Instance.levels.levels)
+        {
+            Data.Instance.levelsData.levelsScore[a].myScore = PlayerPrefs.GetFloat("Run_Level_" + a);
+            a++;
+        }
     }
     public void Reset()
     {
@@ -59,6 +68,7 @@ public class LevelsData : MonoBehaviour {
     }
     void OnParseLoadedScore(string facebookID, float score, int levelID)
     {
+       // ArrengeListByScore(levelID);
       //  print("__________________________OnParseLoadedScore" + facebookID + " score: " + score + " levelID: " + levelID);
     }
     int loadFriendsAndParseLogged = 0;
@@ -127,7 +137,7 @@ public class LevelsData : MonoBehaviour {
         int levelID = 1;
         foreach(LevelsScore levelscore in levelsScore)
         {
-            print("levelscore.myScore :" + levelscore.myScore + "   levelscore.myScoreInParse :" + levelscore.myScoreInParse);
+          //  print("levelscore.myScore :" + levelscore.myScore + "   levelscore.myScoreInParse :" + levelscore.myScoreInParse);
             levelID++;
         }
     }
@@ -151,7 +161,7 @@ public class LevelsData : MonoBehaviour {
     }
     void OnSaveScore(int level, float score)
     {
-        print("_________OnSaveScore" + level + " " + score);
+        print("_________OnSaveScore" + level + " " + score + " myScoreInParse  " + levelsScore[level].myScoreInParse);
         // si es por laps entonces el tiempo tiene que ser menor para grabar el score
         if (Data.Instance.levels.levels[level].totalLaps > 0 && score > levelsScore[level].myScore && levelsScore[level].myScore != 0) { Debug.Log("Ya tenias menos tiempo"); return; }
         if (Data.Instance.levels.levels[level].totalTime > 0 && score < levelsScore[level].myScore) { Debug.Log("Ya hbaias recorrido mas distancia");   return; }
@@ -197,7 +207,7 @@ public class LevelsData : MonoBehaviour {
     }
     void SaveNewScore(int level, float score)
     {
-        print("SaveNewScore");
+        print("SaveNewScore" + level);
         ParseObject gameScore = new ParseObject("Level_" + level.ToString());
         //gameScore.Increment("score", hiscore);
         gameScore["playerName"] = Data.Instance.userData.username;
@@ -205,7 +215,6 @@ public class LevelsData : MonoBehaviour {
         gameScore["score"] = score;
         //gameScore["objectId"] = ParseUser.CurrentUser.Username;
         gameScore.SaveAsync();
-        print("SaveHighScore");
     }
 
 
@@ -224,15 +233,19 @@ public class LevelsData : MonoBehaviour {
 
     private void LoadData(int _level)
     {
-        Data.Instance.levelsData.levelsScore[_level].myScore = PlayerPrefs.GetFloat("Run_Level_" + _level);
-      //  print("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
+        
+        print("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
+
+        levelsScore[_level].scoreData.Clear();
+
         ParseQuery<ParseObject> query;
 
-        print("LoadDATA: " + myList.Count);
+        //print("LoadDATA: " + myList.Count);
 
+       // print("_________________");
         foreach(string n in myList)
         {
-          //  print("n: " + n);
+            //print("n: " + n);
         }
 
         if (Data.Instance.levels.levels[_level].totalLaps > 0)
@@ -240,41 +253,36 @@ public class LevelsData : MonoBehaviour {
             query = ParseObject.GetQuery("Level_" + _level.ToString())
             .OrderBy("score")
             .WhereContainedIn("facebookID", myList)
-            .Limit(3);
+            .Limit(20);
         }
         else
         {
             query = ParseObject.GetQuery("Level_" + _level.ToString())
                 .OrderByDescending("score")
                 .WhereContainedIn("facebookID", myList)
-                .Limit(3);
+                .Limit(20);
         }
         
             query.FindAsync().ContinueWith(t =>
             {
                 IEnumerable<ParseObject> results = t.Result;
-            
                 int a = 1;
                 foreach (var result in results)
                 {
-
-                    ScoreData sd = levelsScore[_level].scoreData3;
-
-                    switch (a)
-                    {
-                        case 1: sd = levelsScore[_level].scoreData1; break;
-                        case 2: sd = levelsScore[_level].scoreData2; break;
-                        default: sd = levelsScore[_level].scoreData3; break;
-                    }
+                    ScoreData sd = new ScoreData();
+                   
                     sd.playerName = result["playerName"].ToString();
                     sd.facebookID = result["facebookID"].ToString();
                     sd.score = float.Parse(result["score"].ToString());
-
+                    levelsScore[_level].scoreData.Add(sd);
                     Events.OnParseLoadedScore(sd.facebookID, sd.score, _level);
                     a++;
                 }
+                
             });        
     }
+
+
     public string GetScoreString(int levelID, float score)
     {
         if (Data.Instance.levels.levels[levelID].Sudden_Death || Data.Instance.levels.levels[levelID].totalLaps > 0)
@@ -284,61 +292,21 @@ public class LevelsData : MonoBehaviour {
         else
             return score.ToString();
     }
-    private string GetTimer(float timer)
+    public string GetTimer(float timer)
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
         return string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds/10);
     }
+    int lastLevelHiscore;
     void RefreshLevelHiscore(int level, float score)
     {
-        print("_____RefreshLevelHiscore ");
-        LevelsScore thisLevelScore = levelsScore[level];
-
-        int newRecord = 0;
-
-        if (Data.Instance.levels.levels[level].totalLaps > 0)
-        {
-            if (thisLevelScore.scoreData1.score > score)
-                newRecord = 1;
-            else if (thisLevelScore.scoreData2.score > score)
-                newRecord = 2;
-            else if (thisLevelScore.scoreData3.score > score)
-                newRecord = 3;
-        }
-        else if (Data.Instance.levels.levels[level].totalTime > 0)
-        {
-            if (thisLevelScore.scoreData1.score < score)
-                newRecord = 1;
-            else if (thisLevelScore.scoreData2.score < score)
-                newRecord = 2;
-            else if (thisLevelScore.scoreData3.score < score)
-                newRecord = 3;
-        }
-
-        if (newRecord == 1)
-        {
-            if (thisLevelScore.scoreData2.playerName != Data.Instance.userData.username)
-            {
-                thisLevelScore.scoreData2.facebookID = thisLevelScore.scoreData1.facebookID;
-                thisLevelScore.scoreData2.score = thisLevelScore.scoreData1.score;
-                thisLevelScore.scoreData2.playerName = thisLevelScore.scoreData1.playerName;
-            }
-            AddNewRefreshedData(thisLevelScore.scoreData1, score);
-        }
-        if (newRecord == 2)
-        {
-            if (thisLevelScore.scoreData3.playerName != Data.Instance.userData.username)
-            {
-                thisLevelScore.scoreData3.facebookID = thisLevelScore.scoreData2.facebookID;
-                thisLevelScore.scoreData3.score = thisLevelScore.scoreData2.score;
-                thisLevelScore.scoreData3.playerName = thisLevelScore.scoreData2.playerName;
-            }
-            AddNewRefreshedData(thisLevelScore.scoreData2, score);
-        }
-        if (newRecord == 3)
-        {
-            AddNewRefreshedData(thisLevelScore.scoreData3, score);
-        }
+        print("RefreshLevelHiscore + " + level + " score: " + score);
+        lastLevelHiscore = level;
+        Invoke("ReloadHiscores", 2);
+    }
+    void ReloadHiscores()
+    {
+        LoadData(lastLevelHiscore);
     }
     void AddNewRefreshedData(ScoreData scoreData, float score)
     {
@@ -346,5 +314,10 @@ public class LevelsData : MonoBehaviour {
         scoreData.score = score;
         scoreData.playerName = Data.Instance.userData.username;
         scoreData.facebookID = Data.Instance.userData.facebookID;
+    }
+    public void ArrengeListByScore(int levelId)
+    {
+        levelsScore[levelId].scoreData = levelsScore[levelId].scoreData.OrderBy(x => x.score).ToList();
+        if (Data.Instance.levels.levels[levelId].totalTime > 0) levelsScore[levelId].scoreData.Reverse();
     }
 }
