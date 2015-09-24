@@ -21,7 +21,6 @@ public class Player : MonoBehaviour {
 
     public SpriteRenderer numSprite;
 
-    private float maxSpeed;    
     private float speedJump;
 
     private float acceleration;
@@ -60,7 +59,6 @@ public class Player : MonoBehaviour {
         initialAacceleration = gameSettigns.player.initialAacceleration;
         initialDeceleration = gameSettigns.player.initialDeceleration;
         decelerationJump = gameSettigns.player.jumpDeceleration;
-        maxSpeed = gameSettigns.player.maxSpeed;
         speedJump = gameSettigns.player.speedJump;
 
         gameCamera = _gameCamera;
@@ -244,7 +242,7 @@ public class Player : MonoBehaviour {
     {
         if (state == states.STARTING_NEXT_LAP) return;
         if (state == states.READY) return;
-        if (speed > maxSpeed) speed = maxSpeed;
+      //  if (speed > maxSpeed) speed = maxSpeed;
         if (state == states.DEAD) return;
         if (state == states.PLAYING) return;
         if (state == states.HURT) return;
@@ -253,14 +251,17 @@ public class Player : MonoBehaviour {
             state = states.PLAYING;
 
         if (state == states.RUNNING)
-            speed -= deceleration * Time.deltaTime;
+            speed -= (speed/1.7f) * deceleration * Time.deltaTime;
         else if (state == states.JUMPING)
-            speed -= (decelerationJump) * Time.deltaTime;
+            speed -= (speed/4) * decelerationJump * Time.deltaTime;
 
+        
         
         if (speed < 0) speed = 0;
         else if (speed > 0) 
         {
+            print("speed: " + speed);
+
             Vector3 pos = transform.localPosition;
 
             if (state == states.IN_WIND_ZONE)

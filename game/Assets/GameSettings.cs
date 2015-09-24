@@ -10,7 +10,7 @@ public class GameSettings : MonoBehaviour  {
         public float initialAacceleration = 0.2f;
         public float initialDeceleration = 1.2f;
         public float jumpDeceleration = 0.6f;
-        public float maxSpeed = 2.2f;
+      //  public float maxSpeed = 2.2f;
         public float speedJump = 1;
     }
 
