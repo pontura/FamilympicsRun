@@ -77,7 +77,8 @@ public class MultiplayerData : MonoBehaviour {
     void OnAvatarDie(Player player)
     {
         float timer = GameObject.Find("UICanvas").GetComponent<Chronometer>().timer;
-        GetPlayer(player.id).time = timer;
+        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER) return;
+            GetPlayer(player.id).time = timer;
     }
     void StartGame()
     {
