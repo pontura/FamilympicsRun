@@ -3,6 +3,9 @@ using System.Collections;
 
 public class LevelData : MonoBehaviour {
 
+    //es solo para cuando jugas un level por challenge pero todavia no lo tenes desbloqueado:
+    public bool dontSaveScore;
+
     public int winnerID;
     public int score;
     public int laps;

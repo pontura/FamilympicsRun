@@ -6,6 +6,7 @@ using System;
 
 public class UserData : MonoBehaviour {
 
+    public int tournamentAvailable;
     public int starsCount;
     public int levelProgressionId;
     public bool logged;
@@ -77,5 +78,20 @@ public class UserData : MonoBehaviour {
         PlayerPrefs.SetString("mode", mode.ToString() );
         Events.OnChangePlayMode(mode);
         print("ToogleMode mode: " + mode);
+    }
+    public int GetTournamentAvailable()
+    {
+        int stars = Data.Instance.userData.starsCount;
+
+       int tournamentAvailable = 1;
+        if (Data.Instance.userData.levelProgressionId > 8 && stars >= Data.Instance.gameSettings.stars_for_tournament_2)
+            tournamentAvailable = 2;
+        if (Data.Instance.userData.levelProgressionId > 16 && stars >= Data.Instance.gameSettings.stars_for_tournament_3)
+            tournamentAvailable = 3;
+        else if (Data.Instance.userData.levelProgressionId > 32 && stars >= Data.Instance.gameSettings.stars_for_tournament_4)
+            tournamentAvailable = 4;
+
+        return tournamentAvailable;
+
     }
 }

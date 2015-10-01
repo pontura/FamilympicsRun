@@ -9,6 +9,7 @@ public class EnergyAskButton : MonoBehaviour {
     public ProfilePicture profilePicture;
     public int id = 0;
     private EnergyAskFor creator;
+    public GameObject SendButton;
     public GameObject SendedButton;
     private bool selected;
 
@@ -21,7 +22,10 @@ public class EnergyAskButton : MonoBehaviour {
         profilePicture.setPicture(facebookID);
 
         if (done)
+        {
             SendedButton.SetActive(true);
+            SendButton.SetActive(false);
+        }
         else
         {
             SendedButton.SetActive(false);
@@ -29,6 +33,7 @@ public class EnergyAskButton : MonoBehaviour {
             {
                 if (selected) return;
                 selected = true;
+                SendButton.SetActive(false);
                 SendedButton.SetActive(true);
                 creator.Select(facebookID);
             });

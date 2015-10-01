@@ -5,6 +5,7 @@ using System.Collections;
 public class LevelDetailsPopup : MonoBehaviour {
 
     public Button challengesButton;
+    public GameObject challengesButtonDisable;
     public Text field;
     public Text subTitle;
     public Text goalText;
@@ -60,6 +61,8 @@ public class LevelDetailsPopup : MonoBehaviour {
 
         float _myScore = PlayerPrefs.GetFloat("Run_Level_" + levelId);
 
+        starsInLevel = 0;
+
         if (_myScore == 0)
             stars.Reset();
         else
@@ -75,12 +78,18 @@ public class LevelDetailsPopup : MonoBehaviour {
         else
             subTitle.text = "";
 
-        Levels.LevelData levelData = Data.Instance.levels.levels[levelId];       
+        Levels.LevelData levelData = Data.Instance.levels.levels[levelId];
 
-        if(starsInLevel<1)
+        if (starsInLevel < 1)
+        {
+            challengesButtonDisable.SetActive(true);
             challengesButton.interactable = false;
+        }
         else
+        {
             challengesButton.interactable = true;
+            challengesButtonDisable.SetActive(false);
+        }
 
         
         if (levelData.Sudden_Death)

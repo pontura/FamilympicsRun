@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Tournaments : MonoBehaviour {
@@ -15,34 +16,47 @@ public class Tournaments : MonoBehaviour {
     public GameObject lock2;
     public GameObject lock3;
 
-    void Start()
+    public Text text1;
+    public Text text2;
+    public Text text3;
+
+    public void Init()
     {
-        Invoke("CheckForStarsAndThenStart", 0.5f);
+        CheckForStarsAndThenStart();
+        if( Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+            SetTournamentButtons(false);
     }
     void CheckForStarsAndThenStart()
     {
-        int stars = Data.Instance.userData.starsCount;
+        text1.text = "COMPLETE SEASON 1 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_2 + " STARS TO UNLOCK";
+        text1.text = "COMPLETE SEASON 2 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_3 + " STARS TO UNLOCK";
+        text1.text = "COMPLETE SEASON 3 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_4 + " STARS TO UNLOCK";
         
         scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason1));
 
-        if (Data.Instance.userData.levelProgressionId < 16 && stars >= Data.Instance.gameSettings.stars_for_tournament_2)
+        int tournamentAvailable = Data.Instance.userData.GetTournamentAvailable();
+
+      //  print("_______________" + Data.Instance.userData.levelProgressionId + " __________   " + stars);
+
+        if (tournamentAvailable == 2)
         {
             Destroy(lock1);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason2));
-        }
-        else if (Data.Instance.userData.levelProgressionId < 32 && stars >= Data.Instance.gameSettings.stars_for_tournament_3)
+        } else
+        if (tournamentAvailable == 3)
         {
             Destroy(lock1);
             Destroy(lock2);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason3));
         }
-        else if (stars >= Data.Instance.gameSettings.stars_for_tournament_4)
+        else if (tournamentAvailable == 4)
         {
             Destroy(lock1);
             Destroy(lock2);
             Destroy(lock3);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason4));
         }
+
         Events.OnChangePlayMode += OnChangePlayMode;
 	}
     void OnDestroy()
@@ -51,7 +65,6 @@ public class Tournaments : MonoBehaviour {
     }
     public void PlayTournament(int id)
     {
-        print("PlayTournament " + id);
         int levelID = 1;
         switch (id)
         {

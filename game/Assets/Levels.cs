@@ -44,6 +44,13 @@ public class Levels : MonoBehaviour {
     {
         return levels[currentLevel];
     }
+    public int GetSeason(int levelID)
+    {
+        if (levelID < 9) return 1;
+        else if (levelID < 17) return 2;
+        else if (levelID < 25) return 3;
+        else return 4;
+    }
     public LevelData GetData(int id)
     {
         return levels[id];
@@ -74,6 +81,8 @@ public class Levels : MonoBehaviour {
     }
     public int GetCurrentLevelStarsByScore(int levelID, float score)
     {
+        if (score == 0) return 0;
+
         int stars = 0;
         LevelData level = levels[levelID];
       // print(" _______levelID: " + levelID + " GetCurrentLevelStarsByScore totalLaps: " + level.totalLaps + " star3: " + level.star3 + " score: " + score);

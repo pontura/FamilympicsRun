@@ -12,6 +12,7 @@ public class ChallengersManager : MonoBehaviour {
 	void Start () {
         Events.OnChallengeCreate += OnChallengeCreate;
         Events.OnChallengeClose += OnChallengeClose;
+        Events.OnChallengeDelete += OnChallengeDelete;
 	}
 
     public void OnChallengeCreate(string oponent_username, string oponent_facebookID, int level, float score)
@@ -46,5 +47,22 @@ public class ChallengersManager : MonoBehaviour {
         {
             Debug.Log("Score updated!");
         });   
+    }
+    public void OnChallengeDelete(string objectId)
+    {
+        print("Deletechallengen");
+        var query = new ParseQuery<ParseObject>("Challenges")
+            .WhereEqualTo("objectId", objectId);
+
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerator<ParseObject> enumerator = t.Result.GetEnumerator();
+            enumerator.MoveNext();
+            var data = enumerator.Current;
+            return data.DeleteAsync();
+        }).Unwrap().ContinueWith(t =>
+        {
+            Debug.Log("Challenge deleted!");
+        });
     }
 }

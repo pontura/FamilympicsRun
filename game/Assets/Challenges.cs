@@ -156,11 +156,18 @@ public class Challenges : MonoBehaviour {
     
     public void Confirm(string username, string objectID, string facebookID, float op_score)
     {
+        if(Data.Instance.levels.currentLevel > Data.Instance.userData.levelProgressionId)
+            Data.Instance.levelData.dontSaveScore = true;
+
         Data.Instance.levelData.challenge_username = username;
         Data.Instance.levelData.challenge_facebookID = facebookID;
         Data.Instance.levelData.challenge_objectID = objectID;
         Data.Instance.levelData.challenge_op_score = op_score;
         Data.Instance.userData.mode = UserData.modes.SINGLEPLAYER;
         Data.Instance.Load("GameSingle");
+    }
+    public void CancelChallenge(string objectID)
+    {
+        Events.OnChallengeDelete(objectID);
     }
 }

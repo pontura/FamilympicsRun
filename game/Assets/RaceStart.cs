@@ -20,13 +20,13 @@ public class RaceStart : MonoBehaviour {
 
         if (totalTime > 0)
         {
-            title1.text = "RUN AS MUCH AS YOU CAN";
-            title2.text = "IN " + totalTime + " SECONDS";
+            title1.text = "YOU HAVE " + totalTime + " SECONDS";
+            title2.text = "TO RUN AS FAR AS YOU CAN";
         }
         else if (totalLaps > 0)
         {
-            title1.text = "COMPLETE " + Data.Instance.levels.GetCurrentLevelData().totalLaps * 1000 + " MTS";
-            title2.text = "IN LESS THAN " + gameOverTime + " SECONDS";
+            title1.text = "COMPLETE " + Data.Instance.levels.GetCurrentLevelData().totalLaps * 1000 + " METERS";
+            title2.text = "IN " + gameOverTime + " SECONDS OR LESS TO QUALIFY";
         }
         else if (Sudden_Death)
         {

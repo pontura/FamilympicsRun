@@ -24,13 +24,13 @@ public class GameOverSignal : MonoBehaviour {
     }
     void GameOver(bool byTime)
     {
-        if (byTime)
-        {
-            print("GameOverByTime");
-            panelTimeOver.SetActive(true);
-        }
-        else
-        {
+        //if (byTime)
+        //{
+        //    print("GameOverByTime");
+        //    panelTimeOver.SetActive(true);
+        //}
+        //else
+        //{
             print("GameOver");
             panel.SetActive(true);
            
@@ -38,7 +38,7 @@ public class GameOverSignal : MonoBehaviour {
             field.text = "LEVEL " + levelId + " FAIL!";
 
             
-        }
+       // }
         panel.GetComponent<Animation>().Play("PopupOn");
        // Invoke("Reset", 3f);
     }

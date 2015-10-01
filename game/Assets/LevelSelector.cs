@@ -24,6 +24,9 @@ public class LevelSelector : MonoBehaviour {
 
 	void Start () {
 
+        //resetea el flag de challenge por si es un level que no jugaste aun
+        Data.Instance.levelData.dontSaveScore = false;
+
         Data.Instance.userData.starsCount = 0;
         Events.CheckForNewNotifications();
 
@@ -47,16 +50,25 @@ public class LevelSelector : MonoBehaviour {
             Events.OnChangePlayMode += OnChangePlayMode;            
         }
         LoadButtons();
-        Events.AddStarsToCount += AddStarsToCount;
         Positionate();
         Events.OnLoadLocalData();
+
+        if (Data.Instance.energyManager.energy <= 0)
+            Invoke("OnOpenEnergyPopup", 0.5f);
 	}
+    void OnOpenEnergyPopup()
+    {
+        Events.OnOpenEnergyPopup();
+    }
     void LoadButtons()
     {
         int b = 0;
         int _seasonWhiteSpace = 0;
+        Data.Instance.userData.starsCount = 0;
 
-        for (int a = 1; a < Data.Instance.levels.levels.Length; a++)
+        int total = Data.Instance.levels.levels.Length;
+
+        for (int a = 1; a < total; a++)
         {
             b++;
             Data.Instance.levelsData.ArrengeListByScore(a);
@@ -74,6 +86,14 @@ public class LevelSelector : MonoBehaviour {
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
 
+            float score = PlayerPrefs.GetFloat("Run_Level_" + a);
+            int _stars = Data.Instance.levels.GetCurrentLevelStarsByScore(a, score);
+
+            //print("Run_Level_" + a + "   -   stars: " + _stars + "     score: " + score);
+
+            if(_stars>0)
+                Data.Instance.userData.starsCount += _stars;
+
             if (Data.Instance.FreeLevels) lastLevelScore = 3;
             newLevelButton.Init(this, a, lastLevelScore);
 
@@ -83,12 +103,11 @@ public class LevelSelector : MonoBehaviour {
             if (Data.Instance.FreeLevels)
                 Data.Instance.userData.levelProgressionId = 100;
         }
+
+        GetComponent<Tournaments>().Init();
+
         if (Data.Instance.FreeLevels == true)
             Data.Instance.userData.starsCount = 1000;
-    }
-    void AddStarsToCount(int qty)
-    {
-        Data.Instance.userData.starsCount += qty;
     }
     void Positionate()
     {
@@ -110,7 +129,6 @@ public class LevelSelector : MonoBehaviour {
     void OnDestroy()
     {
         Events.OnChangePlayMode -= OnChangePlayMode;
-        Events.AddStarsToCount -= AddStarsToCount;
     }
     public void StartLevel(int id)
     {

@@ -17,7 +17,7 @@ public class Summary : MonoBehaviour {
 
         System.TimeSpan t = System.TimeSpan.FromSeconds(levelData.time);
 
-        string timerFormatted = string.Format("{0:00}:{1:00}:{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
+        string timerFormatted = string.Format("{0:00}:{1:00}.{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
        Levels.LevelData CurrentlevelData = Data.Instance.levels.GetCurrentLevelData();
 
        float score = 0;

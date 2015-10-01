@@ -44,6 +44,14 @@ public class LevelButton : MonoBehaviour {
         
         OnChangePlayMode(Data.Instance.userData.mode);
 
+        int tournamentActive = Data.Instance.userData.GetTournamentAvailable();
+        bool showFriends = true;
+        if (levelID > 8 && tournamentActive < 2) showFriends = false;
+        else if (levelID > 16 && tournamentActive < 3) showFriends = false;
+        else if (levelID > 24 && tournamentActive < 4) showFriends = false;
+        if (showFriends) StartCoroutine("LoopToCheckChanges");
+
+
         if (myLastScore == 0 && levelID > 1)
         {
             button.GetComponent<Image>().color = lockColor;
@@ -51,8 +59,6 @@ public class LevelButton : MonoBehaviour {
             labelNum.enabled = false;
             return;
         }
-
-       
 
         LockImage.enabled = false;
         
@@ -64,7 +70,7 @@ public class LevelButton : MonoBehaviour {
                 levelSelector.StartLevel(id);
             }
         });
-        StartCoroutine("LoopToCheckChanges");
+        
     }
     IEnumerator LoopToCheckChanges()
     {
@@ -105,7 +111,6 @@ public class LevelButton : MonoBehaviour {
             
             string _score = Data.Instance.levelsData.GetScoreString(id, _myScore);
             int _stars = Data.Instance.levels.GetCurrentLevelStarsByScore(id, _myScore);
-            Events.AddStarsToCount(_stars);
             stars.Init(_stars);
             myScore.text = _score;
         }        

@@ -22,8 +22,15 @@ public class SettingsInGame : MonoBehaviour {
     }
     public void Challenge()
     {
-        Time.timeScale = 1;
-        Data.Instance.Load("ChallengeCreator");
+        if (FB.IsLoggedIn)
+        {
+            Time.timeScale = 1;
+            Data.Instance.Load("ChallengeCreator");
+        }
+        else
+        {
+            Events.OnFacebookNotConnected();
+        }
     }
     public void NextRace()
     {
@@ -37,8 +44,8 @@ public class SettingsInGame : MonoBehaviour {
         }
         Data.Instance.levels.currentLevel++;
         Time.timeScale = 1;
-        int totalPlayers = Data.Instance.multiplayerData.players.Count;
-        if (totalPlayers > 1)
+
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             Data.Instance.Load("Game");
         else Data.Instance.Load("GameSingle");
     }

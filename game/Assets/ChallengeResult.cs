@@ -8,6 +8,9 @@ public class ChallengeResult : MonoBehaviour {
     public string winner;
     public float myScore;
 
+    public Color colorWin;
+    public Color colorLose;
+
     public Text title1;
     public Text title2;
 
@@ -30,8 +33,8 @@ public class ChallengeResult : MonoBehaviour {
 
         int levelID = Data.Instance.levels.currentLevel;
 
-        username1.text = Data.Instance.userData.username;
-        username2.text = Data.Instance.levelData.challenge_username;
+        username1.text = Data.Instance.gameSettings.GetUsername(Data.Instance.userData.username);
+        username2.text = Data.Instance.gameSettings.GetUsername(Data.Instance.levelData.challenge_username);
 
         myScore = Data.Instance.levelData.time;
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
@@ -55,12 +58,14 @@ public class ChallengeResult : MonoBehaviour {
          winner = "";
          if (youWon)
          {
+             title1.color = colorWin;
              winner = Data.Instance.userData.facebookID;
              result = "YOU WON THE CHALLENGE";
              wonPanel.SetActive(true);
          }
          else
          {
+             title1.color = colorLose;
              winner = Data.Instance.levelData.challenge_facebookID;
              losePanel.SetActive(true);
              result = "YOU LOST THE CHALLENGE";
@@ -68,7 +73,7 @@ public class ChallengeResult : MonoBehaviour {
 
         title1.text = result;
 
-        title2.text = "LEVEL " + levelID;
+        title2.text = "LEVEL " + levelID + " / " + Data.Instance.levels.GetSeason(levelID);
 
         challenge_objectID = Data.Instance.levelData.challenge_objectID;        
         
@@ -77,7 +82,12 @@ public class ChallengeResult : MonoBehaviour {
 	public void Share () 
     {
         //SHARE
-        print("SHARE");
+        Debug.Log("SHARE");
+        if(winner == Data.Instance.userData.facebookID)
+            Data.Instance.facebookShare.WinChallengeTo(Data.Instance.levelData.challenge_username);
+        else
+            Data.Instance.facebookShare.LostChallengeTo(Data.Instance.levelData.challenge_username);
+
         Close();
 	}
     public void Dismiss()

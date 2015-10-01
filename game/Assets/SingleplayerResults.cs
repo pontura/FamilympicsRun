@@ -18,8 +18,8 @@ public class SingleplayerResults : MonoBehaviour
     public Stars stars;
 
 	void Start () {
-        if (!FB.IsLoggedIn) share.SetActive(false);
-        if (!FB.IsLoggedIn) challengeButton.interactable = false;
+       // if (!FB.IsLoggedIn) share.SetActive(false);
+        //if (!FB.IsLoggedIn) challengeButton.interactable = false;
 
         panel.SetActive(false);
         ChallengesResultPanel.SetActive(false);
@@ -43,7 +43,7 @@ public class SingleplayerResults : MonoBehaviour
     void SaveScore()
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
-        time = string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+        time = string.Format("{0:00}:{1:00}.{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
 
         numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
 
@@ -53,7 +53,11 @@ public class SingleplayerResults : MonoBehaviour
         else
             score = Data.Instance.levelData.time;
 
-        Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
+        if (Data.Instance.levelData.dontSaveScore)
+            Debug.Log("NO GRABA SCORE PORQUE ES UN CHALLENGE DE UN LEVEL QUE NO JUGUE");
+        else
+           Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
+
         Invoke("SetOn", 3);
     }
     public void SetOn()
@@ -70,7 +74,25 @@ public class SingleplayerResults : MonoBehaviour
     }
     public void Share()
     {
+        if (FB.IsLoggedIn)
+        {
+            System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
+            time = string.Format("{0:00}:{1:00}.{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
 
+            numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
+
+            string score = "";
+            if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
+                score = time;
+            else
+                score = Data.Instance.levelData.time + "m";
+
+            Data.Instance.facebookShare.NewHiscore(score);
+        }
+        else
+        {
+            Events.OnFacebookNotConnected();
+        }
     }
     public void SetOnSingleResult()
     {
@@ -84,15 +106,15 @@ public class SingleplayerResults : MonoBehaviour
             score = Data.Instance.levelData.laps;
 
             resultField.text = score + "m";
-            hiscoreField.text = "BEST " + lastScore + "m";
+            hiscoreField.text = "MY BEST " + lastScore + "m";
             //timeField.text = time; 
         }
         else
         {
             score = Data.Instance.levelData.time;
             System.TimeSpan lastT = System.TimeSpan.FromSeconds(lastScore);
-            string lastTime = string.Format("{0:00}:{1:00}:{2:00}", lastT.Minutes, lastT.Seconds, lastT.Milliseconds / 10);
-            hiscoreField.text = "BEST " + lastTime;
+            string lastTime = string.Format("{0:00}:{1:00}.{2:00}", lastT.Minutes, lastT.Seconds, lastT.Milliseconds / 10);
+            hiscoreField.text = "MY BEST " + lastTime;
 
             string result = time;
 

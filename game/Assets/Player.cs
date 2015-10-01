@@ -260,8 +260,6 @@ public class Player : MonoBehaviour {
         if (speed < 0) speed = 0;
         else if (speed > 0) 
         {
-            print("speed: " + speed);
-
             Vector3 pos = transform.localPosition;
 
             if (state == states.IN_WIND_ZONE)

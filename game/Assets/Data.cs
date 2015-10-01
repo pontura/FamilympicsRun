@@ -40,6 +40,8 @@ public class Data : MonoBehaviour
     public SoundManager soundManager;
      [HideInInspector]
     public Notifications notifications;
+     [HideInInspector]
+     public FacebookShare facebookShare;
 
     public static Data Instance
     {
@@ -82,6 +84,7 @@ public class Data : MonoBehaviour
         musicManager = GetComponent<MusicManager>();
         soundManager = GetComponentInChildren<SoundManager>();
         notifications = GetComponent<Notifications>();
+        facebookShare = GetComponent<FacebookShare>();
        // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);
@@ -119,4 +122,5 @@ public class Data : MonoBehaviour
     {
         Load(lastScene);
     }
+
 }

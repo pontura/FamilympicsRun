@@ -22,6 +22,7 @@ public class ShareAdvice : MonoBehaviour {
     public void Login()
     {
         FB.Login();
+        Close();
     }
     public void Close()
     {

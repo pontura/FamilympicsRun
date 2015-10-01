@@ -32,8 +32,17 @@ public class MultiplayerResults : MonoBehaviour {
     private string GetTimeFormat(float timer)
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
-        string time = string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
+        string time = string.Format("{0:00}:{1:00}.{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
         return time;
+    }
+    public void Share()
+    {
+        //SHARE
+        Debug.Log("SHARE");
+        if (FB.IsLoggedIn)
+            Data.Instance.facebookShare.MultiplayerHiscore(timeField.text);
+        else
+            Events.OnFacebookNotConnected();
     }
     public void SetOn()
     {

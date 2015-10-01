@@ -6,8 +6,11 @@ public class SettingsMenu : MonoBehaviour {
 
     public Button challengesButton;
     public Button loginButton;
+    public GameObject masker;
+    public GameObject SettingsButton;
 
 	void Start () {
+        masker.SetActive(false);
         if (!FB.IsLoggedIn)
         {
             challengesButton.interactable = false;
@@ -54,10 +57,14 @@ public class SettingsMenu : MonoBehaviour {
     }
     public void Open()
     {
+        SettingsButton.SetActive(false);
+        masker.SetActive(true);
         GetComponent<Animation>().Play("SettingsOpen");
     }
     public void Close()
     {
+        SettingsButton.SetActive(true);
+        masker.SetActive(false);
         GetComponent<Animation>().Play("SettingsClose");
     }
     void OnFacebookLogin()

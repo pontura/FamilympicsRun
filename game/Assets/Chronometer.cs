@@ -82,7 +82,7 @@ public class Chronometer : MonoBehaviour {
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
       
 
-        timerFormatted = string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds/10);
+        timerFormatted = string.Format("{0:00}:{1:00}.{2:00}", t.Minutes, t.Seconds, t.Milliseconds/10);
 
         if (singlePlayerMode)
         {

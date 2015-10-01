@@ -79,7 +79,7 @@ public class ChallengesLine : MonoBehaviour
             if (data.totalTime > 0)
                 addToScore = "m in " + Data.Instance.levelsData.GetTimer(data.totalTime);
             else
-                addToScore = "in " + data.totalLaps  + " m";
+                addToScore = " in " + data.totalLaps+"000"  + "m";
 
             scoreLabel.text += addToScore;
 
@@ -114,6 +114,7 @@ public class ChallengesLine : MonoBehaviour
     }
     public void Cancel()
     {
-       // challenges.Confirm(challenges.userData[id].playerName, challenges.userData[id].facebookID);   
+        challenges.CancelChallenge(objectID);
+        Destroy(gameObject);
     }
 }

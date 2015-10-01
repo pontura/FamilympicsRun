@@ -20,7 +20,7 @@ public class RankingLine : MonoBehaviour {
         if (_username == null) return;
 
         this.facebookID = _facebookID;
-        this.playerName = _username;
+        this.playerName = Data.Instance.gameSettings.GetUsername(_username);
 
         string[] nameArr = Regex.Split(_username, " ");
 

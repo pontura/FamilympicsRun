@@ -106,7 +106,7 @@ public class LevelsData : MonoBehaviour {
       // levelsScore = new LevelsScore[Data.Instance.levels.levels.Length];
         totalLevels = Data.Instance.levels.GetTotalLevelsInUnblockedSeasons();
        
-       Invoke("LoadNextData", 0.5f);
+       Invoke("LoadNextData", 1f);
     }
     public void Refresh()
     {
@@ -290,12 +290,12 @@ public class LevelsData : MonoBehaviour {
             return GetTimer(score);
         }
         else
-            return score.ToString();
+            return score.ToString() + "m";
     }
     public string GetTimer(float timer)
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(timer);
-        return string.Format("{0:00}:{1:00}:{2:00}", t.Minutes, t.Seconds, t.Milliseconds/10);
+        return string.Format("{0:00}:{1:00}.{2:00}", t.Minutes, t.Seconds, t.Milliseconds/10);
     }
     int lastLevelHiscore;
     void RefreshLevelHiscore(int level, float score)
