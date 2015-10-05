@@ -109,7 +109,7 @@ public class LoginManager : MonoBehaviour
         doLoop = true;
     }
 
-    bool doLoop = false;
+    bool doLoop = true;
     void Update()
     {
         if (!doLoop) return;

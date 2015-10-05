@@ -43,13 +43,12 @@ public class LevelsData : MonoBehaviour {
         Events.OnParseLogin += OnParseLogin;
         Events.OnSaveScore += OnSaveScore;
         Events.OnRefreshHiscores += OnRefreshHiscores;
-        Events.OnLoadParseScore += OnLoadParseScore;
+     //   Events.OnLoadParseScore += OnLoadParseScore;
         Events.OnLoadLocalData += OnLoadLocalData;
     }
     public void ResetLoadings()
     {
         loadingScores = false;
-        totalLevels = 0;
         scoresLoaded = 0;
     }
     void OnFacebookLogin()
@@ -164,38 +163,27 @@ public class LevelsData : MonoBehaviour {
     }
     void OnLoadParseScore(int levelID)
     {
-        print("_______________________________OnLoadParseScore " + levelID);
+        //print("_______________________________OnLoadParseScore " + levelID);
 
-        levelsScore[levelID].myScoreInParse = 0;
-        var query = new ParseQuery<ParseObject>("Level_" + levelID)
-              .WhereEqualTo("facebookID", Data.Instance.userData.facebookID);       
+        //levelsScore[levelID].myScoreInParse = 0;
+        //var query = new ParseQuery<ParseObject>("Level_" + levelID)
+        //      .WhereEqualTo("facebookID", Data.Instance.userData.facebookID);       
 
-        query.FindAsync().ContinueWith(t =>
-        {
-            IEnumerable<ParseObject> results = t.Result;
-            foreach (var result in results)
-            {
-                levelsScore[levelID].myScore = float.Parse(result["score"].ToString());
-                levelsScore[levelID].myScoreInParse = float.Parse(result["score"].ToString());
-            }
-            CompareLocalScoresWithParseScores();
-        });
-    }
-    void CompareLocalScoresWithParseScores()
-    {
-        print("CompareLocalScoresWithParseScores()");
-        int levelID = 1;
-        foreach(LevelsScore levelscore in levelsScore)
-        {
-          //  print("levelscore.myScore :" + levelscore.myScore + "   levelscore.myScoreInParse :" + levelscore.myScoreInParse);
-            levelID++;
-        }
+        //query.FindAsync().ContinueWith(t =>
+        //{
+        //    IEnumerable<ParseObject> results = t.Result;
+        //    foreach (var result in results)
+        //    {
+        //        levelsScore[levelID].myScore = float.Parse(result["score"].ToString());
+        //        levelsScore[levelID].myScoreInParse = float.Parse(result["score"].ToString());
+        //    }
+        //});
     }
     void OnRefreshHiscores()
     {
         if (levelsScore != null)
         {
-            print("_________OnRefreshHiscores");
+            print("_________OnRefreshHiscores totalLevels: " + totalLevels);
             i = 0;
             Invoke("LoadNextData", 0.5f);
         }

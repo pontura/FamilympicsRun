@@ -10,6 +10,7 @@ public class MultiplayerEndSignal : MonoBehaviour {
     private int playerID;
 
 	void Start () {
+        panel.transform.localScale = Data.Instance.screenManager.scale;
         Events.OnLevelComplete += OnLevelComplete;
 	}
     void OnDestroy()

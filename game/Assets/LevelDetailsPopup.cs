@@ -21,6 +21,7 @@ public class LevelDetailsPopup : MonoBehaviour {
 
 	void Start () {
         panel.SetActive(false);
+        
 	}
     public void StartRace()
     {
@@ -29,7 +30,7 @@ public class LevelDetailsPopup : MonoBehaviour {
     }
     public void Open(int levelId)
     {
-        
+        panel.transform.localScale = Data.Instance.screenManager.scale;
 
         if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
         {

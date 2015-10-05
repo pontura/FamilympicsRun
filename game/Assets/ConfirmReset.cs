@@ -1,30 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShareAdvice : MonoBehaviour {
+public class ConfirmReset : MonoBehaviour {
 
+    public SettingsMenu menu;
     public GameObject panel;
 
-	void Start () {
-        panel.transform.localScale = Data.Instance.screenManager.scale;
+    void Start()
+    {
         panel.SetActive(false);
-        Events.OnFacebookNotConnected += OnFacebookNotConnected;
-	}
-    void OnDestroy()
-    {
-        Events.OnFacebookNotConnected -= OnFacebookNotConnected;
     }
-    void OnFacebookNotConnected()
+    public void Open()
     {
+        menu.Close();
         panel.transform.localScale = Data.Instance.screenManager.scale;
         panel.SetActive(true);
         panel.GetComponent<Animation>().Play("PopupOn");
     }
-
-    public void Login()
+    public void ResetApp()
     {
-        FB.Login();
-        Close();
+        Events.ResetApp();
+        Data.Instance.Load("MainMenu");
     }
     public void Close()
     {

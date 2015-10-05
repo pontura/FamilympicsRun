@@ -29,8 +29,8 @@ public class Tournaments : MonoBehaviour {
     void CheckForStarsAndThenStart()
     {
         text1.text = "COMPLETE SEASON 1 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_2 + " STARS TO UNLOCK";
-        text1.text = "COMPLETE SEASON 2 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_3 + " STARS TO UNLOCK";
-        text1.text = "COMPLETE SEASON 3 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_4 + " STARS TO UNLOCK";
+        text2.text = "COMPLETE SEASON 2 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_3 + " STARS TO UNLOCK";
+        text3.text = "COMPLETE SEASON 3 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_4 + " STARS TO UNLOCK";
         
         scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason1));
 
@@ -73,7 +73,7 @@ public class Tournaments : MonoBehaviour {
             case 3: if (Data.Instance.userData.levelProgressionId < 16) return; break;
             case 4: if (Data.Instance.userData.levelProgressionId < 24) return; break;
         }
-        Events.OnLoadParseScore(levelID);
+       // Events.OnLoadParseScore(levelID);
 
         //if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
         //    Data.Instance.Load("SinglePlayer");

@@ -18,6 +18,7 @@ public class MultiplayerResults : MonoBehaviour {
     public MultiplayerResultLine puesto4;
 
 	void Start () {
+        panel.transform.localScale = Data.Instance.screenManager.scale;
         panel.SetActive(false);
         Events.OnLevelComplete += OnLevelComplete;
 	}

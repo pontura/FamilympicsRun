@@ -10,9 +10,25 @@ public class MainMenu : MonoBehaviour {
 
     void Start()
     {
-        //forzar a cargar el Data instance:
+        startButton.gameObject.SetActive(false);
         float vol = Data.Instance.musicVolume;
-        Invoke("ResetLoadings", 6);
+        Invoke("Init", 1);
+    }
+    void Init()
+    {
+        startButton.gameObject.SetActive(true);
+        float vol = Data.Instance.musicVolume;
+        if (Data.Instance.userData.facebookID == "")
+        {
+            forceStart = true;
+            return;
+        }
+        else
+        {
+            label.text = "LOADING...";
+            startButton.interactable = false;
+        }
+        Invoke("ResetLoadings", 8);
     }
     public void GotoLevelSelector()
     {

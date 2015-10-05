@@ -22,6 +22,7 @@ public class EnergyPopup : MonoBehaviour {
     }
     public void OnOpenEnergyPopup()
     {
+        panel.transform.localScale = Data.Instance.screenManager.scale;
         if (Data.Instance.energyManager.energy == 0)
         {
             outOfEnergyIcon.SetActive(true);

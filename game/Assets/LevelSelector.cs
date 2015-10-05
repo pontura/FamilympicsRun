@@ -30,25 +30,19 @@ public class LevelSelector : MonoBehaviour {
         Data.Instance.userData.starsCount = 0;
         Events.CheckForNewNotifications();
 
-        Events.OnMusicChange("menus");
-        
-        if(Data.Instance.OnlyMultiplayer)
+        Events.OnMusicChange("menus");        
+       
+        if (FB.IsLoggedIn)
         {
-            Data.Instance.userData.mode = UserData.modes.MULTIPLAYER;
-        }
-        else
-        {
-            if (FB.IsLoggedIn)
+            if (Data.Instance.userData.FacebookFriends != null && Data.Instance.userData.FacebookFriends.Count == 0)
             {
-                if (Data.Instance.userData.FacebookFriends != null && Data.Instance.userData.FacebookFriends.Count == 0)
-                {
-                   // Data.Instance.loginManager.GetFriends();
-                }
+                // Data.Instance.loginManager.GetFriends();
             }
-            Data.Instance.levelData.ResetChallenge();
-            OnChangePlayMode(Data.Instance.userData.mode);
-            Events.OnChangePlayMode += OnChangePlayMode;           
         }
+        Data.Instance.levelData.ResetChallenge();
+        OnChangePlayMode(Data.Instance.userData.mode);
+        Events.OnChangePlayMode += OnChangePlayMode;           
+
         LoadButtons();
         Positionate();
         Events.OnLoadLocalData();
@@ -144,7 +138,7 @@ public class LevelSelector : MonoBehaviour {
     public void GotoLevel(int id)
     {
        // Events.OnSoundFX("buttonPress");
-        Events.OnLoadParseScore(id);
+      //  Events.OnLoadParseScore(id);
         if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
             Data.Instance.Load("GameSingle");
         else
@@ -173,11 +167,7 @@ public class LevelSelector : MonoBehaviour {
         else
             Events.OnFacebookNotConnected();
     }
-    public void ResetApp()
-    {
-        Events.ResetApp();        
-        Data.Instance.Load("MainMenu");
-    }
+    
     void OnChangePlayMode(UserData.modes mode)
     {
         switch (mode)
