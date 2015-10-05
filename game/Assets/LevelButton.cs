@@ -104,7 +104,7 @@ public class LevelButton : MonoBehaviour {
     }
     void LoadSinglePlayerWinners()
     {
-        float _myScore = PlayerPrefs.GetFloat("Run_Level_" + id);
+        float _myScore = Data.Instance.levelsData.GetMyScoreIfExists(id);
 
         if (_myScore > 0)
         {

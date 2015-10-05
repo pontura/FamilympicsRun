@@ -140,6 +140,7 @@ public class LoginManager : MonoBehaviour
 
     public void ParseFBLogout()
     {
+        Events.ResetApp();
         FB.Logout();
         ParseUser.LogOut();
     }

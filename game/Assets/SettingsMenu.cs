@@ -70,7 +70,7 @@ public class SettingsMenu : MonoBehaviour {
     void OnFacebookLogin()
     {
         Data.Instance.userData.mode = UserData.modes.SINGLEPLAYER;
-        Data.Instance.Load("LevelSelector");
+        Data.Instance.Load("MainMenu");
     }
     void FBLogin()
     {

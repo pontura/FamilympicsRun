@@ -94,6 +94,8 @@ public class Data : MonoBehaviour
         multiplayerData.Init();
 
         GetComponent<MusicManager>().Init();
+
+        Events.ResetApp += ResetApp;
     }
     void OnMusicVolumeChanged(float value)
     {
@@ -102,9 +104,6 @@ public class Data : MonoBehaviour
     void OnSoundsVolumeChanged(float value)
     {
         soundsVolume = value;
-    }
-    public void Reset()
-    {
     }
     void OnSaveVolumes(float _musicVolume, float _soundsVolume)
     {
@@ -121,6 +120,13 @@ public class Data : MonoBehaviour
     public void Back()
     {
         Load(lastScene);
+    }
+    public void ResetApp()
+    {
+        PlayerPrefs.DeleteAll();
+        Data.Instance.levelsData.Reset();
+        Data.Instance.userData.Reset();
+        Data.Instance.multiplayerData.Reset();
     }
 
 }

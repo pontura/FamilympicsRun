@@ -47,7 +47,7 @@ public class LevelSelector : MonoBehaviour {
             }
             Data.Instance.levelData.ResetChallenge();
             OnChangePlayMode(Data.Instance.userData.mode);
-            Events.OnChangePlayMode += OnChangePlayMode;            
+            Events.OnChangePlayMode += OnChangePlayMode;           
         }
         LoadButtons();
         Positionate();
@@ -67,7 +67,7 @@ public class LevelSelector : MonoBehaviour {
         Data.Instance.userData.starsCount = 0;
 
         int total = Data.Instance.levels.levels.Length;
-
+        float lastLevelScore = 0;
         for (int a = 1; a < total; a++)
         {
             b++;
@@ -84,9 +84,9 @@ public class LevelSelector : MonoBehaviour {
 
             newLevelButton.transform.localPosition = new Vector3(_x, 0, 0);
             newLevelButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-            float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
+          //  float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
 
-            float score = PlayerPrefs.GetFloat("Run_Level_" + a);
+            float score = Data.Instance.levelsData.GetMyScoreIfExists(a);
             int _stars = Data.Instance.levels.GetCurrentLevelStarsByScore(a, score);
 
             //print("Run_Level_" + a + "   -   stars: " + _stars + "     score: " + score);
@@ -102,6 +102,8 @@ public class LevelSelector : MonoBehaviour {
 
             if (Data.Instance.FreeLevels)
                 Data.Instance.userData.levelProgressionId = 100;
+
+            lastLevelScore = score;
         }
 
         GetComponent<Tournaments>().Init();
@@ -173,12 +175,8 @@ public class LevelSelector : MonoBehaviour {
     }
     public void ResetApp()
     {
-        PlayerPrefs.DeleteAll();
-        Data.Instance.levelsData.Reset();
-        Data.Instance.userData.Reset();
+        Events.ResetApp();        
         Data.Instance.Load("MainMenu");
-        Data.Instance.loginManager.ParseFBLogout();
-        Data.Instance.multiplayerData.Reset();
     }
     void OnChangePlayMode(UserData.modes mode)
     {

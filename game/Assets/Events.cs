@@ -4,6 +4,8 @@ using System.Collections;
 public static class Events {
 
     //The music:
+
+    public static System.Action ResetApp = delegate { };
     public static System.Action<float, float> OnSaveVolumes = delegate { };
     public static System.Action<float> OnMusicVolumeChanged = delegate { };
     public static System.Action<float> OnSoundsVolumeChanged = delegate { };
