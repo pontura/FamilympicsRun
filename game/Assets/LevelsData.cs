@@ -185,7 +185,7 @@ public class LevelsData : MonoBehaviour {
         {
             print("_________OnRefreshHiscores totalLevels: " + totalLevels);
             i = 0;
-            Invoke("LoadNextData", 0.5f);
+            Invoke("LoadNextData", 1);
         }
     }
     private void LoadNextData()
@@ -194,7 +194,7 @@ public class LevelsData : MonoBehaviour {
         if (i < totalLevels)
         {
             LoadData(i);
-            Invoke("LoadNextData", 0.5f);
+            Invoke("LoadNextData", 1);
         }
     }
     void OnSaveScore(int level, float score)

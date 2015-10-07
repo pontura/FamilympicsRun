@@ -30,7 +30,9 @@ public class UIPlayerButtons : MonoBehaviour {
 
 	public void Init (int id) {
 
-        powerups.Init(id);
+        if(Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+            powerups.Init(id);
+
         startUpFailed.Init(id);
 
         this.id = id;
