@@ -65,7 +65,7 @@ public class EnergyPopup : MonoBehaviour {
 	}
     public void Refill()
     {
-        Events.ReFillEnergy(5);
+        Events.ReFillEnergy(10);
         Close();
     }
 }

@@ -6,6 +6,7 @@ public class BoardMenu : MonoBehaviour {
 
     public Text energyField;
     public Text notificationsField;
+    public Text challengesField;
 
 	void Start () {
         SetEnergy();
@@ -26,6 +27,10 @@ public class BoardMenu : MonoBehaviour {
         {
             totalRequestedNotifications = Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count;
             notificationsField.text = totalRequestedNotifications.ToString();
+        }
+        if (Data.Instance.challengesManager.received.Count>0)
+        {
+            challengesField.text = Data.Instance.challengesManager.received.Count.ToString();
         }
     }
     //void OnRefreshNotifications(int totalRequestedNotifications)

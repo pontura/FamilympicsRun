@@ -64,10 +64,11 @@ public static class Events {
    
 
     public static System.Action<Enemy, int> OnAddEnemy = delegate { };
-    public static System.Action OnPowerUpOn = delegate { };
+    public static System.Action<int> OnPowerUpOn = delegate { };
     public static System.Action<int, Powerups.types> OnPowerUpActive = delegate { };
 
     //Challenges
+    public static System.Action OnChallengesLoad = delegate { };
     public static System.Action<string, string, int, float> OnChallengeCreate = delegate { };
     public static System.Action<string, string, string, float> OnChallengeClose = delegate { };
     public static System.Action<string> OnChallengeDelete = delegate { };

@@ -11,6 +11,8 @@ public class ScreenManager : MonoBehaviour {
         string name = SystemInfo.deviceModel;
         if (name.Substring(0, 4) == "iPad")
             isTablet = true;
+        else if (name.Substring(0, 4) == "iPho")
+            isTablet = false;
         else
         {
             float screenHeightInInch = Screen.height / Screen.dpi;
@@ -23,10 +25,8 @@ public class ScreenManager : MonoBehaviour {
                 isTablet = true;
             }
         }
-
         if (isTablet) scale = Vector3.one;
-        else scale = new Vector3(1.2f, 1.2f, 1.2f);      
-
+        else scale = new Vector3(1.2f, 1.2f, 1.2f);
     }
 
 }

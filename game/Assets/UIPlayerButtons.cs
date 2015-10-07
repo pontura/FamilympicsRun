@@ -4,6 +4,7 @@ using System.Collections;
 
 public class UIPlayerButtons : MonoBehaviour {
 
+    public Powerups powerups;
     public int id;
     private int laps;
 
@@ -29,6 +30,7 @@ public class UIPlayerButtons : MonoBehaviour {
 
 	public void Init (int id) {
 
+        powerups.Init(id);
         startUpFailed.Init(id);
 
         this.id = id;
@@ -55,6 +57,14 @@ public class UIPlayerButtons : MonoBehaviour {
             lapsLabelTitle.alignment = TextAnchor.MiddleLeft;
             lapsLabel.alignment = TextAnchor.MiddleLeft;
         }
+
+        //print("__________________ Data.Instance.screenManager.isTablet : " + Data.Instance.screenManager.isTablet);
+        if (!Data.Instance.screenManager.isTablet)
+        {
+            float scaleSum = 0.17f;
+            transform.localScale += new Vector3(scaleSum, scaleSum, scaleSum); 
+        }
+
 	}
     void Start()
     {

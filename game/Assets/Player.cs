@@ -10,10 +10,9 @@ public class Player : MonoBehaviour {
     public states state;
     public float speed;
     public float realDistance;
-    private float initialAacceleration;
-    private float initialDeceleration;
-    public int totalPlayers;
-
+    public int laps = 0;
+    
+    
     public Sprite num1;
     public Sprite num2;
     public Sprite num3;
@@ -26,11 +25,17 @@ public class Player : MonoBehaviour {
     private float acceleration;
     private float deceleration;
     private float decelerationJump;
-    public int laps = 0;
+    private float initialAacceleration;
+    private float initialDeceleration;
+    private bool isMultiplayer;
 
     private float TrilRendererDefaultTime;
     private GameCamera gameCamera;
     private GameManager gameManager;
+
+    private float PU_BOOST_Acceleration;
+    private float PU_BOOST_duration;
+    private float PU_PAUSED_duration;
 
     public enum states
     {
@@ -41,20 +46,24 @@ public class Player : MonoBehaviour {
         DEAD,
         IN_WIND_ZONE,
         STARTING_NEXT_LAP,
+        PAUSED,
         READY        
     }
     void Start()
     {
         gameManager = GameObject.Find("Game").GetComponent<GameManager>();
         TrilRendererDefaultTime = GetComponent<TrailRenderer>().time;
-        totalPlayers = Data.Instance.multiplayerData.players.Count;
-
-        if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
-            totalPlayers = 1;
         numSprite.sprite = null;
     }
     public void Init(GameCamera _gameCamera)
     {
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+            isMultiplayer = true;
+
+        PU_BOOST_Acceleration = Data.Instance.gameSettings.PU_BOOST_Acceleration;
+        PU_BOOST_duration = Data.Instance.gameSettings.PU_BOOST_duration;
+        PU_PAUSED_duration = Data.Instance.gameSettings.PU_PAUSED_duration;
+
         GameSettings gameSettigns = Data.Instance.gameSettings;
         initialAacceleration = gameSettigns.player.initialAacceleration;
         initialDeceleration = gameSettigns.player.initialDeceleration;
@@ -65,7 +74,9 @@ public class Player : MonoBehaviour {
         acceleration = initialAacceleration;
         deceleration = initialDeceleration;
 
-        Events.OnPowerUpActive += OnPowerUpActive;
+        if (isMultiplayer)
+            Events.OnPowerUpActive += OnPowerUpActive;
+
         Events.OnAvatarJump += OnAvatarJump;
         Events.OnAvatarRun += OnAvatarRun;
         Events.OnLevelComplete += OnLevelComplete;
@@ -94,64 +105,52 @@ public class Player : MonoBehaviour {
     {
         state = states.PLAYING;
     }
-    public void UpdatePosition(int position)
-    {
-        this.position = position;
-        if (state == states.STARTING_NEXT_LAP) return;
-        else if (state == states.READY) return;
-        else if (state != Player.states.DEAD)
-        {
-            float playerDistance = transform.localPosition.x;
-            float realDistance = gameCamera.distance - playerDistance;
-            if (gameCamera.distance - playerDistance > 20)
-            {
-                Die();
-            }
-            else if (playerDistance - gameCamera.distance > 20)
-                Win();
-            else
-            {
-                float posX = (20 - realDistance) * 100 / 40;
-                if (posX < 0) posX = 0; if (posX > 100) posX = 99;
-                meters = ((int)(posX * 10)).ToString();
-                if (meters.Length < 2) meters = "00" + meters;
-                else if (meters.Length < 3) meters = "0" + meters;
-                meters = laps + meters;
-
-                if (state == states.PLAYING) return;
-
-                if (totalPlayers <2) return;
-
-                switch (position)
-                {
-                    case 1: numSprite.sprite = num1; break;
-                    case 2: numSprite.sprite = num2; break;
-                    case 3: numSprite.sprite = num3; break;
-                    case 4: numSprite.sprite = num4; break;
-                }
-            }
-        }
-    }
+    
     void OnPowerUpActive(int _id, Powerups.types type)
     {
+        if (state == states.PAUSED) return;
         if (state == states.READY) return;
-        else if (_id != id) return;
         switch (type)
         {
-            case Powerups.types.FORWARD:
-                GetComponent<Animation>().Play("playerOnForward");
-                deceleration /= 2;
-                acceleration = 12;
+            case Powerups.types.BOOST:
+                if (_id != id) return;
+                acceleration *= PU_BOOST_Acceleration;
                 speed = acceleration;
-                Invoke("ResetPowerups", 2);
+                Invoke("ResetPowerups", PU_BOOST_duration);
+                Run();
+                break;
+            case Powerups.types.PAUSE_ME:
+                if (_id != id) return;
+                OnPaused();                
+                break;
+            case Powerups.types.PAUSE_OTHERS:
+                if (_id == id) return;
+                OnPaused(); 
                 break;
         }
     }
+    void OnPaused()
+    {
+        print("OnPaused");
+
+        if (acceleration > initialAacceleration)
+            acceleration /= 2;
+        if (acceleration < initialAacceleration) acceleration = initialAacceleration;
+
+        state = states.PAUSED;
+        Invoke("ResetPaused", PU_PAUSED_duration);
+    }
+    void ResetPaused()
+    {
+        print("OnPaused RESET");
+        Idle();
+    }
     void ResetPowerups()
     {
+        print("ResetPowerups");
         acceleration = initialAacceleration;
         deceleration = initialDeceleration;
-        Idle();
+        GetComponent<Animation>().Play("playerIdle");
     }
     public void SetColor(Color color)
     {
@@ -176,6 +175,7 @@ public class Player : MonoBehaviour {
     }
     public void Run()
     {
+        if (state == states.PAUSED) return;
         if (state == states.STARTING_NEXT_LAP) return;
         if (state == states.READY) return;
         if (state == states.HURT) return;
@@ -185,11 +185,13 @@ public class Player : MonoBehaviour {
              state = states.RUNNING;
 
         gameCamera.OnAvatarMoved();
+
         speed += acceleration;
         GetComponent<Animation>().Play("playerRun");
     }
     public void Jump()
     {
+        if (state == states.PAUSED) return;
         if (state == states.STARTING_NEXT_LAP) return;
         if (state == states.READY) return;
         if (state == states.HURT) return;
@@ -231,7 +233,7 @@ public class Player : MonoBehaviour {
     public void EndJump()
     {
        // Idle();
-        state = states.PLAYING;
+        state = states.RUNNING;
         GetComponent<Animation>().Play("playerIdle");
     }
     public void EndHurt()
@@ -242,7 +244,6 @@ public class Player : MonoBehaviour {
     {
         if (state == states.STARTING_NEXT_LAP) return;
         if (state == states.READY) return;
-      //  if (speed > maxSpeed) speed = maxSpeed;
         if (state == states.DEAD) return;
         if (state == states.PLAYING) return;
         if (state == states.HURT) return;
@@ -250,12 +251,25 @@ public class Player : MonoBehaviour {
         if (speed == 0)
             state = states.PLAYING;
 
+      
         if (state == states.RUNNING)
             speed -= (speed/1.7f) * deceleration * Time.deltaTime;
+        else if (state == states.PAUSED)
+            speed -= speed * deceleration * Time.deltaTime;
         else if (state == states.JUMPING)
             speed -= (speed/4) * decelerationJump * Time.deltaTime;
 
-        
+        //desacelera el powerup BOOST:
+        if (isMultiplayer)
+        {
+            if (acceleration > initialAacceleration)
+                acceleration -= 0.015f;
+            if (acceleration < initialAacceleration) acceleration = initialAacceleration;
+        }
+        //if (id == 1)
+        //{
+        //    print(  "acceleration: " + acceleration + "initialAacceleration: " + initialAacceleration + "  deceleration: " + deceleration + "SPEED: " + speed + "   state: " + state );
+        //}
         
         if (speed < 0) speed = 0;
         else if (speed > 0) 
@@ -268,6 +282,44 @@ public class Player : MonoBehaviour {
                 pos.x += (speed * 10) * Time.deltaTime;
 
             transform.localPosition = pos;
+        }
+    }
+    public void UpdatePosition(int position)
+    {
+        this.position = position;
+        if (state == states.STARTING_NEXT_LAP) return;
+        else if (state == states.READY) return;
+        else if (state != Player.states.DEAD)
+        {
+            float playerDistance = transform.localPosition.x;
+            float realDistance = gameCamera.distance - playerDistance;
+            if (gameCamera.distance - playerDistance > 20)
+            {
+                Die();
+            }
+            else if (playerDistance - gameCamera.distance > 20)
+                Win();
+            else
+            {
+                float posX = (20 - realDistance) * 100 / 40;
+                if (posX < 0) posX = 0; if (posX > 100) posX = 99;
+                meters = ((int)(posX * 10)).ToString();
+                if (meters.Length < 2) meters = "00" + meters;
+                else if (meters.Length < 3) meters = "0" + meters;
+                meters = laps + meters;
+
+                if (state == states.PLAYING) return;
+
+                if (!isMultiplayer) return;
+
+                switch (position)
+                {
+                    case 1: numSprite.sprite = num1; break;
+                    case 2: numSprite.sprite = num2; break;
+                    case 3: numSprite.sprite = num3; break;
+                    case 4: numSprite.sprite = num4; break;
+                }
+            }
         }
     }
     void Die()

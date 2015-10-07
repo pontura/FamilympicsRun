@@ -44,6 +44,8 @@ public class Data : MonoBehaviour
      public FacebookShare facebookShare;
      [HideInInspector]
      public ScreenManager screenManager;
+     [HideInInspector]
+     public ChallengersManager challengesManager;
 
     public static Data Instance
     {
@@ -66,7 +68,11 @@ public class Data : MonoBehaviour
     void Awake()
     {
 
-       // PlayerPrefs.DeleteAll();
+#if UNITY_EDITOR   
+        musicVolume = 0;
+        soundsVolume = 0;
+#endif
+        // PlayerPrefs.DeleteAll();
 
         if (!mInstance)
             mInstance = this;
@@ -88,6 +94,7 @@ public class Data : MonoBehaviour
         notifications = GetComponent<Notifications>();
         facebookShare = GetComponent<FacebookShare>();
         screenManager = GetComponent<ScreenManager>();
+        challengesManager = GetComponent<ChallengersManager>();
        // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);

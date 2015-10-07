@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour {
         LaneSeparation /= scaleFactor;
 
         if(!ForceMultiplayer)
-            Invoke("OnPowerUp", Random.Range(3,6));
+            Invoke("OnPowerUp", Random.Range(8,12));
 	}
     public void Restart()
     {
@@ -117,8 +117,10 @@ public class GameManager : MonoBehaviour {
     }
     void OnPowerUp()
     {
-        Events.OnPowerUpOn();
-        Invoke("OnPowerUp", Random.Range(5, 12));
+        if (state == states.READY) return;
+        int powerUpActive = Random.Range(1, 4);
+        Events.OnPowerUpOn(powerUpActive);
+        Invoke("OnPowerUp", Random.Range(6,12));
     }
     void OnAvatarWinLap(int playerID, int count)
     {

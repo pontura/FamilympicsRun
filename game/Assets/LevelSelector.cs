@@ -24,6 +24,9 @@ public class LevelSelector : MonoBehaviour {
 
 	void Start () {
 
+        if(FB.IsLoggedIn)
+            Events.OnChallengesLoad();
+
         //resetea el flag de challenge por si es un level que no jugaste aun
         Data.Instance.levelData.dontSaveScore = false;
 

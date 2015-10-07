@@ -29,17 +29,24 @@ public class Challenges : MonoBehaviour {
     }
     public GameObject container;
 
-
     [SerializeField]
     ChallengesLine challengesLine;
 
     private int buttonsSeparation = 89;
-    public List<PlayerData> userData;
     public bool infoLoaded;
 
     void Start()
     {
-        ChallengesReceived();
+        Events.OnChallengesLoad();
+    }
+    void Update()
+    {
+        if (infoLoaded) return;
+
+        if(type == types.RECEIVED && Data.Instance.challengesManager.received.Count > 0)
+            ChallengesReceived();
+        if (type == types.MADE && Data.Instance.challengesManager.made.Count > 0)
+            ChallengesMade();
     }
     public void Back()
     {
@@ -54,11 +61,13 @@ public class Challenges : MonoBehaviour {
     }
     public void ChallengesMade()
     {
+        infoLoaded = true;
         type = types.MADE;
         LoadData();
     }
     public void ChallengesReceived()
     {
+        infoLoaded = true;
         type = types.RECEIVED;
         LoadData();
     }
@@ -71,87 +80,50 @@ public class Challenges : MonoBehaviour {
         
         if (type == types.RECEIVED)
         {
-             LoadChallenge(
-                 ParseObject.GetQuery("Challenges")
-                .WhereEqualTo("op_facebookID", Data.Instance.userData.facebookID)
-                .Limit(90)
-            );
+            LoadChallenge(Data.Instance.challengesManager.received);
         }
         else
         {
-            LoadChallenge( 
-                ParseObject.GetQuery("Challenges")
-                .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
-                .Limit(90)
-            );
+            LoadChallenge( Data.Instance.challengesManager.made );
         }
     }
-    void LoadChallenge(ParseQuery<ParseObject> query)
+    void LoadChallenge(List<ChallengersManager.PlayerData> data)
     {
-        print("LoadData  " + type);
-
-        userData.Clear();
-        infoLoaded = false;
-
-        query.FindAsync().ContinueWith(t =>
+        int a = 0;
+        foreach (ChallengersManager.PlayerData result in data)
         {
-            IEnumerable<ParseObject> results = t.Result;
-            foreach (var result in results)
-            {
-                string objectID = result.ObjectId;
-                string facebookID = result.Get<string>("facebookID");
-                string op_playerName = result.Get<string>("op_playerName");
-                string playerName = result.Get<string>("playerName");
-                int level = result.Get<int>("level");                
-                float score = result.Get<float>("score");
-                
 
-                float score2 = 0;
-                string winner = "";
-                try
-                {
-                    score2 = result.Get<float>("score2");
-                    winner = result.Get<string>("winner");
-                }
-                catch
-                {
-                }
-                PlayerData playerData = new PlayerData();
-                playerData.objectID = objectID;
-                playerData.facebookID = facebookID;
+            string objectID = result.objectID;
+            string facebookID = result.facebookID;
+            string op_playerName = result.playerName;
+            string playerName = result.playerName;
+            int level = result.level;            
+            float score = result.score;
+            float score2 = result.score2;
+            string winner = result.winner;
 
-                if (type == types.MADE)
-                    playerData.playerName = op_playerName;
-                else
-                    playerData.playerName = playerName;
+            PlayerData playerData = new PlayerData();
+            playerData.objectID = objectID;
+            playerData.facebookID = facebookID;
 
-                playerData.score = score;
-                playerData.level = level;
+            if (type == types.MADE)
+                playerData.playerName = op_playerName;
+            else
+                playerData.playerName = playerName;
 
-                playerData.winner = winner;
-                playerData.score2 = score2;
+            playerData.score = score;
+            playerData.level = level;
+            playerData.winner = winner;
 
-                userData.Add(playerData);
-                print("userData " + userData.Count);
-            }
+            playerData.score2 = score2;
+
+            ChallengesLine newButton = Instantiate(challengesLine) as ChallengesLine;
+            newButton.transform.SetParent(container.transform);
+            newButton.transform.localScale = Vector3.one;
+            newButton.Init(this, a, playerData);
+            a++;
         }
-        );
        
-    }
-    void Update() {
-        if (infoLoaded) return;
-        if (userData.Count > 0)
-        {
-            print("carga qty: " + userData.Count);
-            infoLoaded = true;
-            for (int a = 0; a < userData.Count; a++)
-            {
-                ChallengesLine newButton = Instantiate(challengesLine) as ChallengesLine;
-                newButton.transform.SetParent(container.transform);
-                newButton.transform.localScale = Vector3.one;
-                newButton.Init(this, a);                
-            }
-        }
     }
     
     public void Confirm(string username, string objectID, string facebookID, float op_score)

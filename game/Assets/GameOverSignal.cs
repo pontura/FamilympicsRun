@@ -19,7 +19,7 @@ public class GameOverSignal : MonoBehaviour {
     }
     public void Buy()
     {
-        Events.ReFillEnergy(5);
+        Events.ReFillEnergy(10);
         Replay();
     }
     void GameOver(bool byTime)

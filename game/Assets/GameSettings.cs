@@ -15,6 +15,11 @@ public class GameSettings : MonoBehaviour  {
         public float speedJump = 1;
     }
 
+    public float PU_BOOST_Acceleration;
+    public float PU_BOOST_duration;
+
+    public float PU_PAUSED_duration;
+
     public Player player;
     public float LaneSeparation = 2.1f;
 

@@ -26,12 +26,12 @@ public class GameCamera : MonoBehaviour {
 
     void Start()
     {
-        Events.OnPowerUpActive += OnPowerUpActive;
+      //  Events.OnPowerUpActive += OnPowerUpActive;
         Events.OnAddEnemy += OnAddEnemy;
     }
     void OnDestroy()
     {
-        Events.OnPowerUpActive -= OnPowerUpActive;
+      //  Events.OnPowerUpActive -= OnPowerUpActive;
         Events.OnAddEnemy -= OnAddEnemy;
     }
     void OnPowerUpActive(int _id, Powerups.types type)
@@ -39,11 +39,11 @@ public class GameCamera : MonoBehaviour {
         if (_id == id) return;
         switch (type)
         {
-            case Powerups.types.PAUSE:
+            case Powerups.types.PAUSE_ME:
                 state = states.PAUSED;
                 Invoke("Reset", 2);
                 break;
-            case Powerups.types.REWIND:
+            case Powerups.types.PAUSE_OTHERS:
                 powerUpMultiplierSpeed = 3;
                 Invoke("Reset", 2);
                 break;

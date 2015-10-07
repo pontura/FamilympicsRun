@@ -8,47 +8,66 @@ public class Powerups : MonoBehaviour {
     public int playerId;
     public int powerUpActive;
     public types type;
+    public Image[] toColorize;
+    public GameObject panel;
 
     [SerializeField]
     public Image bar;
-    public GameObject ForwardAsset;
-    public GameObject PauseAsset;
-    public GameObject RewindAsset;
+    public GameObject BoostAsset;
+    public GameObject PauseMeAsset;
+    public GameObject PauseOthersAsset;
 
     private bool isOn;
 
     public enum types
     {
-        FORWARD,
-        PAUSE,
-        REWIND
+        BOOST,
+        PAUSE_ME,
+        PAUSE_OTHERS
     }
-
+    public void Init(int playerId)
+    {
+        panel.SetActive(false);
+        this.playerId = playerId;
+        Color colorID = Data.Instance.colors[playerId - 1];
+        colorID.a = 0.5f;
+        foreach (Image image in toColorize)
+            image.color = colorID;
+    }
 	void Start () {
-        return;
-        if(Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
-             Events.OnPowerUpOn += OnPowerUpOn;
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
+        {
+            Events.OnPowerUpOn += OnPowerUpOn;
+            Events.OnPowerUpActive += OnPowerUpActive;
+        }
 	}
     void OnDestroy()
     {
         Events.OnPowerUpOn -= OnPowerUpOn;
+        Events.OnPowerUpActive -= OnPowerUpActive;
+    }
+    void OnPowerUpActive(int playerID, types type)
+    {
+        Reset();
     }
     void Reset()
     {
         bar.gameObject.SetActive(false);
-        ForwardAsset.gameObject.SetActive(false);
-        PauseAsset.gameObject.SetActive(false);
-        RewindAsset.gameObject.SetActive(false);
+        BoostAsset.gameObject.SetActive(false);
+        PauseMeAsset.gameObject.SetActive(false);
+        PauseOthersAsset.gameObject.SetActive(false);
+        panel.SetActive(false);
     }
-    void OnPowerUpOn()
+    void OnPowerUpOn(int powerUpActive)
     {
-        powerUpActive = Random.Range(1, 4);
+        print("powerUpActive: " + powerUpActive);
+        panel.SetActive(true);
         bar.gameObject.SetActive(true);
         switch (powerUpActive)
         {
-            case 1: type = types.FORWARD; ForwardAsset.gameObject.SetActive(true); break;
-            case 2: type = types.PAUSE; PauseAsset.gameObject.SetActive(true); break;
-            case 3: type = types.REWIND; RewindAsset.gameObject.SetActive(true); break;
+            case 1: type = types.BOOST; BoostAsset.gameObject.SetActive(true); break;
+            case 2: type = types.PAUSE_ME; PauseMeAsset.gameObject.SetActive(true); break;
+            case 3: type = types.PAUSE_OTHERS; PauseOthersAsset.gameObject.SetActive(true); break;
         }
          iTween.ValueTo(gameObject, iTween.Hash(
              "from", 0,
@@ -70,9 +89,9 @@ public class Powerups : MonoBehaviour {
     {
         switch (type)
         {
-            case 1: Events.OnPowerUpActive(playerId, types.FORWARD); break;
-            case 2: Events.OnPowerUpActive(playerId, types.PAUSE); break;
-            default: Events.OnPowerUpActive(playerId, types.REWIND); break;
+            case 1: Events.OnPowerUpActive(playerId, types.BOOST); break;
+            case 2: Events.OnPowerUpActive(playerId, types.PAUSE_ME); break;
+            default: Events.OnPowerUpActive(playerId, types.PAUSE_OTHERS); break;
         }
     }
 }

@@ -23,89 +23,60 @@ public class ChallengesLine : MonoBehaviour
 
     public Button ok;
     public Button cancel;
+    public Challenges.PlayerData playerData;
 
-    void Start()
+    public void Init(Challenges challenges, int _id, Challenges.PlayerData playerData)
     {
-        
-    }
-    public void Init(Challenges challenges, int _id)
-    {
-        hide();
-
+        this.playerData = playerData;
         this.challenges = challenges;
         this.id = _id;
-    }
-    void Update()
-    {
-        if (infoLoaded) return;
-        if (challenges.userData[id].facebookID != "")
+        
+        string title = "";
+        if (challenges.type == Challenges.types.MADE)
         {
-            string title = "";
-            if (challenges.type == Challenges.types.MADE)
-            {
-               // title = "To: ";
-                InactiveButtons();
-            }
-            else
-            {
-               // title = "From: ";
-            }
-
-            if (challenges.userData[id].winner != "")
-            {
-                if (challenges.userData[id].winner == Data.Instance.userData.facebookID)
-                {
-                    result.text = "YOU WON";
-                    result.color = WinColor;
-                }
-                else
-                {
-                    result.text = "YOU LOST";
-                    result.color = lostColor;
-                }
-
-                InactiveButtons();
-            }
-            this.objectID = challenges.userData[id].objectID;
-            this.facebookID = challenges.userData[id].facebookID;
-            usernameLabel.text = title + challenges.userData[id].playerName.ToUpper();
-            levelId = challenges.userData[id].level;
-            level.text = "LEVEL " + levelId;
-            this.username = challenges.userData[id].playerName;
-            scoreLabel.text = Data.Instance.levelsData.GetScoreString(challenges.userData[id].level, challenges.userData[id].score);
-
-            Levels.LevelData data = Data.Instance.levels.GetData(levelId);
-            string addToScore = "";
-            if (data.totalTime > 0)
-                addToScore = "m in " + Data.Instance.levelsData.GetTimer(data.totalTime);
-            else
-                addToScore = " in " + data.totalLaps+"000"  + "m";
-
-            scoreLabel.text += addToScore;
-
-            op_score = challenges.userData[id].score;
-            profilePicture.setPicture(facebookID);
-            infoLoaded = true;
-
-            show();
+            InactiveButtons();
         }
+
+
+        if (playerData.winner != "")
+        {
+            if (playerData.winner == Data.Instance.userData.facebookID)
+            {
+                result.text = "YOU WON";
+                result.color = WinColor;
+            }
+            else
+            {
+                result.text = "YOU LOST";
+                result.color = lostColor;
+            }
+            InactiveButtons();
+        }
+        this.objectID = playerData.objectID;
+        this.facebookID = playerData.facebookID;
+        usernameLabel.text = title + playerData.playerName.ToUpper();
+        levelId = playerData.level;
+        level.text = "LEVEL " + levelId;
+        this.username = playerData.playerName;
+        scoreLabel.text = Data.Instance.levelsData.GetScoreString(playerData.level, playerData.score);
+
+        Levels.LevelData data = Data.Instance.levels.GetData(levelId);
+        string addToScore = "";
+        if (data.totalTime > 0)
+            addToScore = "m in " + Data.Instance.levelsData.GetTimer(data.totalTime);
+        else
+            addToScore = " in " + data.totalLaps+"000"  + "m";
+
+        scoreLabel.text += addToScore;
+
+        op_score = playerData.score;
+        profilePicture.setPicture(facebookID);
+        infoLoaded = true;
     }
     void InactiveButtons()
     {
         ok.gameObject.SetActive(false);
         cancel.gameObject.SetActive(false);
-    }
-    private void hide()
-    {
-        Vector3 pos = transform.localPosition;
-        pos.x = 1000;
-        transform.localPosition = pos;
-    }
-    private void show()
-    {
-        Vector3 pos = transform.localPosition;
-        pos.x = 0;
-        transform.localPosition = pos;
     }
     public void Accept()
     {

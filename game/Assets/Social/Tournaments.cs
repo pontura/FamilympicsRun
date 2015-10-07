@@ -10,15 +10,15 @@ public class Tournaments : MonoBehaviour {
     public int limitScrollSeason1 = -926;
     public int limitScrollSeason2 = -2100;
     public int limitScrollSeason3 = -3200;
-    public int limitScrollSeason4 = -4824;
+  //  public int limitScrollSeason4 = -4824;
 
     public GameObject lock1;
     public GameObject lock2;
-    public GameObject lock3;
+  //  public GameObject lock3;
 
     public Text text1;
     public Text text2;
-    public Text text3;
+   // public Text text3;
 
     public void Init()
     {
@@ -30,7 +30,7 @@ public class Tournaments : MonoBehaviour {
     {
         text1.text = "COMPLETE SEASON 1 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_2 + " STARS TO UNLOCK";
         text2.text = "COMPLETE SEASON 2 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_3 + " STARS TO UNLOCK";
-        text3.text = "COMPLETE SEASON 3 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_4 + " STARS TO UNLOCK";
+       // text3.text = "COMPLETE SEASON 3 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_4 + " STARS TO UNLOCK";
         
         scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason1));
 
@@ -53,8 +53,8 @@ public class Tournaments : MonoBehaviour {
         {
             Destroy(lock1);
             Destroy(lock2);
-            Destroy(lock3);
-            scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason4));
+          //  Destroy(lock3);
+          //  scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason4));
         }
 
         Events.OnChangePlayMode += OnChangePlayMode;
