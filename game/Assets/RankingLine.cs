@@ -22,19 +22,22 @@ public class RankingLine : MonoBehaviour {
         this.facebookID = _facebookID;
         this.playerName = Data.Instance.gameSettings.GetUsername(_username);
 
-        string[] nameArr = Regex.Split(_username, " ");
-
-        this.username.text = nameArr[0];
+        this.username.text = playerName;
 
         this.score.text = Data.Instance.levelsData.GetScoreString(levelID, float.Parse(_score));
 
-        if(!Data.Instance.OnlyMultiplayer)
-            picture.setPicture(_facebookID);
+        
     }
     public void SetSinglePlayer()
     {
         maskImage.SetActive(true);
         circleImage.gameObject.SetActive(false);
+        picture.gameObject.SetActive(true);
+        Invoke("LoadPicture", 0.2f);
+    }
+    void LoadPicture()
+    {
+        picture.setPicture(facebookID);
     }
     public void SetMultiplayerColor(int playerID)
     {

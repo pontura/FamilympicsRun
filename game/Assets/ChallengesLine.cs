@@ -31,7 +31,6 @@ public class ChallengesLine : MonoBehaviour
         this.challenges = challenges;
         this.id = _id;
         
-        string title = "";
         if (challenges.type == Challenges.types.MADE)
         {
             InactiveButtons();
@@ -54,20 +53,22 @@ public class ChallengesLine : MonoBehaviour
         }
         this.objectID = playerData.objectID;
         this.facebookID = playerData.facebookID;
-        usernameLabel.text = title + playerData.playerName.ToUpper();
+
+        username = Data.Instance.gameSettings.GetUsername(playerData.playerName);
+        usernameLabel.text = username;
+        
+
         levelId = playerData.level;
         level.text = "LEVEL " + levelId;
-        this.username = playerData.playerName;
-        scoreLabel.text = Data.Instance.levelsData.GetScoreString(playerData.level, playerData.score);
+
+        string score = Data.Instance.levelsData.GetScoreString(playerData.level, playerData.score);
 
         Levels.LevelData data = Data.Instance.levels.GetData(levelId);
-        string addToScore = "";
-        if (data.totalTime > 0)
-            addToScore = "m in " + Data.Instance.levelsData.GetTimer(data.totalTime);
-        else
-            addToScore = " in " + data.totalLaps+"000"  + "m";
 
-        scoreLabel.text += addToScore;
+        if (data.totalTime > 0)
+            scoreLabel.text = score + " in " + Data.Instance.levelsData.GetTimer(data.totalTime);
+        else
+            scoreLabel.text = data.totalLaps + "000" + "m in " + score;
 
         op_score = playerData.score;
         profilePicture.setPicture(facebookID);

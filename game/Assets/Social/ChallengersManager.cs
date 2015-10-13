@@ -42,6 +42,7 @@ public class ChallengersManager : MonoBehaviour {
         LoadChallenge(true, 
               ParseObject.GetQuery("Challenges")
              .WhereEqualTo("op_facebookID", Data.Instance.userData.facebookID)
+             .OrderByDescending("updatedAt")
              .Limit(90)
          );
     }
@@ -50,6 +51,7 @@ public class ChallengersManager : MonoBehaviour {
         LoadChallenge(false,
               ParseObject.GetQuery("Challenges")
              .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
+             .OrderByDescending("updatedAt")
              .Limit(90)
          );
     }
@@ -70,6 +72,7 @@ public class ChallengersManager : MonoBehaviour {
                 string op_facebookID = result.Get<string>("op_facebookID");
                 string op_playerName = result.Get<string>("op_playerName");
                 string playerName = result.Get<string>("playerName");
+                
                 int level = result.Get<int>("level");
                 float score = result.Get<float>("score");
 

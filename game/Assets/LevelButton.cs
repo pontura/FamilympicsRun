@@ -23,6 +23,8 @@ public class LevelButton : MonoBehaviour {
     private MultiplayerData multiplayerData;
     private float myLastScore;
     private int levelID;
+    private LevelSelector levelSelector;
+    private bool isLocked;
 
     void Start()
     {
@@ -35,6 +37,7 @@ public class LevelButton : MonoBehaviour {
     }
     public void Init(LevelSelector levelSelector, int levelID, float myLastScore)
     {
+        this.levelSelector = levelSelector;
         this.levelID = levelID;
         this.myLastScore = myLastScore;
         levelScore = Data.Instance.levelsData.GetLevelScores(levelID);
@@ -53,24 +56,43 @@ public class LevelButton : MonoBehaviour {
 
 
         if (myLastScore == 0 && levelID > 1)
+            SetLock(true);
+        else 
+            SetLock(false);
+
+        button.onClick.AddListener(() =>
+        {
+            Clicked();
+        });
+        
+    }
+    void Clicked()
+    {
+        if (isLocked) return;
+        if (Data.Instance.levels.CanPlay(id))
+        {
+            levelSelector.StartLevel(id);
+        }
+    }
+    void SetLock(bool isLocked)
+    {
+        this.isLocked = isLocked;
+        if (isLocked)
         {
             button.GetComponent<Image>().color = lockColor;
             LockImage.enabled = true;
             labelNum.enabled = false;
-            return;
         }
-
-        LockImage.enabled = false;
-        
-        labelNum.text = levelID.ToString();
-        button.onClick.AddListener(() =>
+        else
         {
-            if( Data.Instance.levels.CanPlay(id))
-            {
-                levelSelector.StartLevel(id);
-            }
-        });
-        
+            button.GetComponent<Image>().color = Color.white;
+            LockImage.enabled = false;
+            labelNum.enabled = true;
+
+            labelNum.text = levelID.ToString();
+           
+
+        }
     }
     IEnumerator LoopToCheckChanges()
     {
@@ -83,11 +105,11 @@ public class LevelButton : MonoBehaviour {
             LevelsData.LevelsScore ls = Data.Instance.levelsData.GetLevelScores(levelID);
             int a = 0;
             bool refresh = false;
-            foreach (LevelsData.ScoreData sd in ls.scoreData)
-            {
-                if (user1.score_float != sd.score)
+            //foreach (LevelsData.ScoreData sd in ls.scoreData)
+            //{
+            if (ls.scoreData.Count>0 && user1.score_float != ls.scoreData[0].score)
                     refresh = true;
-            }
+           // }
             if (refresh) Refresh();
             if (!infoLoaded) Refresh();
         }
@@ -113,6 +135,13 @@ public class LevelButton : MonoBehaviour {
             int _stars = Data.Instance.levels.GetCurrentLevelStarsByScore(id, _myScore);
             stars.Init(_stars);
             myScore.text = _score;
+            SetLock(false);
+
+            if (_myScore != PlayerPrefs.GetFloat("Run_Level_" + id))
+            {
+                Debug.Log("___GRABA LOCAL level: " + id + " score: " + _myScore);
+                PlayerPrefs.SetFloat("Run_Level_" + id, _myScore);
+            }
         }        
 
         if (Data.Instance.userData.facebookID.Length < 2)

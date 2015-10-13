@@ -112,8 +112,8 @@ public class LevelDetailsPopup : MonoBehaviour {
         panel.SetActive(false);
     }
     public void Login()
-    {        
-        Data.Instance.loginManager.FBLogin();
+    {
+        Events.OnFacebookNotConnected();
         Close();
     }
     public void Challenge()

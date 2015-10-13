@@ -84,6 +84,7 @@ public class LevelSelector : MonoBehaviour {
           //  float lastLevelScore = PlayerPrefs.GetFloat("Run_Level_" + (a - 1).ToString());
 
             float score = Data.Instance.levelsData.GetMyScoreIfExists(a);
+
             int _stars = Data.Instance.levels.GetCurrentLevelStarsByScore(a, score);
 
             //print("Run_Level_" + a + "   -   stars: " + _stars + "     score: " + score);
@@ -101,6 +102,7 @@ public class LevelSelector : MonoBehaviour {
                 Data.Instance.userData.levelProgressionId = 100;
 
             lastLevelScore = score;
+
         }
 
         GetComponent<Tournaments>().Init();
@@ -131,6 +133,7 @@ public class LevelSelector : MonoBehaviour {
     }
     public void StartLevel(int id)
     {
+        print("StartLevel" + id);
         if (Data.Instance.energyManager.energy <= 0)
         {
             Events.OnOpenEnergyPopup();

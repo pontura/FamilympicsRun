@@ -94,8 +94,13 @@ public class LevelsData : MonoBehaviour {
                 return levelsScore[levelID].myScore;
             }
         }
-        if (Data.Instance.userData.facebookID != "" && PlayerPrefs.GetFloat("Run_Level_" + levelID) > 0 && levelsScore[levelID].myScore != levelsScore[levelID].myScoreInParse)
+        if (Data.Instance.userData.facebookID != "" 
+            && PlayerPrefs.GetFloat("Run_Level_" + levelID) > 0 
+            && levelsScore[levelID].myScore != levelsScore[levelID].myScoreInParse
+            && levelsScore[levelID].scoreData.Count > 0
+            )
         {
+            Debug.LogError("SaveNewScore local: " + PlayerPrefs.GetFloat("Run_Level_" + levelID) + "  --   myscore: " + levelsScore[levelID].myScore + " myparse SCORE : " + levelsScore[levelID].myScoreInParse);
             levelsScore[levelID].myScore = PlayerPrefs.GetFloat("Run_Level_" + levelID);
             levelsScore[levelID].myScoreInParse = PlayerPrefs.GetFloat("Run_Level_" + levelID);
             SaveNewScore(levelID, levelsScore[levelID].myScore);
@@ -226,7 +231,7 @@ public class LevelsData : MonoBehaviour {
 
     void UpdateScore(int level, float score)
     {
-        print("UpdateScore" + level + " SCORE: " + score);
+        print("____________UpdateScore" + level + " SCORE: " + score);
         var query = new ParseQuery<ParseObject>("Level_" + level)
             .WhereEqualTo("facebookID", Data.Instance.userData.facebookID);
 
@@ -251,7 +256,7 @@ public class LevelsData : MonoBehaviour {
         sd.score = score;
         levelsScore[level].scoreData.Add(sd);
 
-        print("SaveNewScore" + level);
+        print("___________SaveNewScore" + level);
         ParseObject gameScore = new ParseObject("Level_" + level.ToString());
         //gameScore.Increment("score", hiscore);
         gameScore["playerName"] = Data.Instance.userData.username;
@@ -277,7 +282,7 @@ public class LevelsData : MonoBehaviour {
 
     private void LoadData(int _level)
     {
-        
+
         print("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
 
         levelsScore[_level].scoreData.Clear();
@@ -319,7 +324,6 @@ public class LevelsData : MonoBehaviour {
                     sd.facebookID = result["facebookID"].ToString();
                     sd.score = float.Parse(result["score"].ToString());
                     levelsScore[_level].scoreData.Add(sd);
-                    //Events.OnParseLoadedScore(sd.facebookID, sd.score, _level);
                     scoresLoaded++;
                     a++;
                 }

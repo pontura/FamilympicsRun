@@ -96,7 +96,6 @@ public class LoginManager : MonoBehaviour
                 FB.API("/me", HttpMethod.GET, FBAPICallback);
                 // Display current profile info
                 UpdateProfile();
-                Debug.Log("UpdateProfile");
             }
         }
     }
@@ -200,8 +199,8 @@ public class LoginManager : MonoBehaviour
     private bool profileLoaded;
     private void UpdateProfile()
     {
-        print("UpdateProfile");
         if (profileLoaded) return;
+        print("UpdateProfile");
         var user = ParseUser.CurrentUser;
         Events.OnParseLogin();
         profileLoaded = true;

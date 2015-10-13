@@ -55,6 +55,7 @@ public class Notifications : MonoBehaviour {
                  ParseObject.GetQuery("Notifications")
                 .WhereEqualTo("asked_facebookID", Data.Instance.userData.facebookID)
                 .WhereEqualTo("status", "0")
+                .OrderByDescending("updatedAt")
                 .Limit(90)
             );
     }
@@ -84,6 +85,7 @@ public class Notifications : MonoBehaviour {
                  ParseObject.GetQuery("Notifications")
                 .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
                 .WhereNotEqualTo("status", "0")
+                .OrderByDescending("updatedAt")
                 .Limit(90)
             );
     }

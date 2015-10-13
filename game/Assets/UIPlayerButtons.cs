@@ -35,6 +35,8 @@ public class UIPlayerButtons : MonoBehaviour {
 
         startUpFailed.Init(id);
 
+        transform.localScale += Data.Instance.screenManager.GetUiPlayerButtonsScale();
+
         this.id = id;
         scaleBig = button1.transform.localScale.x;
         scaleSmall = scaleBig - 0.04f;
@@ -60,12 +62,7 @@ public class UIPlayerButtons : MonoBehaviour {
             lapsLabel.alignment = TextAnchor.MiddleLeft;
         }
 
-        //print("__________________ Data.Instance.screenManager.isTablet : " + Data.Instance.screenManager.isTablet);
-        if (!Data.Instance.screenManager.isTablet)
-        {
-            float scaleSum = 0.17f;
-            transform.localScale += new Vector3(scaleSum, scaleSum, scaleSum); 
-        }
+        
 
 	}
     void Start()

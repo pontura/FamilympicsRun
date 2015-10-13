@@ -22,7 +22,7 @@ public class NotificationButton : MonoBehaviour {
         this.creator = _creator;
         this.facebookID = facebookID;
 
-        usernameLabel.text = playerName.ToUpper();
+        usernameLabel.text = Data.Instance.gameSettings.GetUsername(playerName);
         profilePicture.setPicture(facebookID);
 
         result.text = "";

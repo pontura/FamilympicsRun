@@ -7,12 +7,14 @@ public class Ranking : MonoBehaviour {
     public RankingLine rankingLine;
     public GameObject container;
     private MultiplayerData multiplayerData;
+    private int levelID;
 
 	void Start () {
         multiplayerData = Data.Instance.GetComponent<MultiplayerData>();
 	}
     public void LoadSinglePlayerWinners(int levelID)
     {
+        this.levelID = levelID;
         foreach (Transform child in container.transform)
         {
             GameObject.Destroy(child.gameObject);
@@ -20,18 +22,11 @@ public class Ranking : MonoBehaviour {
 
         if (!FB.IsLoggedIn) return;
 
-        //List<LevelsData.ScoreData> scoresData = Data.Instance.levelsData.LoadFacebookHiscores(levelID);
-
-        //foreach(LevelsData.ScoreData scoreData in scoresData)
-        //{
-        //      AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1);
-        //}
-
         List<LevelsData.ScoreData> scoresData = Data.Instance.levelsData.levelsScore[levelID].scoreData;
 
         foreach (LevelsData.ScoreData scoreData in scoresData)
         {
-            AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1);
+            AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1, scoreData.facebookID);
         }
     }
 
@@ -46,20 +41,24 @@ public class Ranking : MonoBehaviour {
 
         foreach (MultiplayerData.HiscoresData data in hiscoreData)
         {
-            AddPlayer(data.username, data.score.ToString(), data.playerID);
+            AddPlayer(data.username, data.score.ToString(), data.playerID, "");
         }
     }
 
 
-    void AddPlayer(string username, string score, int playerId)
+    void AddPlayer(string username, string score, int playerId, string facebookID)
     {
+        //Debug.Log(username + " scoRe: " + score + " playerId: " + playerId + " facebookID: " + facebookID);
+
         RankingLine rl = Instantiate(rankingLine) as RankingLine;
         rl.transform.SetParent(container.transform);
         rl.transform.localScale = Vector3.one;
-        rl.Init(0, username, score, "");
+        rl.Init(levelID, username, score, facebookID);
 
         if(playerId>-1)
              rl.SetMultiplayerColor(playerId);
+        else
+            rl.SetSinglePlayer();
     }
    
 }
