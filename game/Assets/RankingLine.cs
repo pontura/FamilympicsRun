@@ -43,7 +43,11 @@ public class RankingLine : MonoBehaviour {
     {
         maskImage.SetActive(false);
         circleImage.gameObject.SetActive(true);
-        Debug.Log("SetMultiplayerColor " + playerID );
+        if (playerID == 0)
+        {
+            Debug.Log("SetMultiplayerColor " + playerID);
+            return;
+        }
         Color color = Data.Instance.colors[playerID-1];
         SetColor(color);
     }

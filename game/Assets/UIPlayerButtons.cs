@@ -38,7 +38,7 @@ public class UIPlayerButtons : MonoBehaviour {
         transform.localScale += Data.Instance.screenManager.GetUiPlayerButtonsScale();
 
         this.id = id;
-        scaleBig = button1.transform.localScale.x;
+        scaleBig = transform.localScale.x;
         scaleSmall = scaleBig - 0.04f;
         
         Color colorID = Data.Instance.colors[id - 1];
@@ -157,10 +157,10 @@ public class UIPlayerButtons : MonoBehaviour {
         if (buttonPressed == activeButton)
             return;
 
-        button1.transform.localScale = new Vector3(scaleSmall, scaleSmall, scaleSmall);
-        button2.transform.localScale = new Vector3(scaleSmall, scaleSmall, scaleSmall);
+       // button1.transform.localScale = new Vector3(scaleSmall, scaleSmall, scaleSmall);
+      //  button2.transform.localScale = new Vector3(scaleSmall, scaleSmall, scaleSmall);
         activeButton = buttonPressed;
-        buttonPressed.transform.localScale = new Vector3(scaleBig, scaleBig, scaleBig);
+      //  buttonPressed.transform.localScale = new Vector3(scaleBig, scaleBig, scaleBig);
         Events.OnAvatarRun(id);
     }
 }
