@@ -15,6 +15,7 @@ public class MultiplayerSelector : MonoBehaviour {
         {
             playerButton.Init();
         }
+        playButton.interactable = false;
     }
     void Update()
     {

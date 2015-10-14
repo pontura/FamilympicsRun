@@ -25,6 +25,8 @@ public class Tournaments : MonoBehaviour {
         CheckForStarsAndThenStart();
         if( Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
             SetTournamentButtons(false);
+
+        Events.OnChangePlayMode += OnChangePlayMode;        
     }
     void CheckForStarsAndThenStart()
     {
@@ -43,21 +45,14 @@ public class Tournaments : MonoBehaviour {
             Destroy(lock1);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason2));
         } else
-        if (tournamentAvailable == 3)
+        if (tournamentAvailable >2)
         {
             Destroy(lock1);
             Destroy(lock2);
             scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason3));
-        }
-        else if (tournamentAvailable == 4)
-        {
-            Destroy(lock1);
-            Destroy(lock2);
-          //  Destroy(lock3);
-          //  scrollLimit.SetLimit(new Vector2(scrollLimit.transform.localPosition.x, limitScrollSeason4));
-        }
+        }        
 
-        Events.OnChangePlayMode += OnChangePlayMode;
+        Invoke("CheckForStarsAndThenStart", 2);
 	}
     void OnDestroy()
     {

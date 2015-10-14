@@ -24,6 +24,7 @@ public class LevelsData : MonoBehaviour {
     [Serializable]
     public class LevelsScore
     {
+        public bool parseInfoLoaded;
         public List<ScoreData> scoreData;
         public float myScore;
         public float myScoreInParse;
@@ -97,10 +98,10 @@ public class LevelsData : MonoBehaviour {
         if (Data.Instance.userData.facebookID != "" 
             && PlayerPrefs.GetFloat("Run_Level_" + levelID) > 0 
             && levelsScore[levelID].myScore != levelsScore[levelID].myScoreInParse
-            && levelsScore[levelID].scoreData.Count > 0
+            && levelsScore[levelID].parseInfoLoaded
             )
         {
-            Debug.LogError("SaveNewScore local: " + PlayerPrefs.GetFloat("Run_Level_" + levelID) + "  --   myscore: " + levelsScore[levelID].myScore + " myparse SCORE : " + levelsScore[levelID].myScoreInParse);
+            Debug.Log("SaveNewScore local: " + PlayerPrefs.GetFloat("Run_Level_" + levelID) + "  --   myscore: " + levelsScore[levelID].myScore + " myparse SCORE : " + levelsScore[levelID].myScoreInParse);
             levelsScore[levelID].myScore = PlayerPrefs.GetFloat("Run_Level_" + levelID);
             levelsScore[levelID].myScoreInParse = PlayerPrefs.GetFloat("Run_Level_" + levelID);
             SaveNewScore(levelID, levelsScore[levelID].myScore);
@@ -204,7 +205,7 @@ public class LevelsData : MonoBehaviour {
     }
     void OnSaveScore(int level, float score)
     {
-        print("_________OnSaveScore" + level + " " + score + " myScoreInParse  " + levelsScore[level].myScoreInParse);
+        print("_________CHECK if SaveScore" + level + " " + score + " myScoreInParse  " + levelsScore[level].myScoreInParse);
         // si es por laps entonces el tiempo tiene que ser menor para grabar el score
         if (Data.Instance.levels.levels[level].totalLaps > 0 && score > levelsScore[level].myScore && levelsScore[level].myScore != 0) { Debug.Log("Ya tenias menos tiempo"); return; }
         if (Data.Instance.levels.levels[level].totalTime > 0 && score < levelsScore[level].myScore) { Debug.Log("Ya hbaias recorrido mas distancia");   return; }
@@ -315,6 +316,7 @@ public class LevelsData : MonoBehaviour {
             query.FindAsync().ContinueWith(t =>
             {
                 IEnumerable<ParseObject> results = t.Result;
+                levelsScore[_level].parseInfoLoaded = true;
                 int a = 1;
                 foreach (var result in results)
                 {

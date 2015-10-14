@@ -83,10 +83,11 @@ public class ChallengeResult : MonoBehaviour {
     {
         //SHARE
         Debug.Log("SHARE");
-        if(winner == Data.Instance.userData.facebookID)
-            Data.Instance.facebookShare.WinChallengeTo(Data.Instance.levelData.challenge_username);
-        else
-            Data.Instance.facebookShare.LostChallengeTo(Data.Instance.levelData.challenge_username);
+        //if(winner == Data.Instance.userData.facebookID)
+          //  Data.Instance.facebookShare.ShareToFriend(Data.Instance.levelData.challenge_username + " accepted your challenge and beat you!");
+        Data.Instance.facebookShare.ShareToFriend(Data.Instance.levelData.challenge_facebookID, Data.Instance.userData.username + " accepted your challenge and beat you!");
+        //else
+           // Data.Instance.facebookShare.LostChallengeTo(Data.Instance.levelData.challenge_username);
 
         Close();
 	}

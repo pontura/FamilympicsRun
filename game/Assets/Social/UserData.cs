@@ -86,6 +86,8 @@ public class UserData : MonoBehaviour {
     }
     public int GetTournamentAvailable()
     {
+        if (Data.Instance.FreeLevels) return 4;
+
         int stars = Data.Instance.userData.starsCount;
 
        int tournamentAvailable = 1;

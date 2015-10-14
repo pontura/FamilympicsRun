@@ -11,6 +11,8 @@ public class MultiplayerResults : MonoBehaviour {
     public Text title;
     public Text timeField;
 
+    private string result;
+
     public Stars stars;
     public MultiplayerResultLine puesto1;
     public MultiplayerResultLine puesto2;
@@ -18,6 +20,7 @@ public class MultiplayerResults : MonoBehaviour {
     public MultiplayerResultLine puesto4;
 
 	void Start () {
+        result = "A";
         panel.transform.localScale = Data.Instance.screenManager.scale;
         panel.SetActive(false);
         Events.OnLevelComplete += OnLevelComplete;
@@ -41,7 +44,9 @@ public class MultiplayerResults : MonoBehaviour {
         //SHARE
         Debug.Log("SHARE");
         if (FB.IsLoggedIn)
-            Data.Instance.facebookShare.MultiplayerHiscore(timeField.text);
+        {
+            Data.Instance.facebookShare.MultiplayerHiscore("My high-score in level " + Data.Instance.levels.currentLevel + " is " + result);
+        } 
         else
             Events.OnFacebookNotConnected();
     }
@@ -65,7 +70,7 @@ public class MultiplayerResults : MonoBehaviour {
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
         {
             score = Data.Instance.levelData.laps;
-            timeField.text = "TIME: " + time;
+            result = "TIME: " + time;
             puesto1.Init(playersData[0].username, playersData[0].meters.ToString() + "m", playersData[0].color);
 
             if (playersData.Count > 1)
@@ -80,7 +85,7 @@ public class MultiplayerResults : MonoBehaviour {
             playersData = multiplayerData.players.OrderBy(x => x.time).ToList();
             playersData.Reverse();
 
-            timeField.text = "SUDDEN DEATH";
+            result = "SUDDEN DEATH";
 
             puesto1.Init(playersData[0].username, GetTimeFormat(playersData[0].time), playersData[0].color);
 
@@ -96,10 +101,10 @@ public class MultiplayerResults : MonoBehaviour {
             score = Data.Instance.levelData.time;
             puesto1.Init(playersData[0].username, time, playersData[0].color);
 
-            string result = playersData[0].meters.ToString() + "m";
+            result = playersData[0].meters.ToString() + "m";
 
 
-            timeField.text = result;
+            
 
             if (playersData.Count > 1)
                 puesto2.Init(playersData[1].username, "---", playersData[1].color);
@@ -108,6 +113,7 @@ public class MultiplayerResults : MonoBehaviour {
             if (playersData.Count > 3)
                 puesto4.Init(playersData[3].username, "---", playersData[3].color);
         }
+        timeField.text = result;
 
         Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
         Events.OnAddMultiplayerScore(Data.Instance.levels.currentLevel, score, playersData[0].playerID, playersData[0].username);      

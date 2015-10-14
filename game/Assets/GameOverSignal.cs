@@ -9,6 +9,7 @@ public class GameOverSignal : MonoBehaviour {
     public Text field;
 
 	void Start () {
+        panel.transform.localScale = Data.Instance.screenManager.scale;
         panelTimeOver.SetActive(false);
         panel.SetActive(false);
         Events.GameOver += GameOver;
