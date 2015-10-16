@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Soomla.Store;
 
 
 public class UserData : MonoBehaviour {
@@ -87,6 +88,9 @@ public class UserData : MonoBehaviour {
     public int GetTournamentAvailable()
     {
         if (Data.Instance.FreeLevels) return 4;
+        if (StoreData.Instance.season_2_unlocked) return 2;
+        else if (StoreData.Instance.season_3_unlocked) return 3;
+
 
         int stars = Data.Instance.userData.starsCount;
 

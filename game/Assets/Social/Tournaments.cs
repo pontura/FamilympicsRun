@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Soomla.Store;
 
 public class Tournaments : MonoBehaviour {
 
@@ -27,6 +28,11 @@ public class Tournaments : MonoBehaviour {
             SetTournamentButtons(false);
 
         Events.OnChangePlayMode += OnChangePlayMode;        
+    }
+    public void Buy(int id)
+    {
+        Debug.Log("BUY season: " + id);
+        StoreInventory.BuyItem("season2unlock");
     }
     void CheckForStarsAndThenStart()
     {

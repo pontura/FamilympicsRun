@@ -65,6 +65,8 @@ public class MultiplayerResults : MonoBehaviour {
         int numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
         stars.Init(numStars);
 
+        print("STARS: " + numStars);
+
         float score = 0;
         //si es por tiempo:
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
