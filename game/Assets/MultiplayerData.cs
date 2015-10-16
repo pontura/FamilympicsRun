@@ -156,6 +156,7 @@ public class MultiplayerData : MonoBehaviour {
     void ArrengeListByScore(int levelId)
     {
         hiscoreLevels[levelId].hiscores = hiscoreLevels[levelId].hiscores.OrderBy(x => x.score).ToList();
+        if (Data.Instance.levels.levels[levelId].Sudden_Death) hiscoreLevels[levelId].hiscores.Reverse();
         if (Data.Instance.levels.levels[levelId].totalTime > 0) hiscoreLevels[levelId].hiscores.Reverse();
     }
     public void OnSaveName(string username, int id)

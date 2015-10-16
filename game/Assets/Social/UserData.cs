@@ -73,7 +73,7 @@ public class UserData : MonoBehaviour {
     {
         FacebookUserData data = new FacebookUserData();
         data.facebookID = id;
-        data.username = username;
+        data.username = Data.Instance.gameSettings.GetUsername(username);
         FacebookFriends.Add(data);
     }
     public void ToogleMode()

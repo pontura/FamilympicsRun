@@ -250,7 +250,7 @@ public class LoginManager : MonoBehaviour
     void GetFriends()
     {
       //  print("GetFriendsGetFriendsGetFriendsGetFriendsGetFriendsGetFriends");
-        FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+        FB.API("/me?fields=id,name,friends.limit(100).fields(name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
     }
     void FBFriendsCallback(FBResult result)
     {
@@ -258,7 +258,7 @@ public class LoginManager : MonoBehaviour
         {
             Debug.LogError(result.Error);
             // Let's just try again
-            FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+            FB.API("/me?fields=id,name,friends.limit(100).fields(name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
             return;
         }
         Data.Instance.userData.ResetFacebookFriends();
@@ -269,7 +269,7 @@ public class LoginManager : MonoBehaviour
         foreach (object friend in friends)
         {
             Dictionary<string, object> friendData = friend as Dictionary<string, object>;
-            Data.Instance.userData.AddFacebookFriend(friendData["id"].ToString(), friendData["first_name"].ToString());
+            Data.Instance.userData.AddFacebookFriend(friendData["id"].ToString(), friendData["name"].ToString() );
         }
 
         Events.OnFacebookFriends();

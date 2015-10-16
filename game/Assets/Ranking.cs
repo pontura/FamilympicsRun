@@ -30,14 +30,16 @@ public class Ranking : MonoBehaviour {
         }
     }
 
-    public void LoadMultiplayerWinners(int id)
+    public void LoadMultiplayerWinners(int levelID)
     {
+        this.levelID = levelID;
+
         foreach (Transform child in container.transform)
         {
             GameObject.Destroy(child.gameObject);
         }
 
-        List<MultiplayerData.HiscoresData> hiscoreData = multiplayerData.hiscoreLevels[id].hiscores;
+        List<MultiplayerData.HiscoresData> hiscoreData = multiplayerData.hiscoreLevels[levelID].hiscores;
 
         foreach (MultiplayerData.HiscoresData data in hiscoreData)
         {

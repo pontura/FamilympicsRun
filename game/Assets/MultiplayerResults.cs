@@ -82,6 +82,8 @@ public class MultiplayerResults : MonoBehaviour {
         }
         else if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
         {
+            score = Data.Instance.levelData.time;
+
             playersData = multiplayerData.players.OrderBy(x => x.time).ToList();
             playersData.Reverse();
 
@@ -95,6 +97,8 @@ public class MultiplayerResults : MonoBehaviour {
                 puesto3.Init(playersData[2].username, GetTimeFormat(playersData[2].time), playersData[2].color);
             if (playersData.Count > 3)
                 puesto4.Init(playersData[3].username, GetTimeFormat(playersData[3].time), playersData[3].color);
+
+            
         }
         else
         {

@@ -85,7 +85,6 @@ public class Levels : MonoBehaviour {
 
         int stars = 0;
         LevelData level = levels[levelID];
-      // print(" _______levelID: " + levelID + " GetCurrentLevelStarsByScore totalLaps: " + level.totalLaps + " star3: " + level.star3 + " score: " + score);
 
         if (level.totalLaps > 0)
         {
@@ -96,7 +95,7 @@ public class Levels : MonoBehaviour {
             else if (score < level.star1)
                 stars = 1;
         }
-        else if (level.Sudden_Death ||  level.totalTime > 0)
+        else if (level.Sudden_Death)
         {
             if (score > level.star3)
                 stars = 3;
@@ -105,43 +104,33 @@ public class Levels : MonoBehaviour {
             else if (score > level.star1)
                 stars = 1;
         }
-      //  print("stars: " + stars);
+        else if (level.totalTime > 0)
+        {
+            if (score > level.star3 * 1000)
+                stars = 3;
+            else if (score > level.star2 * 1000)
+                stars = 2;
+            else if (score > level.star1 * 1000)
+                stars = 1;
+        }
+
+        print("stars: " + stars + "  score " + score + " level.totalLaps: " + level.totalLaps + " level.totalTime: " + level.totalTime + " level.suddenDeath: " + level.Sudden_Death);
 
         return stars;
     }
     public int GetCurrentLevelStars(float time, int meters)
     {
-        int stars = 0;
         LevelData level = GetCurrentLevelData();
+
+        float score = time;
         if (level.Sudden_Death)
-        {
-            if (time > level.star3)
-                stars = 3;
-            else if (time > level.star2)
-                stars = 2;
-            else if (time > level.star1)
-                stars = 1;
-        }
+            score = time;
         if (level.totalLaps > 0)
-        {
-            if (time < level.star3)
-                stars = 3;
-            else if (time < level.star2)
-                stars = 2;
-            else if (time < level.star1)
-                stars = 1;
-        }
+            score = time;
         else if ( level.totalTime > 0)
-        {
-           // print("METERS::::::::::::   " + meters + "    level.star3 * 1000: " + level.star3 * 1000);
-            if (meters > level.star3 * 1000)
-                stars = 3;
-            else if (meters > level.star2 * 1000)
-                stars = 2;
-            else if (meters > level.star1 * 1000)
-                stars = 1;
-        }
-        return stars;
+            score = meters;
+       
+        return GetCurrentLevelStarsByScore(Data.Instance.levels.currentLevel, score);
     }
     public int GetTotalLevelsInUnblockedSeasons()
     {
