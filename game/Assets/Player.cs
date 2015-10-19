@@ -211,7 +211,7 @@ public class Player : MonoBehaviour {
         if (state == states.STARTING_NEXT_LAP) return;
 
         Vector3 pos = transform.localPosition;
-        pos.x += 1;
+        //pos.x += 1;
         transform.localPosition = pos;
 
         Events.OnSoundFX("hurdleFall");

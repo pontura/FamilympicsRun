@@ -21,8 +21,8 @@ public class UIPlayerButtons : MonoBehaviour {
 
     public Image[] shadows;
     private Image activeButton;
-    float scaleSmall;
-    float scaleBig;
+ //   float scaleSmall;
+  //  float scaleBig;
 
     public Player player;
     private GameManager gameManager;
@@ -38,8 +38,8 @@ public class UIPlayerButtons : MonoBehaviour {
         transform.localScale += Data.Instance.screenManager.GetUiPlayerButtonsScale();
 
         this.id = id;
-        scaleBig = transform.localScale.x;
-        scaleSmall = scaleBig - 0.04f;
+      //  scaleBig = transform.localScale.x;
+      //  scaleSmall = scaleBig - 0.04f;
         
         Color colorID = Data.Instance.colors[id - 1];
         button1.GetComponent<Image>().color = colorID;
