@@ -20,7 +20,8 @@ public static class Events {
     public static System.Action OnParseLogin = delegate { };
     public static System.Action<string, float, int> OnParseLoadedScore = delegate { };
     public static System.Action OnLoadLocalData = delegate { };    
-    public static System.Action<int, float> OnNewHiscore = delegate { };   
+    public static System.Action<int, float> OnNewHiscore = delegate { };
+    public static System.Action<string> AddFacebookFriend = delegate { };   
     
 
     //The game:
@@ -84,6 +85,7 @@ public static class Events {
     public static System.Action<string> OnAcceptEnergyFrom = delegate { };
     public static System.Action<int> OnRefreshNotifications = delegate { };
 
+    public static System.Action BuyEnergyPack = delegate { };
     public static System.Action<int> ReFillEnergy = delegate { };
     public static System.Action<string> SendEnergyTo = delegate { };
     public static System.Action<string> RejectEnergyTo = delegate { };

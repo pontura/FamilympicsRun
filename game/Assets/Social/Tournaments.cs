@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using Soomla.Store;
 
 public class Tournaments : MonoBehaviour {
@@ -27,12 +28,30 @@ public class Tournaments : MonoBehaviour {
         if( Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
             SetTournamentButtons(false);
 
-        Events.OnChangePlayMode += OnChangePlayMode;        
+        Events.OnChangePlayMode += OnChangePlayMode;
+        StoreEvents.OnMarketPurchase += onMarketPurchase;
+    }
+    void OnDestroy()
+    {
+        Events.OnChangePlayMode -= OnChangePlayMode;
+        StoreEvents.OnMarketPurchase -= onMarketPurchase;
     }
     public void Buy(int id)
     {
         Debug.Log("BUY season: " + id);
         StoreInventory.BuyItem("season2unlock");
+    }
+    public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
+    {
+        // pvi - the PurchasableVirtualItem that was just purchased
+        // payload - a text that you can give when you initiate the purchase operation and
+        //    you want to receive back upon completion
+        // extra - contains platform specific information about the market purchase
+        //    Android: The "extra" dictionary will contain: 'token', 'orderId', 'originalJson', 'signature', 'userId'
+        //    iOS: The "extra" dictionary will contain: 'receiptUrl', 'transactionIdentifier', 'receiptBase64', 'transactionDate', 'originalTransactionDate', 'originalTransactionIdentifier'
+
+        if (pvi.ID == "season3unlock" || pvi.ID == "season2unlock")
+            Data.Instance.Load("LevelSelector");
     }
     void CheckForStarsAndThenStart()
     {
@@ -60,10 +79,7 @@ public class Tournaments : MonoBehaviour {
 
         Invoke("CheckForStarsAndThenStart", 2);
 	}
-    void OnDestroy()
-    {
-        Events.OnChangePlayMode -= OnChangePlayMode;
-    }
+    
     public void PlayTournament(int id)
     {
         int levelID = 1;

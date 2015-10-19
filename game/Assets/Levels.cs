@@ -10,6 +10,7 @@ public class Levels : MonoBehaviour {
     [Serializable]
     public class enemiesType
     {
+        public bool VERTICAL_BAR;
         public bool HURDLES;
         public bool WIND;
         public int distance = 24;
@@ -114,7 +115,7 @@ public class Levels : MonoBehaviour {
                 stars = 1;
         }
 
-        print("stars: " + stars + "  score " + score + " level.totalLaps: " + level.totalLaps + " level.totalTime: " + level.totalTime + " level.suddenDeath: " + level.Sudden_Death);
+      //  print("stars: " + stars + "  score " + score + " level.totalLaps: " + level.totalLaps + " level.totalTime: " + level.totalTime + " level.suddenDeath: " + level.Sudden_Death);
 
         return stars;
     }

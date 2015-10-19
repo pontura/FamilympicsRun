@@ -4,6 +4,7 @@ using System.Collections;
 using Parse;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Soomla.Store;
 
 public class EnergyManager : MonoBehaviour {
 
@@ -32,6 +33,8 @@ public class EnergyManager : MonoBehaviour {
         Events.ReFillEnergy += ReFillEnergy;
         Events.SendEnergyTo += SendEnergyTo;
         Events.RejectEnergyTo += RejectEnergyTo;
+        Events.BuyEnergyPack += BuyEnergyPack;
+        StoreEvents.OnMarketPurchase += onMarketPurchase;
 
         SECONDS_TO_ENERGY = MINUTES_TO_ENERGY * 60;
         lasTimeStamp = PlayerPrefs.GetInt(playerPref_TIME);
@@ -55,15 +58,18 @@ public class EnergyManager : MonoBehaviour {
         Events.ReFillEnergy -= ReFillEnergy;
         Events.SendEnergyTo -= SendEnergyTo;
         Events.RejectEnergyTo -= RejectEnergyTo;
+        Events.BuyEnergyPack = BuyEnergyPack;
+        StoreEvents.OnMarketPurchase -= onMarketPurchase;
     }
 
     void StartGame()
     {
-        if (energy == 0) return;
+        if (energy > 0)
             ConsumeEnergy();
     }
     void ConsumeEnergy()
     {
+        print("_______________  ConsumeEnergy : ConsumeEnergy");
         energy--;
         SaveEnergy();
         SaveNewTime();
@@ -75,7 +81,6 @@ public class EnergyManager : MonoBehaviour {
             Data.Instance.Load("LevelSelector");
             return false;
         }
-        ConsumeEnergy();
         return true;
     }
     void Loop()
@@ -123,6 +128,22 @@ public class EnergyManager : MonoBehaviour {
         var epochStart = new System.DateTime(2010, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
         lasTimeStamp = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         PlayerPrefs.SetInt(playerPref_TIME, lasTimeStamp);
+    }
+    public void BuyEnergyPack()
+    {
+        StoreInventory.BuyItem("season2unlock");
+    }
+    public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
+    {
+        // pvi - the PurchasableVirtualItem that was just purchased
+        // payload - a text that you can give when you initiate the purchase operation and
+        //    you want to receive back upon completion
+        // extra - contains platform specific information about the market purchase
+        //    Android: The "extra" dictionary will contain: 'token', 'orderId', 'originalJson', 'signature', 'userId'
+        //    iOS: The "extra" dictionary will contain: 'receiptUrl', 'transactionIdentifier', 'receiptBase64', 'transactionDate', 'originalTransactionDate', 'originalTransactionIdentifier'
+
+        if (pvi.ID == "energy1")
+            ReFillEnergy(10);
     }
     public void ReFillEnergy(int qty)
     {

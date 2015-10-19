@@ -87,6 +87,10 @@ public class GameCamera : MonoBehaviour {
     
     void OnAddEnemy(Enemy enemy, int _distance)
     {
+        if (enemy.GetComponent<VerticalEnemy>())
+        {
+            return;
+        }
         lastEnemyAddedDistance = 0;
         distanceToAddEnemy = _distance;
         enemies.Add(enemy);

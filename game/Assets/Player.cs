@@ -389,7 +389,9 @@ public class Player : MonoBehaviour {
         if (state == states.JUMPING) return;
         if (other.tag == "enemy")
         {
-            if(other.GetComponent<Hurdle>())
+            if (other.GetComponent<VerticalEnemy>())
+                Hurt();
+            else if(other.GetComponent<Hurdle>())
                 Hurt();
             else if (other.GetComponent<Wind>())
                 OnEnterWindZone();

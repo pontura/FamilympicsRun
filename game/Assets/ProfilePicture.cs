@@ -11,8 +11,16 @@ public class ProfilePicture : MonoBehaviour
     public void setPicture(string facebookID)
     {
        // if (!this.gameObject.activeInHierarchy) return;
-        if(Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
-            StartCoroutine(GetPicture(facebookID));
+        Texture2D texture = Data.Instance.facebookFriends.GetProfilePicture(facebookID);
+        if (texture != null)
+        {
+            SetPicture(texture);
+        }
+        else
+        {
+            if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
+                StartCoroutine(GetPicture(facebookID));
+        }
     }
     IEnumerator GetPicture(string facebookID)
     {
@@ -25,12 +33,16 @@ public class ProfilePicture : MonoBehaviour
         yield return receivedData;
         if (receivedData.error == null)
         {
-            GetComponent<Image>().sprite = Sprite.Create(receivedData.texture, new Rect(0, 0, 128, 128), Vector2.zero);
+            SetPicture(receivedData.texture);
         }
         else
         {
             Debug.Log("ERROR trayendo imagen");
         }
 
+    }
+    void SetPicture(Texture2D texture)
+    {
+        GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 128, 128), Vector2.zero);
     }
 }

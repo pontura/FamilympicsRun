@@ -13,9 +13,14 @@ public class Enemy : MonoBehaviour {
         distanceToDie = pos.x;
         gameCamera = _gameCamera;
     }
+    public void InitInScene(Vector3 pos)
+    {
+        transform.localPosition = pos;
+        distanceToDie = pos.x;
+    }
     void Update()
     {
-        Vector3 pos = transform.localPosition;
+        if (!gameCamera) return;
         if (gameCamera.distance > distanceToDie + 30)
             Die();
     }

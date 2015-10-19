@@ -34,10 +34,6 @@ public class RankingLine : MonoBehaviour {
         maskImage.SetActive(true);
         circleImage.gameObject.SetActive(false);
         picture.gameObject.SetActive(true);
-        Invoke("LoadPicture", 0.2f);
-    }
-    void LoadPicture()
-    {
         picture.setPicture(facebookID);
     }
     public void SetMultiplayerColor(int playerID)

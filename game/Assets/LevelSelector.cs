@@ -44,11 +44,12 @@ public class LevelSelector : MonoBehaviour {
         }
         Data.Instance.levelData.ResetChallenge();
         OnChangePlayMode(Data.Instance.userData.mode);
-        Events.OnChangePlayMode += OnChangePlayMode;           
+        Events.OnChangePlayMode += OnChangePlayMode;
 
+        Events.OnLoadLocalData();
         LoadButtons();
         Positionate();
-        Events.OnLoadLocalData();
+        
 
         if (Data.Instance.energyManager.energy <= 0)
             Invoke("OnOpenEnergyPopup", 0.5f);

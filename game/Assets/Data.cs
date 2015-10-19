@@ -46,6 +46,8 @@ public class Data : MonoBehaviour
      public ScreenManager screenManager;
      [HideInInspector]
      public ChallengersManager challengesManager;
+     [HideInInspector]
+     public FacebookFriends facebookFriends;
 
     public static Data Instance
     {
@@ -95,6 +97,7 @@ public class Data : MonoBehaviour
         facebookShare = GetComponent<FacebookShare>();
         screenManager = GetComponent<ScreenManager>();
         challengesManager = GetComponent<ChallengersManager>();
+        facebookFriends = GetComponent<FacebookFriends>();
        // levelsData.Init();
 
         DontDestroyOnLoad(this.gameObject);
