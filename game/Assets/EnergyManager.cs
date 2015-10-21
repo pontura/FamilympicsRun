@@ -8,10 +8,13 @@ using Soomla.Store;
 
 public class EnergyManager : MonoBehaviour {
 
+    public int energy;
+    public int plusEnergy;
+
     public int ENERGY_TO_START = 10;
     public int MINUTES_TO_ENERGY = 20;
     public int MAX_ENERGY;
-    public int energy;
+    
     public string timerString;
 
     public int diffTimestamp;
@@ -61,7 +64,14 @@ public class EnergyManager : MonoBehaviour {
         Events.BuyEnergyPack = BuyEnergyPack;
         StoreEvents.OnMarketPurchase -= onMarketPurchase;
     }
-
+    public void ConsumePlusEnergy()
+    {
+        print("_______________  ConsumePlusEnergy");
+        energy = 10;
+        plusEnergy--;
+        SaveEnergy();
+        SaveNewTime();
+    }
     void StartGame()
     {
         if (energy > 0)

@@ -20,10 +20,13 @@ public class Enemy : MonoBehaviour {
     }
     void Update()
     {
+        OnUpdate();
         if (!gameCamera) return;
         if (gameCamera.distance > distanceToDie + 30)
             Die();
+        
     }
+    virtual public void OnUpdate() { }
 
     public void Die()
     {

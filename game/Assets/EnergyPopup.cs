@@ -5,6 +5,9 @@ using System.Collections;
 public class EnergyPopup : MonoBehaviour {
 
     public GameObject outOfEnergyIcon;
+    public GameObject plusEnergyIcon;
+
+    public Text plusEnergyLabel;
     public Text title;
     public Text dataField;
     public Text field;
@@ -22,21 +25,36 @@ public class EnergyPopup : MonoBehaviour {
     }
     public void OnOpenEnergyPopup()
     {
+       plusEnergyIcon.SetActive(false);
         panel.transform.localScale = Data.Instance.screenManager.scale;
         if (Data.Instance.energyManager.energy == 0)
         {
-            outOfEnergyIcon.SetActive(true);
-            title.text = "OUT OF ENERGY!";
+            if (Data.Instance.energyManager.plusEnergy < 1)
+            {
+                outOfEnergyIcon.SetActive(true);
+                title.text = "OUT OF ENERGY!";
+            }
+            else
+            {
+                Data.Instance.energyManager.ConsumePlusEnergy();
+            }
         }
         else
         {
             title.text = "MY ENERGY";
         }
+        if (Data.Instance.energyManager.plusEnergy > 1)
+            plusEnergyIcon.SetActive(true);
 
         isActive = true;
         panel.SetActive(true);
         panel.GetComponent<Animation>().Play("PopupOn");
         dataField.text = Data.Instance.energyManager.energy + "/" + Data.Instance.energyManager.MAX_ENERGY;
+        SetPlusLabel();
+    }
+    void SetPlusLabel()
+    {
+        plusEnergyLabel.text = Data.Instance.energyManager.plusEnergy + "x";
     }
     public void AskForEnergy()
     {

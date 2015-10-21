@@ -28,8 +28,8 @@ public class EnemiesManager : MonoBehaviour {
     void StartGame()
     {       
         int distance = levelData.enemies.distance;
-        if (levelData.enemies.VERTICAL_BAR)
-            AddSceneEnemy(verticalBar);
+        if (levelData.enemies.VERTICAL_BAR.Length>0)
+            AddVerticalBar(levelData.enemies.VERTICAL_BAR);
         if(levelData.enemies.HURDLES)
             addEnemy(hurdle, distance);
         if (levelData.enemies.WIND)
@@ -39,13 +39,17 @@ public class EnemiesManager : MonoBehaviour {
     {
         Events.OnAddEnemy(enemy, distance); 
     }
-    void AddSceneEnemy(Enemy enemy)
+    void AddVerticalBar(Levels.VerticalBar[] all)
     {
-        Enemy newEnemy = Instantiate(enemy) as Enemy;
-        newEnemy.transform.SetParent(InSceneContainer.transform);
-        newEnemy.transform.localScale = Vector3.one;
-
-        Vector3 pos = Vector3.zero;
-        newEnemy.InitInScene(pos);
+        foreach (Levels.VerticalBar data in all)
+        {
+            print(data);
+            VerticalEnemy newEnemy = Instantiate(verticalBar) as VerticalEnemy;
+            newEnemy.transform.SetParent(InSceneContainer.transform);
+            newEnemy.transform.localScale = Vector3.one;            
+            Vector3 pos = Vector3.zero;
+            newEnemy.InitInScene(pos);
+            newEnemy.InitVerticalEnemy(data);
+        }
     }
 }

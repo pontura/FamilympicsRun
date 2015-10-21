@@ -8,9 +8,19 @@ public class Levels : MonoBehaviour {
     public int currentLevel;
 
     [Serializable]
+    public class VerticalBar
+    {
+        public int _x;
+        public int _y;
+        public int speed;
+        public int size;
+    }
+
+
+    [Serializable]
     public class enemiesType
     {
-        public bool VERTICAL_BAR;
+        public VerticalBar[] VERTICAL_BAR;
         public bool HURDLES;
         public bool WIND;
         public int distance = 24;
