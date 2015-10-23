@@ -84,6 +84,10 @@ public class ChallengerCreator : MonoBehaviour {
             CreateList();
         }
     }
+    public void InviteFriends()
+    {
+        Events.OnFacebookInviteFriends();
+    }
     public void CreateList()
     {
         for (int a = 0; a < Data.Instance.userData.FacebookFriends.Count; a++)

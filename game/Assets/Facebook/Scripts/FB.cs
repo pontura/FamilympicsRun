@@ -207,32 +207,32 @@ public sealed class FB : ScriptableObject
         FacebookImpl.AppRequest(message, actionType, objectId, to, null, null, null, data, title, callback);
     }
 
-    public static void AppRequest(
-            string message,
-            OGActionType actionType,
-            string objectId,
-            List<object> filters = null,
-            string[] excludeIds = null,
-            int? maxRecipients = null,
-            string data = "",
-            string title = "",
-            FacebookDelegate callback = null)
-    {
-        FacebookImpl.AppRequest(message, actionType, objectId, null, filters, excludeIds, maxRecipients, data, title, callback);
-    }
+    //public static void AppRequest(
+    //        string message,
+    //        OGActionType actionType,
+    //        string objectId,
+    //        List<object> filters = null,
+    //        string[] excludeIds = null,
+    //        int? maxRecipients = null,
+    //        string data = "",
+    //        string title = "",
+    //        FacebookDelegate callback = null)
+    //{
+    //    FacebookImpl.AppRequest(message, actionType, objectId, null, filters, excludeIds, maxRecipients, data, title, callback);
+    //}
 
-    public static void AppRequest(
-            string message,
-            string[] to = null,
-            List<object> filters = null,
-            string[] excludeIds = null,
-            int? maxRecipients = null,
-            string data = "",
-            string title = "",
-            FacebookDelegate callback = null)
-    {
-        FacebookImpl.AppRequest(message, null, null, to, filters, excludeIds, maxRecipients, data, title, callback);
-    }
+    //public static void AppRequest(
+    //        string message,
+    //        string[] to = null,
+    //        List<object> filters = null,
+    //        string[] excludeIds = null,
+    //        int? maxRecipients = null,
+    //        string data = "",
+    //        string title = "",
+    //        FacebookDelegate callback = null)
+    //{
+    //    FacebookImpl.AppRequest(message, null, null, to, filters, excludeIds, maxRecipients, data, title, callback);
+    //}
 
     public static void Feed(
             string toId = "",

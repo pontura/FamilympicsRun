@@ -91,13 +91,7 @@ public class MultiplayerData : MonoBehaviour {
         foreach (HiscoreLevel hiscoreLevel in hiscoreLevels)
         {
             hiscoreLevel.lastWinner = 0;
-            foreach (HiscoresData hiscoresData in hiscoreLevel.hiscores)
-            {
-                hiscoresData.levelID = 0;
-                hiscoresData.playerID = 0;
-                hiscoresData.score = 0;
-                hiscoresData.username = "";
-            }
+            hiscoreLevel.hiscores.Clear();
         }
     }
     void OnAddMultiplayerScore(int levelID, float score, int playerID, string username)

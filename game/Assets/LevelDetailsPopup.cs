@@ -98,7 +98,7 @@ public class LevelDetailsPopup : MonoBehaviour {
         else if (levelData.totalLaps > 0)
             goalText.text = (levelData.totalLaps * 1000).ToString() + "m";
         else
-            goalText.text = (levelData.totalTime).ToString() + " secs";
+            goalText.text = (levelData.totalTime).ToString() + " SECONDS";
     }
     public void Close()
     {

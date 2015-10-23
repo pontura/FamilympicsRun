@@ -5,6 +5,7 @@ using System.Collections;
 public class SettingsMenu : MonoBehaviour {
 
     public Button challengesButton;
+    public Button friendsButton;
     public Button loginButton;
     public GameObject masker;
     public GameObject SettingsButton;
@@ -14,6 +15,7 @@ public class SettingsMenu : MonoBehaviour {
         if (!FB.IsLoggedIn)
         {
             challengesButton.interactable = false;
+            friendsButton.gameObject.SetActive(false);
             SetLoginButton(false);
         }
         else{
@@ -60,6 +62,10 @@ public class SettingsMenu : MonoBehaviour {
         SettingsButton.SetActive(false);
         masker.SetActive(true);
         GetComponent<Animation>().Play("SettingsOpen");
+    }
+    public void InviteFriends()
+    {
+        Events.OnFacebookInviteFriends();
     }
     public void Close()
     {

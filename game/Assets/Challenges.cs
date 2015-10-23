@@ -52,6 +52,10 @@ public class Challenges : MonoBehaviour {
     {
         Data.Instance.Back();
     }
+    public void InviteFriends()
+    {
+        Events.OnFacebookInviteFriends();
+    }
     public void Switch()
     {
         if (type == types.MADE)

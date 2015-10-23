@@ -36,6 +36,7 @@ public class Player : MonoBehaviour {
     private float PU_BOOST_Acceleration;
     private float PU_BOOST_duration;
     private float PU_PAUSED_duration;
+    private Color color;
 
     public enum states
     {
@@ -152,8 +153,10 @@ public class Player : MonoBehaviour {
         deceleration = initialDeceleration;
         GetComponent<Animation>().Play("playerIdle");
     }
+    
     public void SetColor(Color color)
     {
+        this.color = color;
         GetComponentInChildren<SpriteRenderer>().color = color;
         GetComponentInChildren<TrailRenderer>().material.color = color;
     }
@@ -277,7 +280,7 @@ public class Player : MonoBehaviour {
             Vector3 pos = transform.localPosition;
 
             if (state == states.IN_WIND_ZONE)
-                pos.x += (speed * 4) * Time.deltaTime;
+                pos.x += (speed * 1.1f) * Time.deltaTime;
             else
                 pos.x += (speed * 10) * Time.deltaTime;
 
@@ -362,6 +365,7 @@ public class Player : MonoBehaviour {
     {
         laps++;
         gameCamera.NewLap();
+        Events.OnFlashWinLap(color);
         lastState = state;
         state = states.STARTING_NEXT_LAP;
         meters = laps + "000";

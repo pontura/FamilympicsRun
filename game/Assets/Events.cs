@@ -16,6 +16,7 @@ public static class Events {
     public static System.Action<GameObject> OnUIClicked = delegate { };
     public static System.Action OnFacebookFriends = delegate { };
     public static System.Action OnFacebookNotConnected = delegate { };
+    public static System.Action OnFacebookInviteFriends = delegate { };
     public static System.Action OnFacebookLogin = delegate { };
     public static System.Action OnParseLogin = delegate { };
     public static System.Action<string, float, int> OnParseLoadedScore = delegate { };
@@ -49,7 +50,9 @@ public static class Events {
     public static System.Action<UserData.modes> OnChangePlayMode = delegate { };
     public static System.Action OpenSummary = delegate { };
     public static System.Action OnRaceStartReady = delegate { };
-    public static System.Action OnOpenEnergyPopup = delegate { };   
+    public static System.Action OnOpenEnergyPopup = delegate { };
+    public static System.Action<Color> OnFlashWinLap = delegate { };   
+    
     
 
     public static System.Action<string> OnKeyDown = delegate { };

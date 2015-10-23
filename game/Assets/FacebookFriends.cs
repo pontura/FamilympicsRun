@@ -17,7 +17,14 @@ public class FacebookFriends : MonoBehaviour {
 	void Start () {
         ids = new List<string>();
         Events.AddFacebookFriend += AddFacebookFriend;
+        Events.OnFacebookInviteFriends += OnFacebookInviteFriends;
 	}
+    void OnFacebookInviteFriends()
+    {
+        FB.AppRequest(
+            "Running!", null, null, null, null, "Come and play Running!", null
+        );
+    }
     void AddFacebookFriend(string id)
     {
         ids.Add(id);
