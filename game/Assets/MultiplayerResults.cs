@@ -7,6 +7,7 @@ using System.Linq;
 public class MultiplayerResults : MonoBehaviour {
 
     public GameObject panel;
+    public GameObject finishButton;
 
     public Text title;
     public Text timeField;
@@ -19,7 +20,10 @@ public class MultiplayerResults : MonoBehaviour {
     public MultiplayerResultLine puesto3;
     public MultiplayerResultLine puesto4;
 
+
+
 	void Start () {
+        finishButton.SetActive(false);
         result = "A";
         panel.transform.localScale = Data.Instance.screenManager.scale;
         panel.SetActive(false);
@@ -50,9 +54,21 @@ public class MultiplayerResults : MonoBehaviour {
         else
             Events.OnFacebookNotConnected();
     }
+    public void Exit()
+    {
+        Time.timeScale = 1;
+        if (Data.Instance.tournament.isOn)
+        {
+            Events.OnTournamentFinish();
+            panel.SetActive(false);
+        }
+        else
+            Data.Instance.Load("LevelSelector");
+    }
     public void SetOn()
     {
-        panel.SetActive(true);        
+        panel.SetActive(true);
+        panel.GetComponent<Animation>().Play("PopupOn");    
 
         title.text = "LEVEL " + Data.Instance.levels.currentLevel  + " COMPLETED!";
 
@@ -148,8 +164,17 @@ public class MultiplayerResults : MonoBehaviour {
             puesto4.gameObject.SetActive(true);
 
 
+        List<int> arr = new List<int>();
+        foreach (MultiplayerData.PlayerData data in playersData)
+            arr.Add(data.playerID);
 
-         
+        Events.OnTournamentAddScores(Data.Instance.levels.currentLevel, arr);
+        if (Data.Instance.tournament.GetTotalMatches() == 8)
+            finishButton.SetActive(true); 
+    }
+    public void FinishTournament()
+    {
+        Events.OnTournamentFinish();
     }
     public void Ready()
     {

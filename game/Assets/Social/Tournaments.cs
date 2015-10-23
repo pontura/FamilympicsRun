@@ -86,18 +86,13 @@ public class Tournaments : MonoBehaviour {
         switch (id)
         {
             case 1: levelID = 1; break;
-            case 2: if (Data.Instance.userData.levelProgressionId < 8) return; break;
-            case 3: if (Data.Instance.userData.levelProgressionId < 16) return; break;
+            case 2: levelID = 9; if (Data.Instance.userData.levelProgressionId < 8) return; break;
+            case 3: levelID = 17; if (Data.Instance.userData.levelProgressionId < 16) return; break;
             case 4: if (Data.Instance.userData.levelProgressionId < 24) return; break;
         }
-       // Events.OnLoadParseScore(levelID);
-
-        //if (Data.Instance.userData.mode == UserData.modes.SINGLEPLAYER)
-        //    Data.Instance.Load("SinglePlayer");
-        //else
-            Data.Instance.Load("Players");
-
+        Events.OnTournamentStart(levelID);
         Data.Instance.GetComponent<Levels>().currentLevel = levelID;
+        Data.Instance.Load("Players");
     }
     void OnChangePlayMode(UserData.modes mode)
     {

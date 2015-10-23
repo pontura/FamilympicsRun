@@ -11,7 +11,8 @@ public class MultiplayerResultLine : MonoBehaviour {
     public void Init(string username, string score, Color color)
     {
         usernameField.text = username;
-        scorefield.text = score;
+        if (score != "")
+            scorefield.text = score;
         image.color = color;
     }
 }

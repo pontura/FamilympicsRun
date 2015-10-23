@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class Events {
 
@@ -92,6 +93,10 @@ public static class Events {
     public static System.Action<int> ReFillEnergy = delegate { };
     public static System.Action<string> SendEnergyTo = delegate { };
     public static System.Action<string> RejectEnergyTo = delegate { };
+
+    public static System.Action<int> OnTournamentStart = delegate { };
+    public static System.Action<int, List<int>> OnTournamentAddScores = delegate { };
+    public static System.Action OnTournamentFinish = delegate { };
     
     
 
