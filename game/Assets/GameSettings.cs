@@ -15,6 +15,7 @@ public class GameSettings : MonoBehaviour  {
         public float speedJump = 1;
     }
 
+    public float wind_stops = 1.2f;
     public float PU_BOOST_Acceleration;
     public float PU_BOOST_duration;
 

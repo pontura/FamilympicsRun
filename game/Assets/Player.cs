@@ -28,6 +28,7 @@ public class Player : MonoBehaviour {
     private float initialAacceleration;
     private float initialDeceleration;
     private bool isMultiplayer;
+    private float wind_stops;
 
     private float TrilRendererDefaultTime;
     private GameCamera gameCamera;
@@ -61,6 +62,7 @@ public class Player : MonoBehaviour {
         if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             isMultiplayer = true;
 
+        wind_stops = Data.Instance.gameSettings.wind_stops;
         PU_BOOST_Acceleration = Data.Instance.gameSettings.PU_BOOST_Acceleration;
         PU_BOOST_duration = Data.Instance.gameSettings.PU_BOOST_duration;
         PU_PAUSED_duration = Data.Instance.gameSettings.PU_PAUSED_duration;
@@ -229,7 +231,7 @@ public class Player : MonoBehaviour {
     public void OnExitWindZone()
     {
         state = states.RUNNING;
-        speed /= 2;
+       // speed /= 2;
     }
 
     //from animation
@@ -280,9 +282,10 @@ public class Player : MonoBehaviour {
             Vector3 pos = transform.localPosition;
 
             if (state == states.IN_WIND_ZONE)
-                pos.x += (speed * 1.1f) * Time.deltaTime;
-            else
-                pos.x += (speed * 10) * Time.deltaTime;
+            {
+                if (speed > 1) speed /= wind_stops;
+            }
+            pos.x += (speed * 10) * Time.deltaTime;
 
             transform.localPosition = pos;
         }
@@ -389,13 +392,15 @@ public class Player : MonoBehaviour {
     }
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.GetComponent<VerticalEnemy>())
+                Hurt();
+
         if (state == states.STARTING_NEXT_LAP) return;
         if (state == states.JUMPING) return;
         if (other.tag == "enemy")
         {
-            if (other.GetComponent<VerticalEnemy>())
-                Hurt();
-            else if(other.GetComponent<Hurdle>())
+            
+            if(other.GetComponent<Hurdle>())
                 Hurt();
             else if (other.GetComponent<Wind>())
                 OnEnterWindZone();
