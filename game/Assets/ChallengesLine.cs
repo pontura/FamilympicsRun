@@ -23,10 +23,12 @@ public class ChallengesLine : MonoBehaviour
 
     public Button ok;
     public Button cancel;
+    public GameObject RemindButton;
     public Challenges.PlayerData playerData;
 
     public void Init(Challenges challenges, int _id, Challenges.PlayerData playerData)
     {
+        RemindButton.SetActive(false);
         this.playerData = playerData;
         this.challenges = challenges;
         this.id = _id;
@@ -34,6 +36,7 @@ public class ChallengesLine : MonoBehaviour
         if (challenges.type == Challenges.types.MADE)
         {
             InactiveButtons();
+            RemindButton.SetActive(true);
         }
 
 
@@ -76,6 +79,7 @@ public class ChallengesLine : MonoBehaviour
     }
     void InactiveButtons()
     {
+        RemindButton.SetActive(false);
         ok.gameObject.SetActive(false);
         cancel.gameObject.SetActive(false);
     }
@@ -88,5 +92,10 @@ public class ChallengesLine : MonoBehaviour
     {
         challenges.CancelChallenge(objectID);
         Destroy(gameObject);
+    }
+    public void Remind()
+    {
+        InactiveButtons();
+        Events.OnChallengeRemind(objectID);
     }
 }

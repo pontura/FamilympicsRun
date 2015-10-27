@@ -74,6 +74,7 @@ public static class Events {
 
     //Challenges
     public static System.Action OnChallengesLoad = delegate { };
+    public static System.Action<string> OnChallengeRemind = delegate { };
     public static System.Action<string, string, int, float> OnChallengeCreate = delegate { };
     public static System.Action<string, string, string, float> OnChallengeClose = delegate { };
     public static System.Action<string> OnChallengeDelete = delegate { };

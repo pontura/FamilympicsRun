@@ -37,7 +37,7 @@ public class Challenges : MonoBehaviour {
 
     void Start()
     {
-        Events.OnChallengesLoad();
+       // Events.OnChallengesLoad();
     }
     void Update()
     {

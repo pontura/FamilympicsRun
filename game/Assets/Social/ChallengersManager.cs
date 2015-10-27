@@ -29,6 +29,7 @@ public class ChallengersManager : MonoBehaviour {
     {
         Events.OnChallengesLoad += OnChallengesLoad;
         Events.OnChallengeCreate += OnChallengeCreate;
+        Events.OnChallengeRemind += OnChallengeRemind;
         Events.OnChallengeClose += OnChallengeClose;
         Events.OnChallengeDelete += OnChallengeDelete;       
     }
@@ -110,17 +111,7 @@ public class ChallengersManager : MonoBehaviour {
             }
         }
         );
-
     }
-
-
-
-
-
-
-
-	
-
     public void OnChallengeCreate(string oponent_username, string oponent_facebookID, int level, float score)
     {
         ParseObject data = new ParseObject("Challenges");
@@ -135,6 +126,27 @@ public class ChallengersManager : MonoBehaviour {
 
         data.SaveAsync();
         print("Challenge Saved");
+    }
+    void OnChallengeRemind(string objectID)
+    {
+        print("OnChallengeRemind(string objectID)  " + objectID);
+
+        var query = new ParseQuery<ParseObject>("Challenges")
+            .WhereEqualTo("objectId", objectID);
+
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerator<ParseObject> enumerator = t.Result.GetEnumerator();
+            enumerator.MoveNext();
+            var data = enumerator.Current;
+            data["score2"] = 0;
+           // data["winner"] = winner;
+            return data.SaveAsync();
+        }).Unwrap().ContinueWith(t =>
+        {
+            Debug.Log("OnChallengeRemind updated!");
+        });   
+
     }
     public void OnChallengeClose(string objectID, string op_facebookID, string winner, float newScore)
     {

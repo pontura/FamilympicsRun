@@ -132,7 +132,24 @@ public class ChallengerCreator : MonoBehaviour {
         GetComponent<ChallengeConfirm>().Init(facebookFriendName, facebookFriendId );
         confirmationPanel.GetComponent<Animation>().Play("PopupOn");
     }
+    public void Remind(string _username, string _facebookID)
+    {
+        facebookFriendName = _username;
+        facebookFriendId = _facebookID;
 
+        string objectID = "";
+
+        ChallengersManager cm = Data.Instance.challengesManager;
+        foreach (ChallengersManager.PlayerData data in cm.made)
+        {
+            if (data.facebookID == _facebookID && data.level == levelId)
+            {
+                objectID = data.objectID;
+            }
+        }
+        if(objectID != "")
+            Events.OnChallengeRemind(objectID);
+    }
     public void Accept()
     {
         anim.gameObject.SetActive(true);
