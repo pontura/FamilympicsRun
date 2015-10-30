@@ -37,7 +37,7 @@ public class EnergyManager : MonoBehaviour {
         Events.SendEnergyTo += SendEnergyTo;
         Events.RejectEnergyTo += RejectEnergyTo;
         Events.BuyEnergyPack += BuyEnergyPack;
-        StoreEvents.OnMarketPurchase += onMarketPurchase;
+        Events.AddPlusEnergy += AddPlusEnergy;
 
         SECONDS_TO_ENERGY = MINUTES_TO_ENERGY * 60;
         lasTimeStamp = PlayerPrefs.GetInt(playerPref_TIME);
@@ -55,6 +55,10 @@ public class EnergyManager : MonoBehaviour {
 
         Loop();
 	}
+    public void AddPlusEnergy(int qty)
+    {
+        plusEnergy += qty;
+    }
     void OnDestroy()
     {
         Events.StartGame -= StartGame;
@@ -62,7 +66,8 @@ public class EnergyManager : MonoBehaviour {
         Events.SendEnergyTo -= SendEnergyTo;
         Events.RejectEnergyTo -= RejectEnergyTo;
         Events.BuyEnergyPack = BuyEnergyPack;
-        StoreEvents.OnMarketPurchase -= onMarketPurchase;
+        Events.AddPlusEnergy -= AddPlusEnergy;
+       
     }
     public void ConsumePlusEnergy()
     {
@@ -139,21 +144,9 @@ public class EnergyManager : MonoBehaviour {
         lasTimeStamp = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         PlayerPrefs.SetInt(playerPref_TIME, lasTimeStamp);
     }
-    public void BuyEnergyPack()
+    public void BuyEnergyPack(int qty)
     {
-        StoreInventory.BuyItem("season2unlock");
-    }
-    public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
-    {
-        // pvi - the PurchasableVirtualItem that was just purchased
-        // payload - a text that you can give when you initiate the purchase operation and
-        //    you want to receive back upon completion
-        // extra - contains platform specific information about the market purchase
-        //    Android: The "extra" dictionary will contain: 'token', 'orderId', 'originalJson', 'signature', 'userId'
-        //    iOS: The "extra" dictionary will contain: 'receiptUrl', 'transactionIdentifier', 'receiptBase64', 'transactionDate', 'originalTransactionDate', 'originalTransactionIdentifier'
-
-        if (pvi.ID == "energy1")
-            ReFillEnergy(10);
+        StoreInventory.BuyItem("energy" + qty);
     }
     public void ReFillEnergy(int qty)
     {

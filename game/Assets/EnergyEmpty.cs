@@ -36,6 +36,6 @@ public class EnergyEmpty : MonoBehaviour
     }
     public void Buy()
     {
-        Events.BuyEnergyPack();
+        Data.Instance.Load("Buy");
     }
 }

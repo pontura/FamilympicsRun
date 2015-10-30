@@ -109,8 +109,8 @@ public class SingleplayerResults : MonoBehaviour
 
             result = time;
 
-            if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
-                result = "";
+         //   if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
+            //    result = "";
             
         }
         resultField.text = result;

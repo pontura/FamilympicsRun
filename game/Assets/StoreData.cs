@@ -11,6 +11,7 @@ public class StoreData : MonoBehaviour
     public float totTime = 0.0f;
     public bool season_2_unlocked = false;
     public bool season_3_unlocked = false;
+    //public bool season_all_unlocked = false;
     static StoreData mInstance = null;
 
     public static StoreData Instance
@@ -52,11 +53,15 @@ public class StoreData : MonoBehaviour
     void CheckIAP_PurchaseStatus()
     {
       //  Debug.Log(StoreInventory.GetItemBalance("season2unlock"));							// Print the current status of the IAP
-        if (StoreInventory.GetItemBalance("season2unlock") >= 1)
+        if (StoreInventory.GetItemBalance(StoreAssets.SEASON_2_UNLOCK_PRODUCT_ID) >= 1)
         {
             season_2_unlocked = true;		// check if the non-consumable in app purchase has been bought or not
         }
-        if (StoreInventory.GetItemBalance("season3unlock") >= 1)
+        if (StoreInventory.GetItemBalance(StoreAssets.SEASON_3_UNLOCK_PRODUCT_ID) >= 1)
+        {
+            season_3_unlocked = true;		// check if the non-consumable in app purchase has been bought or not
+        }
+        if (StoreInventory.GetItemBalance(StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID) >= 1)
         {
             season_3_unlocked = true;		// check if the non-consumable in app purchase has been bought or not
         }

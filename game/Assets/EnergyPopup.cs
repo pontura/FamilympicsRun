@@ -83,7 +83,6 @@ public class EnergyPopup : MonoBehaviour {
 	}
     public void Refill()
     {
-        Events.BuyEnergyPack();
-        Close();
+        Data.Instance.Load("Buy");
     }
 }

@@ -29,30 +29,28 @@ public class Tournaments : MonoBehaviour {
             SetTournamentButtons(false);
 
         Events.OnChangePlayMode += OnChangePlayMode;
-        StoreEvents.OnMarketPurchase += onMarketPurchase;
+     //   StoreEvents.OnMarketPurchase += onMarketPurchase;
     }
     void OnDestroy()
     {
         Events.OnChangePlayMode -= OnChangePlayMode;
-        StoreEvents.OnMarketPurchase -= onMarketPurchase;
+      //  StoreEvents.OnMarketPurchase -= onMarketPurchase;
     }
     public void Buy(int id)
     {
-        Debug.Log("BUY season: " + id);
-        StoreInventory.BuyItem("season2unlock");
+        Data.Instance.Load("Buy");
     }
-    public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
-    {
-        // pvi - the PurchasableVirtualItem that was just purchased
-        // payload - a text that you can give when you initiate the purchase operation and
-        //    you want to receive back upon completion
-        // extra - contains platform specific information about the market purchase
-        //    Android: The "extra" dictionary will contain: 'token', 'orderId', 'originalJson', 'signature', 'userId'
-        //    iOS: The "extra" dictionary will contain: 'receiptUrl', 'transactionIdentifier', 'receiptBase64', 'transactionDate', 'originalTransactionDate', 'originalTransactionIdentifier'
+    //public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
+    //{
+    //    // pvi - the PurchasableVirtualItem that was just purchased
+    //    // payload - a text that you can give when you initiate the purchase operation and
+    //    //    you want to receive back upon completion
+    //    // extra - contains platform specific information about the market purchase
+    //    //    Android: The "extra" dictionary will contain: 'token', 'orderId', 'originalJson', 'signature', 'userId'
+    //    //    iOS: The "extra" dictionary will contain: 'receiptUrl', 'transactionIdentifier', 'receiptBase64', 'transactionDate', 'originalTransactionDate', 'originalTransactionIdentifier'
 
-        if (pvi.ID == "season3unlock" || pvi.ID == "season2unlock")
-            Data.Instance.Load("LevelSelector");
-    }
+       
+    //}
     void CheckForStarsAndThenStart()
     {
         text1.text = "COMPLETE SEASON 1 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_2 + " STARS TO UNLOCK";

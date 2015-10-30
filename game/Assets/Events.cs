@@ -90,7 +90,9 @@ public static class Events {
     public static System.Action<string> OnAcceptEnergyFrom = delegate { };
     public static System.Action<int> OnRefreshNotifications = delegate { };
 
-    public static System.Action BuyEnergyPack = delegate { };
+    public static System.Action<int> BuyEnergyPack = delegate { };
+    public static System.Action<int> AddPlusEnergy = delegate { };
+
     public static System.Action<int> ReFillEnergy = delegate { };
     public static System.Action<string> SendEnergyTo = delegate { };
     public static System.Action<string> RejectEnergyTo = delegate { };
