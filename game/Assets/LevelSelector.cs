@@ -42,6 +42,7 @@ public class LevelSelector : MonoBehaviour {
                 // Data.Instance.loginManager.GetFriends();
             }
         }
+        Data.Instance.tournament.Reset();
         Data.Instance.levelData.ResetChallenge();
         OnChangePlayMode(Data.Instance.userData.mode);
         Events.OnChangePlayMode += OnChangePlayMode;
