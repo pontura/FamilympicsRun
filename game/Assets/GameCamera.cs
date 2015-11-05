@@ -94,14 +94,19 @@ public class GameCamera : MonoBehaviour {
         lastEnemyAddedDistance = 0;
         distanceToAddEnemy = _distance;
         enemies.Add(enemy);
+        rand = Random.Range(0, enemies.Count);
     }
-    int rand = 0;
+
+    int rand ;
     Enemy GetRandomEnemy()
     {
         rand++;
-        if (rand % enemies.Count == 0)
-        return enemies[0];
-        else return enemies[1];
+        
+        if (rand >= enemies.Count) rand = 0;
+
+        print("GetRandomEnemy " + rand + " count: " + enemies.Count + " enemy: " + enemies[rand].name );
+
+        return enemies[rand];
     }
     void AddEnemy()
     {

@@ -38,6 +38,7 @@ public class Player : MonoBehaviour {
     private float PU_BOOST_duration;
     private float PU_PAUSED_duration;
     private Color color;
+    private bool inTRampolinZone;
 
     public enum states
     {
@@ -209,6 +210,9 @@ public class Player : MonoBehaviour {
 
         gameCamera.OnAvatarMoved();
         if (speed < speedJump) speed = speedJump;
+
+        if (inTRampolinZone) speed *= 2;
+
         GetComponent<Animation>().Play("playerJump");
     }
     public void Hurt()
@@ -232,6 +236,16 @@ public class Player : MonoBehaviour {
     {
         state = states.RUNNING;
        // speed /= 2;
+    }
+
+    public void OnEnterTrampolinZone()
+    {
+        inTRampolinZone = true;
+    }
+    public void OnExitTrampolinZone()
+    {
+        inTRampolinZone = false;
+        // speed /= 2;
     }
 
     //from animation
@@ -303,7 +317,7 @@ public class Player : MonoBehaviour {
             {
                 Die();
             }
-            else if (playerDistance - gameCamera.distance > 20)
+            if (playerDistance - gameCamera.distance > 20)
                 Win();
             else
             {
@@ -338,10 +352,11 @@ public class Player : MonoBehaviour {
                 return;
             }
             laps--;
-            state = states.STARTING_NEXT_LAP;
+            //state = states.STARTING_NEXT_LAP;
             meters = laps + "000";
             Events.OnAvatarWinLap(id, laps);
-            Invoke("PrevLap", 0.05f);
+           // Invoke("PrevLap", 0.05f);
+            PrevLap();
             Vector3 pos = transform.localPosition;
             pos.x -= 1;
             transform.localPosition = pos;
@@ -372,6 +387,8 @@ public class Player : MonoBehaviour {
 
         if (state == states.IN_WIND_ZONE)
             state = states.RUNNING;
+
+        OnExitTrampolinZone();
 
         lastState = state;
 
@@ -406,8 +423,9 @@ public class Player : MonoBehaviour {
         if (state == states.JUMPING) return;
         if (other.tag == "enemy")
         {
-            
-            if(other.GetComponent<Hurdle>())
+            if (other.GetComponent<Trampolin>())
+                OnEnterTrampolinZone();
+            else if(other.GetComponent<Hurdle>())
                 Hurt();
             else if (other.GetComponent<Wind>())
                 OnEnterWindZone();
@@ -421,7 +439,8 @@ public class Player : MonoBehaviour {
 
         if (other.GetComponent<Wind>())
             OnExitWindZone();
-        
+        else if (other.GetComponent<Trampolin>())
+            OnExitTrampolinZone();        
     }
     
     void SetOff()

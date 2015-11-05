@@ -21,6 +21,7 @@ public class Levels : MonoBehaviour {
     public class enemiesType
     {
         public VerticalBar[] VERTICAL_BAR;
+        public bool TRAMPOLIN;
         public bool HURDLES;
         public bool WIND;
         public int distance = 24;

@@ -12,6 +12,9 @@ public class EnemiesManager : MonoBehaviour {
     [SerializeField]
     public Enemy winds;
 
+    [SerializeField]
+    public Enemy trampolin;
+
     private Levels.LevelData levelData;
 
     public GameObject InSceneContainer;
@@ -30,7 +33,9 @@ public class EnemiesManager : MonoBehaviour {
         int distance = levelData.enemies.distance;
         if (levelData.enemies.VERTICAL_BAR.Length>0)
             AddVerticalBar(levelData.enemies.VERTICAL_BAR);
-        if(levelData.enemies.HURDLES)
+        if (levelData.enemies.TRAMPOLIN)
+            addEnemy(trampolin, distance);
+        if (levelData.enemies.HURDLES)
             addEnemy(hurdle, distance);
         if (levelData.enemies.WIND)
             addEnemy(winds, distance);
@@ -43,7 +48,6 @@ public class EnemiesManager : MonoBehaviour {
     {
         foreach (Levels.VerticalBar data in all)
         {
-            print(data);
             VerticalEnemy newEnemy = Instantiate(verticalBar) as VerticalEnemy;
             newEnemy.transform.SetParent(InSceneContainer.transform);
             newEnemy.transform.localScale = Vector3.one;            
