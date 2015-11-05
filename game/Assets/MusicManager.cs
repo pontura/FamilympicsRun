@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class MusicManager : MonoBehaviour {
-
-    public float volume;
-       
+           
 	public void Init () {
         GetComponent<AudioSource>().loop = true;
         OnMusicVolumeChanged(Data.Instance.musicVolume);
@@ -38,7 +36,7 @@ public class MusicManager : MonoBehaviour {
     }
     void OnSoundsFadeTo(float to)
     {
-        if (to > 0) to = volume;
+        if (to > 0) to = Data.Instance.musicVolume;
        // TweenVolume tv = TweenVolume.Begin(gameObject, 1, to);
         //tv.PlayForward();
         //tv.onFinished.Clear();
@@ -46,7 +44,7 @@ public class MusicManager : MonoBehaviour {
     void OnMusicVolumeChanged(float value)
     {
         GetComponent<AudioSource>().volume = value;
-        volume = value;
+        Data.Instance.musicVolume = value;
     }
     public void Turn(bool isACtive)
     {

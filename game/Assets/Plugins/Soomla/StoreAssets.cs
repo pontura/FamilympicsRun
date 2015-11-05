@@ -33,11 +33,11 @@ namespace Soomla.Store.Example															//Allows for access to Soomla API
         //****************************BOILERPLATE ABOVE(modify as you see fit/ if nessisary)***********************
         public const string SEASON_2_UNLOCK_PRODUCT_ID = "season2unlock";				//create a string to store the "turn green" in app purchase
         public const string SEASON_3_UNLOCK_PRODUCT_ID = "season3unlock";
-        public const string SEASONS_ALL_UNLOCK_PRODUCT_ID = "seasonAllunlock";
+        public const string SEASONS_ALL_UNLOCK_PRODUCT_ID = "season4unlock";
 
-        public const string ENERGY_1_PRODUCT_ID = "energy1";
-        public const string ENERGY_3_PRODUCT_ID = "energy3";
-        public const string ENERGY_10_PRODUCT_ID = "energy10";
+        public const string ENERGY_1_PRODUCT_ID = "energy1bis";
+        public const string ENERGY_3_PRODUCT_ID = "energy2";
+        public const string ENERGY_10_PRODUCT_ID = "energy3";
 
 
         /** Lifetime Virtual Goods (aka - lasts forever **/
@@ -64,25 +64,25 @@ namespace Soomla.Store.Example															//Allows for access to Soomla API
         public static VirtualGood ALL_SEASONS_UNLOCK = new LifetimeVG(
            "All seasons unlock",
            "Unlock all seasons!",
-           "seasonAllunlock",
+           "season4unlock",
            new PurchaseWithMarket(SEASONS_ALL_UNLOCK_PRODUCT_ID, 24.99)
        );
         public static VirtualGood ENERGY_1 = new SingleUseVG(
             "Energy",
             "Buy 1 energy pack",
-            "energy1",
+            "energy1bis",
             new PurchaseWithMarket(ENERGY_1_PRODUCT_ID, 0.99)
         );
         public static VirtualGood ENERGY_3 = new SingleUseVG(
             "Energy",
             "Buy 3 energy packs",
-            "energy3",
+            "energy2",
             new PurchaseWithMarket(ENERGY_3_PRODUCT_ID, 0.99)
         );
         public static VirtualGood ENERGY_10 = new SingleUseVG(
             "Energy",
             "Buy 10 energy packs",
-            "energy10",
+            "energy3",
             new PurchaseWithMarket(ENERGY_10_PRODUCT_ID, 0.99)
         );
     }

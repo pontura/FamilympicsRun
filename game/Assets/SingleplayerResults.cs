@@ -87,6 +87,7 @@ public class SingleplayerResults : MonoBehaviour
     }
     public void SetOnSingleResult()
     {
+       
         panel.SetActive(true);
         stars.Init(numStars);
 
@@ -117,6 +118,12 @@ public class SingleplayerResults : MonoBehaviour
         if (lastScore == 0) hiscoreField.text = "NEW HISCORE";
 
        // Events.OnSaveScore(Data.Instance.levels.currentLevel, score);
+
+        Invoke("LoadResults", 1);
+    }
+    void LoadResults()
+    {
+         GetComponent<Ranking>().LoadSinglePlayerWinners(Data.Instance.levels.currentLevel);
     }
     void OnNewHiscore(int levelId, float score)
     {

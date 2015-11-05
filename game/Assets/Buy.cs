@@ -36,9 +36,9 @@ public class Buy : MonoBehaviour {
     }
     public void BuyAllSeasons()
     {
-        StoreInventory.BuyItem(StoreAssets.SEASON_2_UNLOCK_PRODUCT_ID);
+        StoreInventory.BuyItem(StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID);
     }
-    public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
+    void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
     {
         // pvi - the PurchasableVirtualItem that was just purchased
         // payload - a text that you can give when you initiate the purchase operation and
@@ -47,20 +47,25 @@ public class Buy : MonoBehaviour {
         //    Android: The "extra" dictionary will contain: 'token', 'orderId', 'originalJson', 'signature', 'userId'
         //    iOS: The "extra" dictionary will contain: 'receiptUrl', 'transactionIdentifier', 'receiptBase64', 'transactionDate', 'originalTransactionDate', 'originalTransactionIdentifier'
 
-        if (pvi.ID == "energy1")
+        if (pvi.ID == StoreAssets.ENERGY_1_PRODUCT_ID)
         {
             Events.ReFillEnergy(10);
         }
-        else if (pvi.ID == "energy3")
+        else if (pvi.ID == StoreAssets.ENERGY_3_PRODUCT_ID)
         {
             Events.ReFillEnergy(10);
             Events.AddPlusEnergy(3);
         }
-        else if (pvi.ID == "energy10")
+        else if (pvi.ID == StoreAssets.ENERGY_10_PRODUCT_ID)
         {
             Events.ReFillEnergy(10);
             Events.AddPlusEnergy(10);
         }
+
+        Invoke("GotoMainMenu", 0.1f);
+    }
+    void GotoMainMenu()
+    {
         Data.Instance.Load("MainMenu");
     }
 }

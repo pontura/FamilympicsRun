@@ -4,6 +4,7 @@ using System.Collections;
 
 public class MainMenuSwitch : MonoBehaviour {
 
+    public int id;
     private bool isOn = true;
     private Animation anim;
 
@@ -14,6 +15,14 @@ public class MainMenuSwitch : MonoBehaviour {
     void Start()
     {
         anim = GetComponent<Animation>();
+        if (id == 1 && Data.Instance.musicVolume == 0)
+        {
+            Switch(1);
+        }
+        if (id == 2 && Data.Instance.soundsVolume == 0)
+        {
+            Switch(2);
+        }
     }
    public void Switch(int id)
     {

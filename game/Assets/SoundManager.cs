@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
-    public float volume = 1;
     void Start()
     {
         Events.OnSoundFX += OnSoundFX;
@@ -18,7 +17,7 @@ public class SoundManager : MonoBehaviour
     void OnSoundsVolumeChanged(float value)
     {
         GetComponent<AudioSource>().volume = value;
-        volume = value;
+        Data.Instance.soundsVolume = value;
     }
     void OnSoundFX(string soundName)
     {
@@ -32,5 +31,6 @@ public class SoundManager : MonoBehaviour
         int value = 0;
         if (isACtive) value = 1;
         OnSoundsVolumeChanged(value);
+        
     }
 }

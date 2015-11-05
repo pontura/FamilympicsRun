@@ -146,7 +146,7 @@ public class EnergyManager : MonoBehaviour {
     }
     public void BuyEnergyPack(int qty)
     {
-        StoreInventory.BuyItem("energy" + qty);
+        
     }
     public void ReFillEnergy(int qty)
     {

@@ -9,6 +9,7 @@ public class StoreData : MonoBehaviour
 {
     public float secTime = 2.0f;
     public float totTime = 0.0f;
+
     public bool season_2_unlocked = false;
     public bool season_3_unlocked = false;
     //public bool season_all_unlocked = false;
@@ -31,12 +32,14 @@ public class StoreData : MonoBehaviour
         Application.LoadLevel("MainMenu");																//Load actual scene
         DontDestroyOnLoad(transform.gameObject);													//Allows this gameObject to remain during level loads, solving restart crashes
         StoreEvents.OnSoomlaStoreInitialized += onSoomlaStoreIntitialized;							//Handle the initialization of store events (calls function below - unneeded in this case)
+        StoreEvents.OnMarketPurchase += onMarketPurchase;
         SoomlaStore.Initialize(new StoreAssets());												    //Intialize the store
     }
 
     //this is likely unnecessary, but may be required depending on how you plan on doing IAPS
     public void onSoomlaStoreIntitialized()
     {
+
     }
 
     void Update()
@@ -63,44 +66,60 @@ public class StoreData : MonoBehaviour
         }
         if (StoreInventory.GetItemBalance(StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID) >= 1)
         {
-            season_3_unlocked = true;		// check if the non-consumable in app purchase has been bought or not
+            season_2_unlocked = true;
+            season_3_unlocked = true;
         }
     }
-
-    //GUI ELEMENTS
-    void ___________________OnGUI()
+    void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
     {
-        //Button To PURCHASE ITEM
-        if (GUI.Button(new Rect(Screen.width * 0.2f, Screen.height * 0.4f, 150, 150), "Make green?"))
+        if (pvi.ID == StoreAssets.SEASON_2_UNLOCK_PRODUCT_ID)
         {
-            try
-            {
-                Debug.Log("attempt to purchase");
-
-                StoreInventory.BuyItem("turn_green_item_id");										// if the purchases can be completed sucessfully
-            }
-            catch (Exception e)
-            {																						// if the purchase cannot be completed trigger an error message connectivity issue, IAP doesnt exist on ItunesConnect, etc...)
-                Debug.Log("SOOMLA/UNITY" + e.Message);
-            }
+            season_2_unlocked = true;
         }
-        //Button to RESTORE PURCHASES
-        if (GUI.Button(new Rect(Screen.width * 0.2f, Screen.height * 0.8f, 150, 150), "Restore\nPurchases"))
+        else if (pvi.ID == StoreAssets.SEASON_3_UNLOCK_PRODUCT_ID)
         {
-            try
-            {
-                SoomlaStore.RestoreTransactions();													// restore purchases if possible
-            }
-            catch (Exception e)
-            {
-                Debug.Log("SOOMLA/UNITY" + e.Message);												// if restoring purchases fails (connectivity issue, IAP doesnt exist on ItunesConnect, etc...)
-            }
+            season_3_unlocked = true;
         }
-
-        //Button to RESTART LEVEL (ensure it doesnt crash)
-        if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.8f, 150, 150), "Restart"))
+        else if (pvi.ID == StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID)
         {
-            Application.LoadLevel(Application.loadedLevel);
+            season_2_unlocked = true;
+            season_3_unlocked = true;
         }
     }
+    //GUI ELEMENTS
+    //void ___________________OnGUI()
+    //{
+    //    //Button To PURCHASE ITEM
+    //    if (GUI.Button(new Rect(Screen.width * 0.2f, Screen.height * 0.4f, 150, 150), "Make green?"))
+    //    {
+    //        try
+    //        {
+    //            Debug.Log("attempt to purchase");
+
+    //            StoreInventory.BuyItem("turn_green_item_id");										// if the purchases can be completed sucessfully
+    //        }
+    //        catch (Exception e)
+    //        {																						// if the purchase cannot be completed trigger an error message connectivity issue, IAP doesnt exist on ItunesConnect, etc...)
+    //            Debug.Log("SOOMLA/UNITY" + e.Message);
+    //        }
+    //    }
+    //    //Button to RESTORE PURCHASES
+    //    if (GUI.Button(new Rect(Screen.width * 0.2f, Screen.height * 0.8f, 150, 150), "Restore\nPurchases"))
+    //    {
+    //        try
+    //        {
+    //            SoomlaStore.RestoreTransactions();													// restore purchases if possible
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Debug.Log("SOOMLA/UNITY" + e.Message);												// if restoring purchases fails (connectivity issue, IAP doesnt exist on ItunesConnect, etc...)
+    //        }
+    //    }
+
+    //    //Button to RESTART LEVEL (ensure it doesnt crash)
+    //    if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.8f, 150, 150), "Restart"))
+    //    {
+    //        Application.LoadLevel(Application.loadedLevel);
+    //    }
+    //}
 }

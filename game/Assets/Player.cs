@@ -369,7 +369,14 @@ public class Player : MonoBehaviour {
         laps++;
         gameCamera.NewLap();
         Events.OnFlashWinLap(color);
+
+        if (state == states.IN_WIND_ZONE)
+            state = states.RUNNING;
+
         lastState = state;
+
+        
+
         state = states.STARTING_NEXT_LAP;
         meters = laps + "000";
         Events.OnAvatarWinLap(id, laps);        
