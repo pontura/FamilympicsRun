@@ -157,6 +157,11 @@ public class ChallengerCreator : MonoBehaviour {
         Events.OnChallengeCreate(facebookFriendName, facebookFriendId, levelId, score);
         lastSelectedFacebookId = facebookFriendId;
         Init();
+        Invoke("FlagReady", 3.7f);
+    }
+    void FlagReady()
+    {
+        anim.gameObject.SetActive(false);
     }
     public void CloseConfirmation()
     {

@@ -104,8 +104,6 @@ public class GameCamera : MonoBehaviour {
         
         if (rand >= enemies.Count) rand = 0;
 
-        print("GetRandomEnemy " + rand + " count: " + enemies.Count + " enemy: " + enemies[rand].name );
-
         return enemies[rand];
     }
     void AddEnemy()

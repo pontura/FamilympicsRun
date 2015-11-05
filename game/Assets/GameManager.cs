@@ -174,7 +174,6 @@ public class GameManager : MonoBehaviour {
     }
     void OnTimeOver()
     {
-        print("OnTimeOverOnTimeOverOnTimeOver");
         float totalTime = Data.Instance.levels.GetCurrentLevelData().totalTime;
         float gameOverTime = Data.Instance.levels.GetCurrentLevelData().gameOver;
         bool somebodyWon = false;

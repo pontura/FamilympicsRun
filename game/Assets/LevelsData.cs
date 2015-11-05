@@ -58,6 +58,7 @@ public class LevelsData : MonoBehaviour {
     }
     public float GetMyScoreIfExists(int levelID)
     {
+
         if (Data.Instance.userData.facebookID == "")
             return PlayerPrefs.GetFloat("Run_Level_" + levelID);
 
@@ -79,7 +80,7 @@ public class LevelsData : MonoBehaviour {
                 else
                 {
                     if (
-                        levelsScore[levelID].myScore < levelsScore[levelID].myScoreInParse && levels.levels[levelID].Sudden_Death
+                        levelsScore[levelID].myScore > levelsScore[levelID].myScoreInParse && levels.levels[levelID].Sudden_Death
                         ||
                         levelsScore[levelID].myScore < levelsScore[levelID].myScoreInParse && levels.levels[levelID].totalLaps > 0
                         ||
@@ -256,7 +257,14 @@ public class LevelsData : MonoBehaviour {
         sd.score = score;
         levelsScore[level].scoreData.Add(sd);
 
-        print("___________SaveNewScore" + level);
+        if (!levelsScore[level].parseInfoLoaded)
+        {
+            Debug.Log("Todavia no llego data de parse para este nivel...");
+            return;
+        }
+
+        Debug.Log("___________SaveNewScore" + level);
+
         ParseObject gameScore = new ParseObject("Level_" + level.ToString());
         //gameScore.Increment("score", hiscore);
         gameScore["playerName"] = Data.Instance.userData.username;
@@ -282,10 +290,7 @@ public class LevelsData : MonoBehaviour {
 
     private void LoadData(int _level)
     {
-
-        print("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
-
-        
+        Debug.Log("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
 
         ParseQuery<ParseObject> query;
 

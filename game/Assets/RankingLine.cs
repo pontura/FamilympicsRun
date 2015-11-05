@@ -24,9 +24,9 @@ public class RankingLine : MonoBehaviour {
 
         this.username.text = playerName;
 
-        print("score: " + _score);
+      //  print("score: " + _score);
         this.score.text = Data.Instance.levelsData.GetScoreString(levelID, float.Parse(_score));
-        print("levelID: " + levelID + "   score: " +  Data.Instance.levelsData.GetScoreString(levelID, float.Parse(_score)));
+      //  print("levelID: " + levelID + "   score: " +  Data.Instance.levelsData.GetScoreString(levelID, float.Parse(_score)));
         
     }
     public void SetSinglePlayer()
