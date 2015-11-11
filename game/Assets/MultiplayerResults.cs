@@ -6,6 +6,7 @@ using System.Linq;
 
 public class MultiplayerResults : MonoBehaviour {
 
+    public Button RePlay;
     public GameObject panel;
     public GameObject finishButton;
 
@@ -28,6 +29,7 @@ public class MultiplayerResults : MonoBehaviour {
         panel.transform.localScale = Data.Instance.screenManager.scale;
         panel.SetActive(false);
         Events.OnLevelComplete += OnLevelComplete;
+        if (Data.Instance.tournament.isOn) RePlay.interactable = false;
 	}
     void OnDestroy()
     {
@@ -59,8 +61,8 @@ public class MultiplayerResults : MonoBehaviour {
         Time.timeScale = 1;
         if (Data.Instance.tournament.isOn)
         {
-            Events.OnTournamentFinish();
-            panel.SetActive(false);
+            Events.OnTournamentFinishAskForConfirmation();
+            //panel.SetActive(false);
         }
         else
             Data.Instance.Load("LevelSelector");
@@ -174,7 +176,7 @@ public class MultiplayerResults : MonoBehaviour {
     }
     public void FinishTournament()
     {
-        Events.OnTournamentFinish();
+        Events.OnTournamentFinishAskForConfirmation();
     }
     public void Ready()
     {

@@ -24,6 +24,7 @@ public class EnergyManager : MonoBehaviour {
 
     private string playerPref_TIME = "energyTimestamp";
     private string playerPref_ENERGY = "energy";
+    private string playerPref_PLUS_ENERGY = "plusEnergy";
 
     private float SECONDS_TO_ENERGY;
 
@@ -43,21 +44,28 @@ public class EnergyManager : MonoBehaviour {
         lasTimeStamp = PlayerPrefs.GetInt(playerPref_TIME);
 
         if (PlayerPrefs.HasKey(playerPref_ENERGY))
-        {
             energy = PlayerPrefs.GetInt(playerPref_ENERGY);
-             print("energy grabada " + energy);
-        }
         else
         {
             energy = ENERGY_TO_START;
             SaveEnergy();
         }
 
+        if (PlayerPrefs.HasKey(playerPref_PLUS_ENERGY))
+            plusEnergy = PlayerPrefs.GetInt(playerPref_PLUS_ENERGY);
+        else plusEnergy = 0;
+
         Loop();
+        
 	}
     public void AddPlusEnergy(int qty)
     {
         plusEnergy += qty;
+        SavePlusEnergy();
+    }
+    void SavePlusEnergy()
+    {
+        PlayerPrefs.SetInt(playerPref_PLUS_ENERGY, plusEnergy);
     }
     void OnDestroy()
     {
@@ -76,6 +84,7 @@ public class EnergyManager : MonoBehaviour {
         plusEnergy--;
         SaveEnergy();
         SaveNewTime();
+        SavePlusEnergy();
     }
     void StartGame()
     {

@@ -80,6 +80,11 @@ public class Tournaments : MonoBehaviour {
     
     public void PlayTournament(int id)
     {
+        if (Data.Instance.energyManager.plusEnergy == 0 && Data.Instance.energyManager.energy < 8)
+        {
+            GetComponent<TournamentNotEnoughEnergy>().Open();
+            return;
+        } 
         int levelID = 1;
         switch (id)
         {

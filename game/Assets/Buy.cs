@@ -50,6 +50,7 @@ public class Buy : MonoBehaviour {
         if (pvi.ID == StoreAssets.ENERGY_1_PRODUCT_ID)
         {
             Events.ReFillEnergy(10);
+            Events.AddPlusEnergy(1);
         }
         else if (pvi.ID == StoreAssets.ENERGY_3_PRODUCT_ID)
         {

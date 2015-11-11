@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class SettingsInGame : MonoBehaviour {
 
+    public Button restartButton;
+
 	void Start () {
         Events.OpenIngameMenu += OpenIngameMenu;
+        if (Data.Instance.tournament.isOn) restartButton.interactable = false;
 	}
     void OnDestroy()
     {
@@ -62,7 +66,6 @@ public class SettingsInGame : MonoBehaviour {
     }
     public void ExitToMap()
     {
-        Time.timeScale = 1;
         Data.Instance.Load("LevelSelector");
     }
 }
