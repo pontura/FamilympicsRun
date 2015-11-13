@@ -175,6 +175,7 @@ public class Player : MonoBehaviour {
     }
     public void Idle()
     {
+        if (state == states.STARTING_NEXT_LAP) return;
         speed = speed/2;
         state = states.PLAYING;
         GetComponent<Animation>().Play("playerIdle");
@@ -219,9 +220,9 @@ public class Player : MonoBehaviour {
     {
         if (state == states.STARTING_NEXT_LAP) return;
 
-        Vector3 pos = transform.localPosition;
+        //Vector3 pos = transform.localPosition;
         //pos.x += 1;
-        transform.localPosition = pos;
+        //transform.localPosition = pos;
 
         Events.OnSoundFX("hurdleFall");
         state = states.HURT;
@@ -230,10 +231,12 @@ public class Player : MonoBehaviour {
     }
     public void OnEnterWindZone()
     {
+        if (state == states.STARTING_NEXT_LAP) return;
         state = states.IN_WIND_ZONE;
     }
     public void OnExitWindZone()
     {
+        if (state == states.STARTING_NEXT_LAP) return;
         state = states.RUNNING;
        // speed /= 2;
     }
@@ -251,12 +254,13 @@ public class Player : MonoBehaviour {
     //from animation
     public void EndJump()
     {
-       // Idle();
+        if (state == states.STARTING_NEXT_LAP) return;
         state = states.RUNNING;
         GetComponent<Animation>().Play("playerIdle");
     }
     public void EndHurt()
     {
+        if (state == states.STARTING_NEXT_LAP) return;
         Idle();
     }
     void Update()
@@ -344,6 +348,7 @@ public class Player : MonoBehaviour {
     }
     void Die()
     {
+        if (state == states.STARTING_NEXT_LAP) return;
         if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death)
         {
             if (laps == 0)
@@ -369,6 +374,7 @@ public class Player : MonoBehaviour {
     }
     void PrevLap()
     {
+        if (state == states.STARTING_NEXT_LAP) return;
         if (gameManager.state == GameManager.states.READY) return;
         if (state == states.READY) return;
 
@@ -379,8 +385,10 @@ public class Player : MonoBehaviour {
         transform.localPosition = pos;
     }
     private states lastState;
+    private float lastXPosition;
     public void Win()
     {
+        if (state == states.STARTING_NEXT_LAP) return;
         laps++;
         gameCamera.NewLap();
         Events.OnFlashWinLap(color);
@@ -391,16 +399,15 @@ public class Player : MonoBehaviour {
         OnExitTrampolinZone();
 
         lastState = state;
-
-        
-
         state = states.STARTING_NEXT_LAP;
+
         meters = laps + "000";
         Events.OnAvatarWinLap(id, laps);        
         Invoke("NextLap", 0.02f);
         Vector3 pos = transform.localPosition;
         pos.x += 1;
         transform.localPosition = pos;
+        lastXPosition = pos.x;
         GetComponent<TrailRenderer>().time = -1;
     }
     void NextLap()
@@ -411,7 +418,7 @@ public class Player : MonoBehaviour {
         GetComponent<TrailRenderer>().time = TrilRendererDefaultTime;
         state = lastState;
         Vector3 pos = transform.localPosition;
-        pos.x -= 40;
+        pos.x = lastXPosition - 40;
         transform.localPosition = pos;
     }
     void OnTriggerEnter2D(Collider2D other)

@@ -154,8 +154,8 @@ public class UIPlayerButtons : MonoBehaviour {
             case 1: buttonPressed = button1; Events.OnSoundFX("stepLeft"); break;
             default: buttonPressed = button2; Events.OnSoundFX("stepRight"); break;
         }
-        if (buttonPressed == activeButton)
-            return;
+       // if (buttonPressed == activeButton)
+         //   return;
 
        // button1.transform.localScale = new Vector3(scaleSmall, scaleSmall, scaleSmall);
       //  button2.transform.localScale = new Vector3(scaleSmall, scaleSmall, scaleSmall);
