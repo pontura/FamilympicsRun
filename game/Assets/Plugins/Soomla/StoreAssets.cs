@@ -17,7 +17,7 @@ namespace Soomla.Store.Example															//Allows for access to Soomla API
 
         public VirtualGood[] GetGoods()
         {												// Add "TURN_GREEN" IAP to GetGoods
-            return new VirtualGood[] { SEASON_2_UNLOCK, SEASON_3_UNLOCK, ALL_SEASONS_UNLOCK, ENERGY_1, ENERGY_3, ENERGY_10 };
+            return new VirtualGood[] { SEASON_2_UNLOCK, SEASON_3_UNLOCK, ALL_SEASONS_UNLOCK, ENERGY_1, ENERGY_3, ENERGY_10, ENERGY_50 };
         }
 
         public VirtualCurrencyPack[] GetCurrencyPacks()
@@ -38,6 +38,7 @@ namespace Soomla.Store.Example															//Allows for access to Soomla API
         public const string ENERGY_1_PRODUCT_ID = "energy1bis";
         public const string ENERGY_3_PRODUCT_ID = "energy2";
         public const string ENERGY_10_PRODUCT_ID = "energy3";
+        public const string ENERGY_50_PRODUCT_ID = "energy5";
 
 
         /** Lifetime Virtual Goods (aka - lasts forever **/
@@ -68,22 +69,28 @@ namespace Soomla.Store.Example															//Allows for access to Soomla API
            new PurchaseWithMarket(SEASONS_ALL_UNLOCK_PRODUCT_ID, 24.99)
        );
         public static VirtualGood ENERGY_1 = new SingleUseVG(
-            "Energy",
+            "10 Energy",
             "Buy 1 energy pack",
             "energy1bis",
             new PurchaseWithMarket(ENERGY_1_PRODUCT_ID, 0.99)
         );
         public static VirtualGood ENERGY_3 = new SingleUseVG(
-            "Energy",
+            "25 Energy",
             "Buy 3 energy packs",
             "energy2",
-            new PurchaseWithMarket(ENERGY_3_PRODUCT_ID, 0.99)
+            new PurchaseWithMarket(ENERGY_3_PRODUCT_ID, 1.99)
         );
         public static VirtualGood ENERGY_10 = new SingleUseVG(
-            "Energy",
+            "100 Energy",
             "Buy 10 energy packs",
             "energy3",
-            new PurchaseWithMarket(ENERGY_10_PRODUCT_ID, 0.99)
+            new PurchaseWithMarket(ENERGY_10_PRODUCT_ID, 4.99)
+        );
+        public static VirtualGood ENERGY_50 = new SingleUseVG(
+            "500 Energy",
+            "Buy 50 energy packs",
+            "energy5",
+            new PurchaseWithMarket(ENERGY_50_PRODUCT_ID, 9.99)
         );
     }
 }

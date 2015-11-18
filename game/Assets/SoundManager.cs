@@ -18,6 +18,7 @@ public class SoundManager : MonoBehaviour
     {
         GetComponent<AudioSource>().volume = value;
         Data.Instance.soundsVolume = value;
+        PlayerPrefs.SetFloat("soundsVolume", value); 
     }
     void OnSoundFX(string soundName)
     {

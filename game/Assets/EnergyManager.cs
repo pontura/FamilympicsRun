@@ -88,19 +88,34 @@ public class EnergyManager : MonoBehaviour {
     }
     void StartGame()
     {
-        if (energy > 0)
-            ConsumeEnergy();
+        if (Data.Instance.tournament.isOn)
+        {
+            print("energy manager StartGame: " + Data.Instance.tournament.GetTotalMatches());
+            if (Data.Instance.tournament.GetTotalMatches() == 0)
+                ConsumeEnergy(8);
+        } else
+            ConsumeEnergy(1);
     }
-    void ConsumeEnergy()
+    void ConsumeEnergy(int qty)
     {
-        print("_______________  ConsumeEnergy : ConsumeEnergy");
-        energy--;
+        print("_______________  ConsumeEnergy : ConsumeEnergy" + plusEnergy + "  energy: " + energy);
+
+        if (energy > qty-1)
+            energy-=qty;
+        else 
+        if (plusEnergy > 0)
+        {
+            energy = 10 - (qty - energy);
+            plusEnergy--;
+            SavePlusEnergy();
+        }
+       
         SaveEnergy();
         SaveNewTime();
     }
     public bool ReplayCheck()
     {
-        if (energy < 1)
+        if (energy < 1 && plusEnergy == 0)
         {
             Data.Instance.Load("LevelSelector");
             return false;

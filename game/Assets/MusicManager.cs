@@ -45,6 +45,7 @@ public class MusicManager : MonoBehaviour {
     {
         GetComponent<AudioSource>().volume = value;
         Data.Instance.musicVolume = value;
+        PlayerPrefs.SetFloat("musicVolume", value); 
     }
     public void Turn(bool isACtive)
     {

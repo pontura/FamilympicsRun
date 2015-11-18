@@ -50,7 +50,7 @@ public class StartUpFailed : MonoBehaviour {
     void OnPaused()
     {
         GetComponent<Animation>().Play("FalseStart");
-        label.text = "PAUSED";
+        label.text = "Oh No!";
     }
     void OnFalseStart(int _id)
     {

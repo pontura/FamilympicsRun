@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="UnityEngine">
+    <type fullname="UnityEngine.iOS.NotificationServices" preserve="all"/>
+    <type fullname="UnityEngine.NotificationServices" preserve="all"/>
+  </assembly>
+</linker>

@@ -5,8 +5,13 @@ using UnityEngine.UI;
 public class MultiplayerSelector : MonoBehaviour {
 
     public Button playButton;
+
+    public GameObject playMulti;
+    public GameObject playTournament;
+
     public PlayerButton[] playerButtons;
     private int numberOfPlayers = 0;
+    
 
     void Start()
     {
@@ -16,6 +21,16 @@ public class MultiplayerSelector : MonoBehaviour {
             playerButton.Init();
         }
         playButton.interactable = false;
+        if (Data.Instance.tournament.isOn)
+        {
+            playTournament.SetActive(true);
+            playMulti.SetActive(false);
+        }
+        else
+        {
+            playTournament.SetActive(false);
+            playMulti.SetActive(true);
+        }
     }
     void Update()
     {
@@ -55,11 +70,6 @@ public class MultiplayerSelector : MonoBehaviour {
 
         if (numberOfPlayers > 1)
             Data.Instance.Load("Game");
-        else
-        {
-            Data.Instance.userData.mode = UserData.modes.SINGLEPLAYER;
-            Data.Instance.Load("GameSingle");
-        }
     }
     public void Back()
     {

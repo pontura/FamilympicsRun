@@ -38,7 +38,13 @@ public class SettingsInGame : MonoBehaviour {
     }
     public void NextRace()
     {
-        // si no hay suficiente energia
+        Debug.Log("NEXTTTT");
+        if (Data.Instance.levels.currentLevel == 24)
+        {
+            Time.timeScale = 1;
+            Data.Instance.Load("LevelSelector");
+            return;
+        }
         if ( !Data.Instance.energyManager.ReplayCheck()) return;
 
         if ( !Data.Instance.levels.CanPlayNext() )
@@ -59,13 +65,14 @@ public class SettingsInGame : MonoBehaviour {
         if ( !Data.Instance.energyManager.ReplayCheck()) return;
 
         Time.timeScale = 1;
-        int totalPlayers = Data.Instance.multiplayerData.players.Count;
-        if (totalPlayers > 1)
+
+        if (Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             Data.Instance.Load("Game");
         else Data.Instance.Load("GameSingle");
     }
     public void ExitToMap()
     {
+        Time.timeScale = 1;
         Data.Instance.Load("LevelSelector");
     }
 }

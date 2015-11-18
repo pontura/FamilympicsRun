@@ -25,6 +25,7 @@ public class Buy : MonoBehaviour {
             case 1:     StoreInventory.BuyItem(StoreAssets.ENERGY_1_PRODUCT_ID); break;
             case 3:     StoreInventory.BuyItem(StoreAssets.ENERGY_3_PRODUCT_ID); break;
             case 10:    StoreInventory.BuyItem(StoreAssets.ENERGY_10_PRODUCT_ID); break;
+            case 50:    StoreInventory.BuyItem(StoreAssets.ENERGY_50_PRODUCT_ID); break;
         }
     }
     public void BuySeason()
@@ -61,6 +62,11 @@ public class Buy : MonoBehaviour {
         {
             Events.ReFillEnergy(10);
             Events.AddPlusEnergy(10);
+        }
+        else if (pvi.ID == StoreAssets.ENERGY_50_PRODUCT_ID)
+        {
+            Events.ReFillEnergy(10);
+            Events.AddPlusEnergy(50);
         }
 
         Invoke("GotoMainMenu", 0.1f);

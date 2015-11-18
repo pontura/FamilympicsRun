@@ -9,6 +9,9 @@ public class MultiplayerResults : MonoBehaviour {
     public Button RePlay;
     public GameObject panel;
     public GameObject finishButton;
+    public GameObject shareButton;
+    public GameObject energyIcon;
+    public Image retryIcon;
 
     public Text title;
     public Text timeField;
@@ -29,7 +32,13 @@ public class MultiplayerResults : MonoBehaviour {
         panel.transform.localScale = Data.Instance.screenManager.scale;
         panel.SetActive(false);
         Events.OnLevelComplete += OnLevelComplete;
-        if (Data.Instance.tournament.isOn) RePlay.interactable = false;
+        if (Data.Instance.tournament.isOn)
+        {
+            RePlay.interactable = false;
+            retryIcon.color = new Color(retryIcon.color.r, retryIcon.color.g, retryIcon.color.b, 0.2f);
+            energyIcon.SetActive(false);
+            shareButton.SetActive(false);
+        }
 	}
     void OnDestroy()
     {
@@ -172,7 +181,10 @@ public class MultiplayerResults : MonoBehaviour {
 
         Events.OnTournamentAddScores(Data.Instance.levels.currentLevel, arr);
         if (Data.Instance.tournament.GetTotalMatches() == 8)
-            finishButton.SetActive(true); 
+        {
+            finishButton.SetActive(true);
+            shareButton.SetActive(true);
+        }
     }
     public void FinishTournament()
     {

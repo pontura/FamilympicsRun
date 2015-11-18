@@ -72,10 +72,9 @@ public class Data : MonoBehaviour
     void Awake()
     {
 
-#if UNITY_EDITOR   
-        musicVolume = 0;
-        soundsVolume = 0;
-#endif
+        musicVolume = PlayerPrefs.GetFloat("musicVolume", 1); 
+        soundsVolume = PlayerPrefs.GetFloat("soundsVolume", 1); 
+
         // PlayerPrefs.DeleteAll();
 
         if (!mInstance)
