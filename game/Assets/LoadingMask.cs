@@ -3,13 +3,15 @@ using System.Collections;
 
 public class LoadingMask : MonoBehaviour {
 
-	public bool infoLoaded;
+    public GameObject panel;
 
-	// Update is called once per frame
-	void Update () {
-        if (infoLoaded)
-        {
-            Destroy(gameObject);
-        }
-	}
+    void Start()
+    {
+        panel.SetActive(false);
+        Events.OnLoading += OnLoading;
+    }
+    void OnLoading(bool active)
+    {
+        panel.SetActive(active);
+    }
 }

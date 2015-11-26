@@ -70,8 +70,7 @@ public class MultiplayerResults : MonoBehaviour {
         Time.timeScale = 1;
         if (Data.Instance.tournament.isOn)
         {
-            Events.OnTournamentFinishAskForConfirmation();
-            //panel.SetActive(false);
+            FinishTournament();
         }
         else
             Data.Instance.Load("LevelSelector");
@@ -188,7 +187,15 @@ public class MultiplayerResults : MonoBehaviour {
     }
     public void FinishTournament()
     {
-        Events.OnTournamentFinishAskForConfirmation();
+        if (Data.Instance.tournament.GetTotalMatches() == 8)
+        {
+            Events.OnTournamentFinish();
+            
+        }
+        else
+        {
+            Events.OnTournamentFinishAskForConfirmation();
+        }
     }
     public void Ready()
     {

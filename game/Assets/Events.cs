@@ -6,6 +6,8 @@ public static class Events {
 
     //The music:
 
+    public static System.Action<bool> OnLoading = delegate { };
+
     public static System.Action ResetApp = delegate { };
     public static System.Action<float, float> OnSaveVolumes = delegate { };
     public static System.Action<float> OnMusicVolumeChanged = delegate { };

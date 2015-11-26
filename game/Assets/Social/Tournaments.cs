@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Soomla.Store;
+using Soomla.Store.Example;
 
 public class Tournaments : MonoBehaviour {
 
@@ -29,28 +30,45 @@ public class Tournaments : MonoBehaviour {
             SetTournamentButtons(false);
 
         Events.OnChangePlayMode += OnChangePlayMode;
-     //   StoreEvents.OnMarketPurchase += onMarketPurchase;
+        StoreEvents.OnMarketPurchase += onMarketPurchase;
     }
     void OnDestroy()
     {
         Events.OnChangePlayMode -= OnChangePlayMode;
-      //  StoreEvents.OnMarketPurchase -= onMarketPurchase;
+        StoreEvents.OnMarketPurchase -= onMarketPurchase;
     }
     public void Buy(int id)
     {
-        Data.Instance.Load("Buy");
+        BuySeason();
+        Events.OnLoading(true);
     }
-    //public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
-    //{
-    //    // pvi - the PurchasableVirtualItem that was just purchased
-    //    // payload - a text that you can give when you initiate the purchase operation and
-    //    //    you want to receive back upon completion
-    //    // extra - contains platform specific information about the market purchase
-    //    //    Android: The "extra" dictionary will contain: 'token', 'orderId', 'originalJson', 'signature', 'userId'
-    //    //    iOS: The "extra" dictionary will contain: 'receiptUrl', 'transactionIdentifier', 'receiptBase64', 'transactionDate', 'originalTransactionDate', 'originalTransactionIdentifier'
-
-       
-    //}
+    public void BuySeason()
+    {
+        Debug.Log("__Buying Season....");
+        if (Data.Instance.userData.GetTournamentAvailable() == 1)
+            StoreInventory.BuyItem(StoreAssets.SEASON_2_UNLOCK_PRODUCT_ID);
+        else
+            StoreInventory.BuyItem(StoreAssets.SEASON_3_UNLOCK_PRODUCT_ID);
+    }
+    public void BuyAllSeasons()
+    {
+        StoreInventory.BuyItem(StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID);
+    }
+    public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
+    {
+        Debug.Log("__Buy READY: " + pvi.ID);
+        if (pvi.ID == StoreAssets.SEASON_2_UNLOCK_PRODUCT_ID
+            || pvi.ID == StoreAssets.SEASON_3_UNLOCK_PRODUCT_ID
+            || pvi.ID == StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID
+            )
+        {
+            Invoke("BuyReady", 0.5f);
+        }
+    }
+    void BuyReady()
+    {
+        Data.Instance.Load("LevelSelector");
+    }
     void CheckForStarsAndThenStart()
     {
         text1.text = "COMPLETE SEASON 1 WITH AT LEAST " + Data.Instance.gameSettings.stars_for_tournament_2 + " STARS TO UNLOCK";

@@ -20,6 +20,7 @@ public class Buy : MonoBehaviour {
     }
     public void BuyEnergy(int qty)
     {
+        Events.OnLoading(true);
         switch (qty)
         {
             case 1:     StoreInventory.BuyItem(StoreAssets.ENERGY_1_PRODUCT_ID); break;
@@ -28,17 +29,17 @@ public class Buy : MonoBehaviour {
             case 50:    StoreInventory.BuyItem(StoreAssets.ENERGY_50_PRODUCT_ID); break;
         }
     }
-    public void BuySeason()
-    {
-        if(Data.Instance.userData.GetTournamentAvailable()==1)
-            StoreInventory.BuyItem(StoreAssets.SEASON_2_UNLOCK_PRODUCT_ID);
-        else
-            StoreInventory.BuyItem(StoreAssets.SEASON_3_UNLOCK_PRODUCT_ID);
-    }
-    public void BuyAllSeasons()
-    {
-        StoreInventory.BuyItem(StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID);
-    }
+    //public void BuySeason()
+    //{
+    //    if(Data.Instance.userData.GetTournamentAvailable()==1)
+    //        StoreInventory.BuyItem(StoreAssets.SEASON_2_UNLOCK_PRODUCT_ID);
+    //    else
+    //        StoreInventory.BuyItem(StoreAssets.SEASON_3_UNLOCK_PRODUCT_ID);
+    //}
+    //public void BuyAllSeasons()
+    //{
+    //    StoreInventory.BuyItem(StoreAssets.SEASONS_ALL_UNLOCK_PRODUCT_ID);
+    //}
     void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra)
     {
         // pvi - the PurchasableVirtualItem that was just purchased

@@ -127,6 +127,7 @@ public class Data : MonoBehaviour
     }    
     public void Load(string nextScene)
     {
+        Events.OnLoading(false);
         lastScene = Application.loadedLevelName;
         if (nextScene == "") nextScene = "LevelSelector";
         Debug.Log("Load Scene: " + nextScene);

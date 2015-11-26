@@ -76,6 +76,7 @@ public class TournamentResults : MonoBehaviour {
         }
         else
         {
+            puesto3.Init(multiplayerData.GetPlayer(players[2].id).username, "", multiplayerData.GetPlayer(players[2].id).color);
             puesto4.Init(multiplayerData.GetPlayer(players[3].id).username, "", multiplayerData.GetPlayer(players[3].id).color);
         }
          
