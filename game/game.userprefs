@@ -1,7 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\PushBehaviorScript.cs">
     <Files>
+      <File FileName="Assets\PushBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\PushBehaviorScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

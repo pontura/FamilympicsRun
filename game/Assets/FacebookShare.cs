@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FacebookShare : MonoBehaviour {
 
-    string linkName = "TapRun";
+    string linkName = "Running";
 
     public void ShareToFriend(string friend_facebookID, string linkCaption)
     {

@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "_default": {
+            "applicationId": "nHb1yKSObQz0ii9ICRcPLtvXLrneKl07wjzWs7SV", 
+            "masterKey": "iBgeJeVk5YHWoLOy18zfcH2Pk966UIdBvCCdyyOO"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.0"
+    }
+}
