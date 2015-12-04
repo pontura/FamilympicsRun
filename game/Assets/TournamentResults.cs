@@ -36,10 +36,17 @@ public class TournamentResults : MonoBehaviour {
     {
         if (!Data.Instance.tournament.isOn) return;
 
-        panel.SetActive(true);
-        panel.GetComponent<Animation>().Play("PopupOn");        
-
         List<Tournament.Hiscore> hiscores = Data.Instance.tournament.hiscores;
+
+        if (hiscores.Count == 0)
+        {
+            Data.Instance.Load("LevelSelector");
+            return;
+        }
+
+        panel.SetActive(true);
+        panel.GetComponent<Animation>().Play("PopupOn");           
+
         foreach (int id in hiscores[0].playersID)
         {
             PlayerScore playerscore = new PlayerScore();

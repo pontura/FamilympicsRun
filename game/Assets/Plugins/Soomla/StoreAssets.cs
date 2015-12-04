@@ -35,10 +35,10 @@ namespace Soomla.Store.Example															//Allows for access to Soomla API
         public const string SEASON_3_UNLOCK_PRODUCT_ID = "season3unlock";
         public const string SEASONS_ALL_UNLOCK_PRODUCT_ID = "season4unlock";
 
-        public const string ENERGY_1_PRODUCT_ID = "energy1bis";
-        public const string ENERGY_3_PRODUCT_ID = "energy2";
-        public const string ENERGY_10_PRODUCT_ID = "energy3";
-        public const string ENERGY_50_PRODUCT_ID = "energy5";
+        public const string ENERGY_1_PRODUCT_ID = "10";
+        public const string ENERGY_3_PRODUCT_ID = "25";
+        public const string ENERGY_10_PRODUCT_ID = "100";
+        public const string ENERGY_50_PRODUCT_ID = "500";
 
 
         /** Lifetime Virtual Goods (aka - lasts forever **/
@@ -71,25 +71,25 @@ namespace Soomla.Store.Example															//Allows for access to Soomla API
         public static VirtualGood ENERGY_1 = new SingleUseVG(
             "10 Energy",
             "Buy 1 energy pack",
-            "energy1bis",
+            "10",
             new PurchaseWithMarket(ENERGY_1_PRODUCT_ID, 0.99)
         );
         public static VirtualGood ENERGY_3 = new SingleUseVG(
             "25 Energy",
             "Buy 3 energy packs",
-            "energy2",
+            "25",
             new PurchaseWithMarket(ENERGY_3_PRODUCT_ID, 1.99)
         );
         public static VirtualGood ENERGY_10 = new SingleUseVG(
             "100 Energy",
             "Buy 10 energy packs",
-            "energy3",
+            "100",
             new PurchaseWithMarket(ENERGY_10_PRODUCT_ID, 4.99)
         );
         public static VirtualGood ENERGY_50 = new SingleUseVG(
             "500 Energy",
             "Buy 50 energy packs",
-            "energy5",
+            "500",
             new PurchaseWithMarket(ENERGY_50_PRODUCT_ID, 9.99)
         );
     }

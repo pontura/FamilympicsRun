@@ -7,12 +7,20 @@ public class GameOverSignal : MonoBehaviour {
     public GameObject panel;
     public GameObject panelTimeOver;
     public Text field;
+    public GameObject EnergyIcon;
+    public Text EndRaceButtonField;
 
 	void Start () {
         panel.transform.localScale = Data.Instance.screenManager.scale;
         panelTimeOver.SetActive(false);
         panel.SetActive(false);
         Events.GameOver += GameOver;
+
+        if (Data.Instance.tournament.isOn)
+        {
+            EnergyIcon.SetActive(false);
+            EndRaceButtonField.text = "FINISH";
+        }
 	}
     void OnDestroy()
     {
@@ -44,13 +52,32 @@ public class GameOverSignal : MonoBehaviour {
     }
     public void Replay()
     {
-       int totalPlayers = Data.Instance.multiplayerData.players.Count;
-        if(totalPlayers>1)
+       if(Data.Instance.userData.mode == UserData.modes.MULTIPLAYER)
             Data.Instance.Load("Game");
-        else Data.Instance.Load("GameSingle");
+        else 
+           Data.Instance.Load("GameSingle");
     }
     public void GotoLevelSelector()
     {
-        Data.Instance.Load("LevelSelector");
+        Time.timeScale = 1;
+        if (Data.Instance.tournament.isOn)
+        {
+            FinishTournament();
+        }
+        else
+        {
+            Data.Instance.Load("LevelSelector");
+        }
+    }
+    public void FinishTournament()
+    {
+        if (Data.Instance.tournament.GetTotalMatches() == 8)
+        {
+            Events.OnTournamentFinish();
+        }
+        else
+        {
+            Events.OnTournamentFinishAskForConfirmation();
+        }
     }
 }
