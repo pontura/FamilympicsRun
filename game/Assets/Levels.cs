@@ -146,6 +146,8 @@ public class Levels : MonoBehaviour {
     }
     public int GetTotalLevelsInUnblockedSeasons()
     {
+        return 25;
+
         int levelProgressionId = Data.Instance.userData.levelProgressionId;
         int total = levels.Length;
         if (levelProgressionId < 8)

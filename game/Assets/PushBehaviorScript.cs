@@ -12,7 +12,6 @@ public class PushBehaviorScript : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.DeleteAll();
         Events.OnChallengeCreate += OnChallengeCreate;
         if (PlayerPrefs.HasKey("currentInstallation"))
         {

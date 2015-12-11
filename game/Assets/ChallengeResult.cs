@@ -50,9 +50,9 @@ public class ChallengeResult : MonoBehaviour {
 
         bool youWon = false;
 
-        if (Data.Instance.levels.GetCurrentLevelData().totalLaps > 0 && myScore < _score2) youWon = true;
-            else
-            if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0 && myScore > _score2) youWon = true;
+        if (Data.Instance.levels.GetCurrentLevelData().Sudden_Death && myScore > _score2) youWon = true;        
+        else if (Data.Instance.levels.GetCurrentLevelData().totalLaps > 0 && myScore < _score2) youWon = true;
+        else if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0 && myScore > _score2) youWon = true;
 
          string result = "";
          winner = "";

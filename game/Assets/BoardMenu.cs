@@ -11,6 +11,9 @@ public class BoardMenu : MonoBehaviour {
 	void Start () {
         SetEnergy();
         Events.OnEnergyWon += OnEnergyWon;
+
+        notificationsField.text = "";
+        challengesField.text = "";
      //   Events.OnRefreshNotifications += OnRefreshNotifications;
         //OnRefreshNotifications( Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
 	}
@@ -26,11 +29,16 @@ public class BoardMenu : MonoBehaviour {
         if ((Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count) != totalRequestedNotifications)
         {
             totalRequestedNotifications = Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count;
-            notificationsField.text = totalRequestedNotifications.ToString();
+            if (totalRequestedNotifications > 0)
+                notificationsField.text = totalRequestedNotifications.ToString();
+            else notificationsField.text = "";
         }
         if (Data.Instance.challengesManager.received.Count>0)
         {
-            challengesField.text = Data.Instance.challengesManager.received.Count.ToString();
+            int num = Data.Instance.challengesManager.received.Count;
+            if (num > 0)
+                challengesField.text = num.ToString();
+            else challengesField.text = "";
         }
     }
     //void OnRefreshNotifications(int totalRequestedNotifications)

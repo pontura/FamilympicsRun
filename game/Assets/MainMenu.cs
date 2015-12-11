@@ -29,7 +29,7 @@ public class MainMenu : MonoBehaviour {
             label.text = "LOADING...";
             startButton.interactable = false;
         }
-        Invoke("ResetLoadings", 8);
+        Invoke("ResetLoadings", 12);
     }
     public void GotoLevelSelector()
     {

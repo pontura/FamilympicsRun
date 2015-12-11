@@ -35,8 +35,10 @@ public class ChallengersManager : MonoBehaviour {
     }
     void OnChallengesLoad()
     {
-        LoadReceived();
-        Invoke("LoadMade", 2);
+        received.Clear();
+        made.Clear();
+        Invoke("LoadReceived", 2);
+        Invoke("LoadMade", 4);
     }
     public void LoadReceived()
     {
