@@ -88,9 +88,9 @@ public class EnergyAskFor : MonoBehaviour {
     {
         Data.Instance.Load("LevelSelector");
     }
-    public void Select(string _facebookID)
+    public void Select(string _facebookID, string username)
     {
-        Events.SendNotificationTo(_facebookID);
+        Events.SendNotificationTo(_facebookID, username);
         Debug.Log("Select " + _facebookID);
     }
     public void ShowFacebookFriends()

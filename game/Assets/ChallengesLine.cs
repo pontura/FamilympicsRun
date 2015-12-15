@@ -96,6 +96,6 @@ public class ChallengesLine : MonoBehaviour
     public void Remind()
     {
         InactiveButtons();
-        Events.OnChallengeRemind(objectID);
+        Events.OnChallengeRemind(objectID, facebookID);
     }
 }

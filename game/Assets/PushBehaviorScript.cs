@@ -13,6 +13,9 @@ public class PushBehaviorScript : MonoBehaviour
     void Start()
     {
         Events.OnChallengeCreate += OnChallengeCreate;
+        Events.OnChallengeRemind += OnChallengeRemind;
+        Events.SendNotificationTo += SendNotificationTo;
+
         if (PlayerPrefs.HasKey("currentInstallation"))
         {
             string objId = PlayerPrefs.GetString("currentInstallation");
@@ -66,17 +69,35 @@ public class PushBehaviorScript : MonoBehaviour
     public void OnChallengeCreate(string facebookFriendName, string facebookFriendId, int levelId, float score)
     {
         print("______SEND: " + facebookFriendName + " " + facebookFriendId + " " + levelId + " " + score );
-        //ParseCloud.CallFunctionAsync<string>("hello", new Dictionary<string, object>()).ContinueWith(t =>
-        // System.Console.WriteLine("received: " + t.Result);
-        //  print("____" + t.Result);
-        // );
         Dictionary<string, object> dic = new Dictionary<string, object>();
         dic.Add("facebookFriendName", facebookFriendName);
         dic.Add("facebookFriendId", facebookFriendId);
         dic.Add("levelId", levelId);
         dic.Add("score", score);
+        dic.Add("username", Data.Instance.userData.username);
 
          ParseCloud.CallFunctionAsync<string>("challengeUpdate", dic).ContinueWith(t =>
             Debug.Log("received: " + t.Result));
+    }
+    void OnChallengeRemind(string objectID, string facebookFriendId)
+    {
+        print("_________OnChallengeRemind: " + facebookFriendId);
+        Dictionary<string, object> dic = new Dictionary<string, object>();
+        dic.Add("facebookFriendId", facebookFriendId);
+        dic.Add("username", Data.Instance.userData.username);
+
+        ParseCloud.CallFunctionAsync<string>("challengeRemind", dic).ContinueWith(t =>
+           Debug.Log("received: " + t.Result));
+    }
+
+    void SendNotificationTo(string facebookFriendId, string username)
+    {
+        print("_________OnChallengeRemind: " + facebookFriendId);
+        Dictionary<string, object> dic = new Dictionary<string, object>();
+        dic.Add("facebookFriendId", facebookFriendId);
+        dic.Add("username", Data.Instance.userData.username);
+
+        ParseCloud.CallFunctionAsync<string>("sendNotificationTo", dic).ContinueWith(t =>
+           Debug.Log("received: " + t.Result));
     }
 }

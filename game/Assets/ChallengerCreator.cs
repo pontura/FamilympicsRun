@@ -148,7 +148,7 @@ public class ChallengerCreator : MonoBehaviour {
             }
         }
         if(objectID != "")
-            Events.OnChallengeRemind(objectID);
+            Events.OnChallengeRemind(objectID, _facebookID);
     }
     public void Accept()
     {

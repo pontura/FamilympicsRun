@@ -31,7 +31,7 @@ public class Notifications : MonoBehaviour {
     {
         Events.CheckForNewNotifications -= CheckForNewNotifications;
         Events.OnNotificationReceived -= OnNotificationReceived;
-        Events.SendNotificationTo += SendNotificationTo;
+        Events.SendNotificationTo -= SendNotificationTo;
         Events.OnAcceptEnergyFrom -= OnAcceptEnergyFrom;
         Events.OnResetApp -= OnResetApp;
     }
@@ -44,7 +44,7 @@ public class Notifications : MonoBehaviour {
     {
         Debug.Log("OnNotificationReceived from :" + facebookId);
     }
-    void SendNotificationTo(string friend_facebookId)
+    void SendNotificationTo(string friend_facebookId, string username)
     {
         Debug.Log("OnNotificationSend to :" + friend_facebookId);
 

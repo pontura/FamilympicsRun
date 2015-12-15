@@ -78,7 +78,7 @@ public static class Events {
 
     //Challenges
     public static System.Action OnChallengesLoad = delegate { };
-    public static System.Action<string> OnChallengeRemind = delegate { };
+    public static System.Action<string, string> OnChallengeRemind = delegate { };
     public static System.Action<string, string, int, float> OnChallengeCreate = delegate { };
     public static System.Action<string, string, string, float> OnChallengeClose = delegate { };
     public static System.Action<string> OnChallengeDelete = delegate { };
@@ -90,7 +90,7 @@ public static class Events {
 
     public static System.Action CheckForNewNotifications = delegate { };
     public static System.Action<string> OnNotificationReceived = delegate { };
-    public static System.Action<string> SendNotificationTo = delegate { };
+    public static System.Action<string, string> SendNotificationTo = delegate { };
     public static System.Action<string> OnAcceptEnergyFrom = delegate { };
     public static System.Action<int> OnRefreshNotifications = delegate { };
 

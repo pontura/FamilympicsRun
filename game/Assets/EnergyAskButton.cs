@@ -35,7 +35,7 @@ public class EnergyAskButton : MonoBehaviour {
                 selected = true;
                 SendButton.SetActive(false);
                 SendedButton.SetActive(true);
-                creator.Select(facebookID);
+                creator.Select(facebookID, playerName);
             });
         }
     }

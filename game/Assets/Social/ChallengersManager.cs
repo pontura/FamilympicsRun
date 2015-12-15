@@ -135,9 +135,9 @@ public class ChallengersManager : MonoBehaviour {
         data.SaveAsync();
         print("Challenge Saved");
     }
-    void OnChallengeRemind(string objectID)
+    void OnChallengeRemind(string objectID, string facebookID)
     {
-        print("OnChallengeRemind(string objectID)  " + objectID);
+        print("OnChallengeRemind(string objectID)  " + objectID + " facebookID " + facebookID);
 
         var query = new ParseQuery<ParseObject>("Challenges")
             .WhereEqualTo("objectId", objectID);
