@@ -25,13 +25,20 @@ public class Notifications : MonoBehaviour {
         Events.OnNotificationReceived += OnNotificationReceived;
         Events.SendNotificationTo += SendNotificationTo;
         Events.OnAcceptEnergyFrom += OnAcceptEnergyFrom;
-	}
+        Events.OnResetApp += OnResetApp;
+    }    
     void OnDestroy()
     {
         Events.CheckForNewNotifications -= CheckForNewNotifications;
         Events.OnNotificationReceived -= OnNotificationReceived;
         Events.SendNotificationTo += SendNotificationTo;
         Events.OnAcceptEnergyFrom -= OnAcceptEnergyFrom;
+        Events.OnResetApp -= OnResetApp;
+    }
+    void OnResetApp()
+    {
+        notifications.Clear();
+        notificationsReceived.Clear();
     }
     void OnNotificationReceived(string facebookId)
     {

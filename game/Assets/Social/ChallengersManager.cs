@@ -31,7 +31,13 @@ public class ChallengersManager : MonoBehaviour {
         Events.OnChallengeCreate += OnChallengeCreate;
         Events.OnChallengeRemind += OnChallengeRemind;
         Events.OnChallengeClose += OnChallengeClose;
-        Events.OnChallengeDelete += OnChallengeDelete;       
+        Events.OnChallengeDelete += OnChallengeDelete;
+        Events.OnResetApp += OnResetApp;
+    }
+    void OnResetApp()
+    {
+        received.Clear();
+        made.Clear();
     }
     void OnChallengesLoad()
     {

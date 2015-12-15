@@ -14,13 +14,13 @@ public class BoardMenu : MonoBehaviour {
 
         notificationsField.text = "";
         challengesField.text = "";
-     //   Events.OnRefreshNotifications += OnRefreshNotifications;
+        Events.OnResetApp += OnResetApp;
         //OnRefreshNotifications( Data.Instance.notifications.FriendsThatGaveYouEnergy.Count);
 	}
     void OnDestroy()
     {
         Events.OnEnergyWon -= OnEnergyWon;
-       // Events.OnRefreshNotifications -= OnRefreshNotifications;
+         Events.OnResetApp -= OnResetApp;
     }
 
     private int totalRequestedNotifications = 0;
@@ -58,5 +58,10 @@ public class BoardMenu : MonoBehaviour {
     public void OpenEnergyPopup()
     {
         Events.OnOpenEnergyPopup();
+    }
+    void OnResetApp()
+    {
+        challengesField.text = "";
+        notificationsField.text = "";
     }
 }

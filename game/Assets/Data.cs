@@ -143,6 +143,7 @@ public class Data : MonoBehaviour
         Data.Instance.levelsData.Reset();
         Data.Instance.userData.Reset();
         Data.Instance.multiplayerData.Reset();
+        Events.OnResetApp();
     }
 
 }
