@@ -22,6 +22,12 @@ public class UserData : MonoBehaviour {
         MULTIPLAYER
     }
 
+    public bool ready_tutorial_walls;
+    public bool ready_tutorial_trampolin;
+    public bool ready_tutorial_run;
+    public bool ready_tutorial_mud;
+    public bool ready_tutorial_hurdles;
+
     [Serializable]
     public class FacebookUserData
     {

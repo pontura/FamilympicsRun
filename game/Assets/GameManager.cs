@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour {
 
         if(!ForceMultiplayer)
             Invoke("OnPowerUp", Random.Range(8,12));
+
 	}
     public void Restart()
     {

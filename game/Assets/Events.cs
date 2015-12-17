@@ -104,7 +104,9 @@ public static class Events {
     public static System.Action<int> OnTournamentStart = delegate { };
     public static System.Action<int, List<int>> OnTournamentAddScores = delegate { };
     public static System.Action OnTournamentFinish = delegate { };
-    public static System.Action OnTournamentFinishAskForConfirmation = delegate { };  
+    public static System.Action OnTournamentFinishAskForConfirmation = delegate { };
+    public static System.Action<Tutorials.panels> OnTutorialOn = delegate { };
+    public static System.Action OnTutorialOff = delegate { };
     
     
 

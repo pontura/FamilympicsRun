@@ -10,6 +10,8 @@ public class Powerups : MonoBehaviour {
     public types type;
     public Image[] toColorize;
     public GameObject panel;
+    public GameObject tutorialPanel;
+    public Text tutorialField;
 
     [SerializeField]
     public Image bar;
@@ -57,17 +59,22 @@ public class Powerups : MonoBehaviour {
         PauseMeAsset.gameObject.SetActive(false);
         PauseOthersAsset.gameObject.SetActive(false);
         panel.SetActive(false);
+        tutorialPanel.SetActive(false);
     }
     void OnPowerUpOn(int powerUpActive)
     {
-        print("powerUpActive: " + powerUpActive);
+       
+        tutorialPanel.SetActive(true);
+        if (playerId > 2)
+            tutorialPanel.transform.localScale = new Vector3(-1, 1, 1);
+
         panel.SetActive(true);
         bar.gameObject.SetActive(true);
         switch (powerUpActive)
         {
-            case 1: type = types.BOOST; BoostAsset.gameObject.SetActive(true); break;
-            case 2: type = types.PAUSE_ME; PauseMeAsset.gameObject.SetActive(true); break;
-            case 3: type = types.PAUSE_OTHERS; PauseOthersAsset.gameObject.SetActive(true); break;
+            case 1: type = types.BOOST; BoostAsset.gameObject.SetActive(true);              tutorialField.text = "BOOST";       break;
+            case 2: type = types.PAUSE_ME; PauseMeAsset.gameObject.SetActive(true);         tutorialField.text = "DON'T TAP";   break;
+            case 3: type = types.PAUSE_OTHERS; PauseOthersAsset.gameObject.SetActive(true); tutorialField.text = "TROLL";       break;
         }
          iTween.ValueTo(gameObject, iTween.Hash(
              "from", 0,
