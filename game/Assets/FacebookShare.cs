@@ -6,6 +6,8 @@ using UnityEngine;
 public class FacebookShare : MonoBehaviour {
 
     string linkName = "Running";
+    private string picture_URL = "http://tipitap.com/running-icon.jpg";
+
 
     public void ShareToFriend(string friend_facebookID, string linkCaption)
     {
@@ -16,9 +18,9 @@ public class FacebookShare : MonoBehaviour {
             FB.Feed(
                 toId: friend_facebookID,
                 linkCaption: linkCaption,
-                //  picture: "<INSERT A LINK TO A PICTURE HERE>",
                 linkName: linkName,
-                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest")
+                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
+                picture: picture_URL
                 );
         }
     }
@@ -33,7 +35,8 @@ public class FacebookShare : MonoBehaviour {
                 linkCaption: linkCaption,
                 //  picture: "<INSERT A LINK TO A PICTURE HERE>",
                 linkName: linkName,
-                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest")
+                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
+                picture: picture_URL
                 );
         }
     }
@@ -74,7 +77,8 @@ public class FacebookShare : MonoBehaviour {
                 linkCaption: linkCaption,
                 //  picture: "<INSERT A LINK TO A PICTURE HERE>",
                 linkName: linkName,
-                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest")
+                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
+                picture: picture_URL
                 );
         }
     }
