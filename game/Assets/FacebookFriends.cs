@@ -25,7 +25,7 @@ public class FacebookFriends : MonoBehaviour {
             "Running!", null, null, null, null, "Come and play Running!", null
         );
     }
-    void AddFacebookFriend(string id)
+    void AddFacebookFriend(string id, string username)
     {
         ids.Add(id);
         Friend friend = new Friend();

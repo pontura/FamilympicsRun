@@ -83,6 +83,15 @@ public class UserData : MonoBehaviour {
         data.username = Data.Instance.gameSettings.GetUsername(username);
         FacebookFriends.Add(data);
     }
+    public string GetUsernameByFacebookID(string _facebookID)
+    {
+        foreach(FacebookUserData data in FacebookFriends)
+        {
+            if (data.facebookID == _facebookID)
+                return data.username;
+        }
+        return "";
+    }
     public void ToogleMode()
     {
         if(mode == modes.SINGLEPLAYER) mode = modes.MULTIPLAYER;

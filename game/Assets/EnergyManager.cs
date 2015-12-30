@@ -201,6 +201,10 @@ public class EnergyManager : MonoBehaviour {
             enumerator.MoveNext();
             var data = enumerator.Current;
             data["status"] = status;
+
+            if(status == "1")
+                data["notificated"] = false;
+
             return data.SaveAsync();
         }).Unwrap().ContinueWith(t =>
         {

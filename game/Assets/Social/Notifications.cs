@@ -13,6 +13,7 @@ public class Notifications : MonoBehaviour {
         public string asked_facebookID;
         public string facebookID;
         public string status;
+        public bool notificated;
     }
 
     public List<NotificationData> notifications;
@@ -53,6 +54,7 @@ public class Notifications : MonoBehaviour {
         parseObj["facebookID"] = Data.Instance.userData.facebookID;
         parseObj["asked_facebookID"] = friend_facebookId;
         parseObj["status"] = "0";
+        parseObj["notificated"] = false;
 
         parseObj.SaveAsync();
     }
@@ -78,6 +80,7 @@ public class Notifications : MonoBehaviour {
                 data.asked_facebookID = result.Get<string>("asked_facebookID");
                 data.facebookID = result.Get<string>("facebookID");
                 data.status = result.Get<string>("status");
+                data.notificated = result.Get<bool>("notificated");
                 notifications.Add(data);
             }
         }
@@ -86,8 +89,6 @@ public class Notifications : MonoBehaviour {
     }
     void CheckForNewNotificationsReceived()
     {
-        print("CheckForNewNotificationsReceived");
-
         LoadFromParseReceived(
                  ParseObject.GetQuery("Notifications")
                 .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
@@ -108,21 +109,34 @@ public class Notifications : MonoBehaviour {
                 data.asked_facebookID = result.Get<string>("asked_facebookID");
                 data.facebookID = result.Get<string>("facebookID");
                 data.status = result.Get<string>("status");
+                data.notificated = result.Get<bool>("notificated");
                 notificationsReceived.Add(data);
             }
         }
        );
     }
-    //void Update()
-    //{
-    //    if (lastNotificationsQty != totalRequestedNotifications)
-    //    {
-    //        totalRequestedNotifications = lastNotificationsQty;
-    //        //Events.OnRefreshNotifications(totalRequestedNotifications);
-    //    }
-    //}
+    public void NotificationNotificated(string facebookID, string asked_facebookID)
+    {
+        print("____________NotificationNotificated");
+        var query = new ParseQuery<ParseObject>("Notifications")
+            .WhereEqualTo("facebookID", facebookID)
+            .WhereEqualTo("asked_facebookID", asked_facebookID);
+
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerator<ParseObject> enumerator = t.Result.GetEnumerator();
+            enumerator.MoveNext();
+            var data = enumerator.Current;
+            data["notificated"] = true;
+            return data.SaveAsync();
+        }).Unwrap().ContinueWith(t =>
+        {
+            Debug.Log("Notification updated!");
+        });
+    }
     public void UpdateNotification(string asked_facebookID, string status)
     {
+        print("_________________UpdateNotification");
         var query = new ParseQuery<ParseObject>("Notifications")
             .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
             .WhereEqualTo("asked_facebookID", asked_facebookID);
@@ -133,6 +147,8 @@ public class Notifications : MonoBehaviour {
             enumerator.MoveNext();
             var data = enumerator.Current;
             data["status"] = status;
+           // if (status == "1")
+            data["notificated"] = false;
             return data.SaveAsync();
         }).Unwrap().ContinueWith(t =>
         {

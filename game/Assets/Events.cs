@@ -27,7 +27,7 @@ public static class Events {
     public static System.Action<string, float, int> OnParseLoadedScore = delegate { };
     public static System.Action OnLoadLocalData = delegate { };    
     public static System.Action<int, float> OnNewHiscore = delegate { };
-    public static System.Action<string> AddFacebookFriend = delegate { };   
+    public static System.Action<string, string> AddFacebookFriend = delegate { };   
     
 
     //The game:
@@ -82,6 +82,8 @@ public static class Events {
     public static System.Action<string, string, int, float> OnChallengeCreate = delegate { };
     public static System.Action<string, string, string, float> OnChallengeClose = delegate { };
     public static System.Action<string> OnChallengeDelete = delegate { };
+    public static System.Action<string> OnChallengeNotificated = delegate { };
+    
     
 
     public static System.Action<int> OnFalseStart = delegate { };

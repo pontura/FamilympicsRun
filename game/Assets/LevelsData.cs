@@ -137,7 +137,7 @@ public class LevelsData : MonoBehaviour {
             yield return null; 
 
         print("________________________OnParseLogin::::::::::::::::::::::::");
-        Events.AddFacebookFriend(Data.Instance.userData.facebookID);
+        Events.AddFacebookFriend(Data.Instance.userData.facebookID, Data.Instance.userData.username);
         loadFriendsAndParseLogged++;
         CheckIfBothAreReady();
     }
@@ -146,7 +146,7 @@ public class LevelsData : MonoBehaviour {
         print("________________________OnFacebookFriends::::::::::::::::::::::::");
         
         foreach (UserData.FacebookUserData facebookUserData in Data.Instance.userData.FacebookFriends)
-            Events.AddFacebookFriend(facebookUserData.facebookID);
+            Events.AddFacebookFriend(facebookUserData.facebookID, facebookUserData.username);
 
         loadFriendsAndParseLogged++;
         CheckIfBothAreReady();
@@ -290,7 +290,7 @@ public class LevelsData : MonoBehaviour {
 
     private void LoadData(int _level)
     {
-        Debug.Log("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
+       // Debug.Log("level: " + _level + " SCORE: " + Data.Instance.levelsData.levelsScore[_level].myScore);
 
         ParseQuery<ParseObject> query;
 
