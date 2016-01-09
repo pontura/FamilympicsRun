@@ -10,6 +10,12 @@ public class NotificationSignal : MonoBehaviour {
     public Text description;
     private bool isOn;
     public Animation anim;
+    public types type;
+    public enum types
+    {
+        NOTIFICATIONS,
+        CHALLENGES
+    }
 
 	void Start () {
         SetOff();
@@ -45,6 +51,7 @@ public class NotificationSignal : MonoBehaviour {
         {
             if (!playerData.notificated && playerData.winner == "")
             {
+                type = types.CHALLENGES;
                 string text = "SENT YOU A NEW CHALLENGE!";
                 SetOn(playerData.facebookID, playerData.playerName, text);                
                 playerData.notificated = true;
@@ -56,6 +63,7 @@ public class NotificationSignal : MonoBehaviour {
         {
             if (!playerData.notificated && playerData.winner != "")
             {
+                type = types.CHALLENGES;
                 string text;
                 if (playerData.winner != Data.Instance.userData.facebookID)
                     text = "accepted your challenge and beat you!";
@@ -72,6 +80,7 @@ public class NotificationSignal : MonoBehaviour {
         {
             if (!data.notificated && data.status == "0")
             {
+                type = types.NOTIFICATIONS;
                 string text = "is requesting energy.";
                 string username = Data.Instance.userData.GetUsernameByFacebookID(data.facebookID);
                 SetOn(data.facebookID, username, text);
@@ -84,13 +93,23 @@ public class NotificationSignal : MonoBehaviour {
         {
             if (!data.notificated && data.status == "1")
             {
+                type = types.NOTIFICATIONS;
                 string text = "sent you energy!";
                 string username = Data.Instance.userData.GetUsernameByFacebookID(data.asked_facebookID);
-                SetOn(data.facebookID, username, text);
+                SetOn(data.asked_facebookID, username, text);
                 data.notificated = true;
                 Data.Instance.notifications.NotificationNotificated(Data.Instance.userData.facebookID, data.asked_facebookID);
                 return;
             }
         }
+    }
+    public void Clicked()
+    {
+        if (type == types.NOTIFICATIONS)
+            Data.Instance.Load("Notifications");
+        else
+            Data.Instance.Load("Challenges");
+
+        SetOff();
     }
 }
