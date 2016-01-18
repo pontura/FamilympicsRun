@@ -96,7 +96,7 @@ public class MultiplayerData : MonoBehaviour {
     }
     void OnAddMultiplayerScore(int levelID, float score, int playerID, string username)
     {
-        print("OnAddMultiplayerScore: " + levelID + " score:" + score + " playerID:" + playerID + " username:" + username);
+        //print("OnAddMultiplayerScore: " + levelID + " score:" + score + " playerID:" + playerID + " username:" + username);
 
         HiscoreLevel hiscoreLevel = hiscoreLevels[levelID];
         hiscoreLevel.lastWinner = playerID;
@@ -126,7 +126,6 @@ public class MultiplayerData : MonoBehaviour {
                     string strName = "Multi_" + hiscoresData.levelID + "_" + a;
                     string strValue = hiscoresData.playerID + "_" + hiscoresData.username + "_" + hiscoresData.score;
                     PlayerPrefs.SetString(strName, strValue);
-                    print("______________" + strName + "   strValue: " + strValue);
                 }
                 a++;
             }

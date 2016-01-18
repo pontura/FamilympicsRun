@@ -201,10 +201,10 @@ public class GameManager : MonoBehaviour {
         float playerPosition = 0;
         foreach (Player player in players)
         {
-            if (player.transform.localPosition.x > playerPosition)
+            if (int.Parse(player.meters) > playerPosition)
             {
                 winner = player;
-                playerPosition = player.transform.localPosition.x;
+                playerPosition = int.Parse(player.meters);
             }
         }
         OnPlayerWin(winner);

@@ -98,7 +98,6 @@ public class EnergyManager : MonoBehaviour {
     }
     void ConsumeEnergy(int qty)
     {
-        print("_______________  ConsumeEnergy : ConsumeEnergy" + plusEnergy + "  energy: " + energy);
 
         if (energy > qty-1)
             energy-=qty;
@@ -159,7 +158,6 @@ public class EnergyManager : MonoBehaviour {
     void SaveEnergy()
     {
         PlayerPrefs.SetInt(playerPref_ENERGY, energy);
-        print("GRABA playerPref_ENERGY:" +  energy);
         Events.OnEnergyWon();
     }
     void SaveNewTime()

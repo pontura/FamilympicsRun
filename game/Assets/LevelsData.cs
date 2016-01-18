@@ -205,7 +205,7 @@ public class LevelsData : MonoBehaviour {
     }
     void OnSaveScore(int level, float score)
     {
-        print("_________CHECK if SaveScore" + level + " " + score + " myScoreInParse  " + levelsScore[level].myScoreInParse);
+      //  print("_________CHECK if SaveScore" + level + " " + score + " myScoreInParse  " + levelsScore[level].myScoreInParse);
         // si es por laps entonces el tiempo tiene que ser menor para grabar el score
         if (Data.Instance.levels.levels[level].totalLaps > 0 && score > levelsScore[level].myScore && levelsScore[level].myScore != 0) { Debug.Log("Ya tenias menos tiempo"); return; }
         if (Data.Instance.levels.levels[level].totalTime > 0 && score < levelsScore[level].myScore) { Debug.Log("Ya hbaias recorrido mas distancia");   return; }

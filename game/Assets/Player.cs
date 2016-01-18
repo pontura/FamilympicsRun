@@ -215,6 +215,7 @@ public class Player : MonoBehaviour {
         if (inTRampolinZone) speed *= 2;
 
         GetComponent<Animation>().Play("playerJump");
+        Invoke("EndJump", 0.7f);
     }
     public void Hurt()
     {
@@ -228,6 +229,7 @@ public class Player : MonoBehaviour {
         state = states.HURT;
         speed = 0;
         GetComponent<Animation>().Play("playerHurt");
+        Invoke("EndHurt", 0.4f);
     }
     public void OnEnterWindZone()
     {
