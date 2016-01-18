@@ -57,10 +57,12 @@ public class Data : MonoBehaviour
         {
             if (mInstance == null)
             {
+                print("mInstance: " + mInstance);
                 mInstance = FindObjectOfType<Data>();
 
                 if (mInstance == null)
                 {
+                    print("carga: " + PREFAB_PATH);
                     GameObject go = Instantiate(Resources.Load<GameObject>(PREFAB_PATH)) as GameObject;
                     mInstance = go.GetComponent<Data>();
                 }
@@ -68,7 +70,10 @@ public class Data : MonoBehaviour
             return mInstance;
         }
     }
+    void Start()
+    {
 
+    }
     void Awake()
     {
 

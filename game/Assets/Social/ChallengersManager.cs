@@ -218,4 +218,15 @@ public class ChallengersManager : MonoBehaviour {
             Debug.Log("Challenge deleted!");
         });
     }
+    public int GetNewChallenges()
+    {
+        int total = 0;
+        foreach(PlayerData data in received)
+        {
+            if (data.winner.Length == 0)
+                total++;
+        }
+        return total;
+    }
+
 }

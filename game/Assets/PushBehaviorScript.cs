@@ -14,7 +14,9 @@ public class PushBehaviorScript : MonoBehaviour
     {
         Events.OnChallengeCreate += OnChallengeCreate;
         Events.OnChallengeRemind += OnChallengeRemind;
+        Events.OnChallengeClose += OnChallengeClose;
         Events.SendNotificationTo += SendNotificationTo;
+        Events.SendEnergyTo += SendEnergyTo;
 
         if (PlayerPrefs.HasKey("currentInstallation"))
         {
@@ -66,7 +68,7 @@ public class PushBehaviorScript : MonoBehaviour
 
 
     //Events.OnChallengeCreate(facebookFriendName, facebookFriendId, levelId, score);
-    public void OnChallengeCreate(string facebookFriendName, string facebookFriendId, int levelId, float score)
+    void OnChallengeCreate(string facebookFriendName, string facebookFriendId, int levelId, float score)
     {
         print("______SEND: " + facebookFriendName + " " + facebookFriendId + " " + levelId + " " + score );
         Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -78,6 +80,33 @@ public class PushBehaviorScript : MonoBehaviour
 
          ParseCloud.CallFunctionAsync<string>("challengeUpdate", dic).ContinueWith(t =>
             Debug.Log("received: " + t.Result));
+    }
+    void OnChallengeClose(string objectID, string op_facebookID, string winner, float newScore)
+    {
+        if (winner == Data.Instance.userData.facebookID)
+            OnChallengeWin(Data.Instance.userData.username, op_facebookID);
+        else
+            OnChallengeLost(Data.Instance.userData.username, op_facebookID);
+    }
+    void OnChallengeWin(string username, string facebookFriendId)
+    {
+        print("______SEND challengeBeat: " + username + " " + facebookFriendId);
+        Dictionary<string, object> dic = new Dictionary<string, object>();
+        dic.Add("username", username);
+        dic.Add("facebookFriendId", facebookFriendId);
+
+        ParseCloud.CallFunctionAsync<string>("challengeBeatYou", dic).ContinueWith(t =>
+           Debug.Log("received: " + t.Result));
+    }
+    void OnChallengeLost(string username, string facebookFriendId)
+    {
+        print("______SEND OnChallengeLost: " + username + " " + facebookFriendId);
+        Dictionary<string, object> dic = new Dictionary<string, object>();
+        dic.Add("username", username);
+        dic.Add("facebookFriendId", facebookFriendId);
+
+        ParseCloud.CallFunctionAsync<string>("challengeLost", dic).ContinueWith(t =>
+           Debug.Log("received: " + t.Result));
     }
     void OnChallengeRemind(string objectID, string facebookFriendId)
     {
@@ -98,6 +127,17 @@ public class PushBehaviorScript : MonoBehaviour
         dic.Add("username", Data.Instance.userData.username);
 
         ParseCloud.CallFunctionAsync<string>("sendNotificationTo", dic).ContinueWith(t =>
+           Debug.Log("received: " + t.Result));
+    }
+    void SendEnergyTo(string facebookFriendId)
+    {
+        string username = Data.Instance.userData.GetUsernameByFacebookID(facebookFriendId);
+        print("_________OnChallengeRemind: " + facebookFriendId + " username: " + username);
+        Dictionary<string, object> dic = new Dictionary<string, object>();
+        dic.Add("facebookFriendId", facebookFriendId);
+        dic.Add("username", Data.Instance.userData.username);
+
+        ParseCloud.CallFunctionAsync<string>("sentYouEnergy", dic).ContinueWith(t =>
            Debug.Log("received: " + t.Result));
     }
 }
