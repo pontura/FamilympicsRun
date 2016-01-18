@@ -8,6 +8,9 @@ public class BoardMenu : MonoBehaviour {
     public Text notificationsField;
     public Text challengesField;
 
+    private bool challengesReceived;
+    private bool notificationsReceived;
+
 	void Start () {
         SetEnergy();
         Events.OnEnergyWon += OnEnergyWon;
@@ -26,19 +29,31 @@ public class BoardMenu : MonoBehaviour {
     private int totalRequestedNotifications = 0;
     void Update()
     {
-        if ((Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count) != totalRequestedNotifications)
+        if (!notificationsReceived)
         {
-            totalRequestedNotifications = Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count;
-            if (totalRequestedNotifications > 0)
-                notificationsField.text = totalRequestedNotifications.ToString();
-            else notificationsField.text = "";
-        }
-        if (Data.Instance.challengesManager.received.Count>0)
+            if ((Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count) != totalRequestedNotifications)
+            {
+                totalRequestedNotifications = Data.Instance.notifications.notifications.Count + Data.Instance.notifications.notificationsReceived.Count;
+                if (totalRequestedNotifications > 0)
+                {
+                    notificationsField.text = totalRequestedNotifications.ToString();
+                    notificationsReceived = true;
+                }
+                else notificationsField.text = "";
+            }
+        }        
+        if (!challengesReceived)
         {
-            int num = Data.Instance.challengesManager.received.Count;
-            if (num > 0)
-                challengesField.text = num.ToString();
-            else challengesField.text = "";
+            int newChallenges = Data.Instance.challengesManager.GetNewChallenges();
+            if (newChallenges > 0)
+            {
+                if (newChallenges > 0)
+                {
+                    challengesReceived = true;
+                    challengesField.text = newChallenges.ToString();
+                }
+                else challengesField.text = "";
+            }
         }
     }
     //void OnRefreshNotifications(int totalRequestedNotifications)
