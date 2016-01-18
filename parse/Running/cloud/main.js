@@ -5,47 +5,11 @@ Parse.Cloud.define("hello", function(request, response) {
 
 Parse.Cloud.define("challengeUpdate", function(request, response) {
   var query = new Parse.Query(Parse.Installation);
-    query.equalTo('facebookID', 'id_' + request.params.facebookFriendId);
+    query.equalTo('user', 'id_' + request.params.facebookFriendId);
     Parse.Push.send({
         where: query,
         data: {
-            alert: request.params.username + " sent you a new challenge in level " + request.params.levelId
-        }
-    }, {
-    success: function() {
-        console.log("success: Parse.Push.send envio challenge");
-    },
-    error: function(e) {
-        console.log("error: Parse.Push.send code: " + e.code + " msg: " + e.message);
-    }
-    });
-});
-
-Parse.Cloud.define("challengeBeatYou", function(request, response) {
-  var query = new Parse.Query(Parse.Installation);
-    query.equalTo('facebookID', 'id_' + request.params.facebookFriendId);
-    Parse.Push.send({
-        where: query,
-        data: {
-            alert: request.params.username + " accepted your challenge and beat you!"
-        }
-    }, {
-    success: function() {
-        console.log("success: Parse.Push.send envio challenge");
-    },
-    error: function(e) {
-        console.log("error: Parse.Push.send code: " + e.code + " msg: " + e.message);
-    }
-    });
-});
-
-Parse.Cloud.define("challengeLost", function(request, response) {
-  var query = new Parse.Query(Parse.Installation);
-    query.equalTo('facebookID', 'id_' + request.params.facebookFriendId);
-    Parse.Push.send({
-        where: query,
-        data: {
-            alert: request.params.username + " accepted your challenge and lost!"
+            alert: "Challenge from " + request.params.username + " in level " + request.params.levelId
         }
     }, {
     success: function() {
@@ -59,7 +23,7 @@ Parse.Cloud.define("challengeLost", function(request, response) {
 
 Parse.Cloud.define("challengeRemind", function(request, response) {
   var query = new Parse.Query(Parse.Installation);
-    query.equalTo('facebookID', 'id_' + request.params.facebookFriendId);
+    query.equalTo('user', 'id_' + request.params.facebookFriendId);
     Parse.Push.send({
         where: query,
         data: {
@@ -77,29 +41,11 @@ Parse.Cloud.define("challengeRemind", function(request, response) {
 
 Parse.Cloud.define("sendNotificationTo", function(request, response) {
   var query = new Parse.Query(Parse.Installation);
-    query.equalTo('facebookID', 'id_' + request.params.facebookFriendId);
+    query.equalTo('user', 'id_' + request.params.facebookFriendId);
     Parse.Push.send({
         where: query,
         data: {
-            alert: request.params.username + " is requesting energy."
-        }
-    }, {
-    success: function() {
-        console.log("success: Parse.Push.send envio challenge");
-    },
-    error: function(e) {
-        console.log("error: Parse.Push.send code: " + e.code + " msg: " + e.message);
-    }
-    });
-});
-
-Parse.Cloud.define("sentYouEnergy", function(request, response) {
-  var query = new Parse.Query(Parse.Installation);
-    query.equalTo('facebookID', 'id_' + request.params.facebookFriendId);
-    Parse.Push.send({
-        where: query,
-        data: {
-            alert: request.params.username + " sent you energy! Get back in the game."
+            alert: request.params.username + " is asking you for energy"
         }
     }, {
     success: function() {
