@@ -1,13 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Parse;
+using System;
 
+using Facebook.Unity;
 public class Ranking : MonoBehaviour {
 
     public RankingLine rankingLine;
     public GameObject container;
     private MultiplayerData multiplayerData;
     private int levelID;
+
+    public List<ScoreData> scoresData;
+
+    [Serializable]
+    public class ScoreData
+    {
+        //public string objectID;
+        public string facebookID;
+        public string playerName;
+        public float score;
+    }
 
 	void Start () {
         multiplayerData = Data.Instance.GetComponent<MultiplayerData>();
@@ -22,14 +36,32 @@ public class Ranking : MonoBehaviour {
 
         if (!FB.IsLoggedIn) return;
 
-        List<LevelsData.ScoreData> scoresData = Data.Instance.levelsData.levelsScore[levelID].scoreData;
+        LoadData(levelID);
 
-        foreach (LevelsData.ScoreData scoreData in scoresData)
+        Invoke("LoopUntilDataLoaded", 0.5f);
+
+        //List<LevelsData.ScoreData> scoresData = Data.Instance.levelsData.levelsScore[levelID].scoreData;
+
+        //foreach (LevelsData.ScoreData scoreData in scoresData)
+        //{
+        //    AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1, scoreData.facebookID);
+        //}
+    }
+    void LoopUntilDataLoaded()
+    {
+        print("LoopUntilDataLoaded");
+        if (scoresData.Count > 0)
         {
-            AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1, scoreData.facebookID);
+            foreach (ScoreData scoreData in scoresData)
+            {
+                AddPlayer(scoreData.playerName, scoreData.score.ToString(), -1, scoreData.facebookID);
+            }
+        }
+        else
+        {
+            Invoke("LoopUntilDataLoaded", 0.5f);
         }
     }
-
     public void LoadMultiplayerWinners(int levelID)
     {
         this.levelID = levelID;
@@ -61,6 +93,45 @@ public class Ranking : MonoBehaviour {
              rl.SetMultiplayerColor(playerId);
         else
             rl.SetSinglePlayer();
+    }
+
+
+
+
+    private void LoadData(int _level)
+    {
+
+        ParseQuery<ParseObject> query;
+
+        if (Data.Instance.levels.levels[_level].totalLaps > 0)
+        {
+            query = ParseObject.GetQuery("Level_" + _level.ToString())
+            .OrderBy("score")
+            .Limit(10);
+        }
+        else
+        {
+            query = ParseObject.GetQuery("Level_" + _level.ToString())
+                .OrderByDescending("score")
+                .Limit(10);
+        }
+
+        query.FindAsync().ContinueWith(t =>
+        {
+            IEnumerable<ParseObject> results = t.Result;
+            int a = 1;
+            foreach (var result in results)
+            {
+                ScoreData sd = new ScoreData();
+
+                sd.playerName = result["playerName"].ToString();
+                sd.facebookID = result["facebookID"].ToString();
+                sd.score = float.Parse(result["score"].ToString());
+                scoresData.Add(sd);
+                a++;
+            }
+
+        });
     }
    
 }

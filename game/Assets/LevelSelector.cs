@@ -4,6 +4,7 @@ using System.Collections;
 using Parse;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Facebook.Unity;
 
 public class LevelSelector : MonoBehaviour {
 

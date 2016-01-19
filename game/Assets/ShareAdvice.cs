@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Facebook.Unity;
 
 public class ShareAdvice : MonoBehaviour {
 
@@ -23,7 +24,7 @@ public class ShareAdvice : MonoBehaviour {
 
     public void Login()
     {
-        FB.Login();
+        Data.Instance.loginManager.FBLogin();
         Close();
     }
     public void Close()

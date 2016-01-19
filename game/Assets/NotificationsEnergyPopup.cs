@@ -6,6 +6,7 @@ using Parse;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using Facebook.Unity;
 
 public class NotificationsEnergyPopup : MonoBehaviour {
 

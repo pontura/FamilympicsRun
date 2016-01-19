@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Parse;
 using System;
-using Facebook;
+using Facebook.Unity;
 using Facebook.MiniJSON;
 using System.Linq;
 
@@ -72,8 +72,10 @@ public class LoginManager : MonoBehaviour
 
             System.Threading.CancellationToken s = new System.Threading.CancellationToken();
 
-            var loginTask = ParseFacebookUtils.LogInAsync(FB.UserId,
-                                                          FB.AccessToken,
+             var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
+
+            var loginTask = ParseFacebookUtils.LogInAsync(aToken.UserId,
+                                                          aToken.TokenString,
                                                           DateTime.Now, s);
             while (!loginTask.IsCompleted) yield return null;
             // Login completed, check results
@@ -104,7 +106,11 @@ public class LoginManager : MonoBehaviour
     {
         // Logging in with Facebook
         //  FB.Login("user_about_me, user_relationships, user_birthday, user_location", FBLoginCallback);
-        FB.Login("email, user_about_me, user_friends", FBLoginCallback);
+        //FB.Login("email, user_about_me, user_friends", FBLoginCallback);
+
+        var perms = new List<string>(){"public_profile", "email", "user_friends"};
+        FB.LogInWithReadPermissions(perms, FBLoginCallback);
+
         doLoop = true;
     }
 
@@ -122,12 +128,13 @@ public class LoginManager : MonoBehaviour
         }
 
     }
-    private void FBLoginCallback(FBResult result)
+    private void FBLoginCallback(ILoginResult result)
     {
         //Events.OnFacebookLogin();
 
         if (FB.IsLoggedIn)
         {
+            print("result");
           //  StartCoroutine("ParseLogin");
            // GetFriends();
         }
@@ -140,11 +147,13 @@ public class LoginManager : MonoBehaviour
     public void ParseFBLogout()
     {
         Events.ResetApp();
-        FB.Logout();
+        FB.LogOut();
+       // FB.Logout();
         ParseUser.LogOut();
     }
-
-    private void FBAPICallback(FBResult result)
+   
+      
+    private void FBAPICallback(IGraphResult result)
     {
         if (!String.IsNullOrEmpty(result.Error))
         {
@@ -155,7 +164,7 @@ public class LoginManager : MonoBehaviour
         else
         {
             // Got user profile info
-            var resultObject = Json.Deserialize(result.Text) as Dictionary<string, object>;
+            var resultObject = result.ResultDictionary as Dictionary<string, object>;
             var userProfile = new Dictionary<string, string>();
 
 
@@ -250,26 +259,29 @@ public class LoginManager : MonoBehaviour
     void GetFriends()
     {
       //  print("GetFriendsGetFriendsGetFriendsGetFriendsGetFriendsGetFriends");
-        FB.API("/me?fields=id,name,friends.limit(100).fields(name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+         var perms = new List<string>(){"public_profile", "email", "user_friends"};
+        FB.API("/me?fields=id,name,friends.limit(100).fields(name,id)", Facebook.Unity.HttpMethod.GET, FBFriendsCallback);
     }
-    void FBFriendsCallback(FBResult result)
+    void FBFriendsCallback(IGraphResult result)
     {
         if (result.Error != null)
         {
             Debug.LogError(result.Error);
             // Let's just try again
-            FB.API("/me?fields=id,name,friends.limit(100).fields(name,id)", Facebook.HttpMethod.GET, FBFriendsCallback);
+            FB.API("/me?fields=id,name,friends.limit(100).fields(name,id)", Facebook.Unity.HttpMethod.GET, FBFriendsCallback);
             return;
         }
         Data.Instance.userData.ResetFacebookFriends();
 
-        print("FBFriendsCallback");
-        List<object> friends = Util.DeserializeJSONFriends(result.Text);
+        var data = Facebook.MiniJSON.Json.Deserialize(result.RawResult) as Dictionary<string, object>;
+        IDictionary dict = Facebook.MiniJSON.Json.Deserialize(result.RawResult) as IDictionary;
+        var friends = dict["friends"] as Dictionary<string, object>;
+        System.Collections.Generic.List<object> ff = friends["data"] as System.Collections.Generic.List<object>;
 
-        foreach (object friend in friends)
+        foreach (var obj in ff)
         {
-            Dictionary<string, object> friendData = friend as Dictionary<string, object>;
-            Data.Instance.userData.AddFacebookFriend(friendData["id"].ToString(), friendData["name"].ToString() );
+            Dictionary<string, object> facebookFriendData = obj as Dictionary<string, object>;
+            Data.Instance.userData.AddFacebookFriend(facebookFriendData["id"].ToString(), facebookFriendData["name"].ToString());
         }
 
         Events.OnFacebookFriends();

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Facebook.Unity;
 
 public class SettingsMenu : MonoBehaviour {
 

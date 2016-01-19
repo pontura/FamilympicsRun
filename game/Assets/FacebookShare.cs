@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Facebook.Unity;
 
 
 public class FacebookShare : MonoBehaviour {
@@ -15,13 +16,15 @@ public class FacebookShare : MonoBehaviour {
         {
             Debug.Log("ShareToFriend: " + friend_facebookID + " linkCaption: " + linkCaption + " linkName: " + linkName);
 
-            FB.Feed(
-                toId: friend_facebookID,
-                linkCaption: linkCaption,
-                linkName: linkName,
-                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
-                picture: picture_URL
-                );
+            var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
+
+            //FB.FeedShare(
+            //    toId: friend_facebookID,
+            //    linkCaption: linkCaption,
+            //    linkName: linkName,
+            //    link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? aToken.UserId : "guest"),
+            //    picture: picture_URL
+            //    );
         }
     }
 
@@ -31,13 +34,13 @@ public class FacebookShare : MonoBehaviour {
         {
             string linkCaption = "New Multiplayer hiscore: " + score;
 
-            FB.Feed(
-                linkCaption: linkCaption,
-                //  picture: "<INSERT A LINK TO A PICTURE HERE>",
-                linkName: linkName,
-                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
-                picture: picture_URL
-                );
+            //FB.FeedShare(
+            //    linkCaption: linkCaption,
+            //    //  picture: "<INSERT A LINK TO A PICTURE HERE>",
+            //    linkName: linkName,
+            //    link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
+            //    picture: picture_URL
+            //    );
         }
     }
 
@@ -73,13 +76,13 @@ public class FacebookShare : MonoBehaviour {
     {
         if (FB.IsLoggedIn)
         {
-            FB.Feed(
-                linkCaption: linkCaption,
-                //  picture: "<INSERT A LINK TO A PICTURE HERE>",
-                linkName: linkName,
-                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
-                picture: picture_URL
-                );
+            //FB.FeedShare(
+            //    linkCaption: linkCaption,
+            //    //  picture: "<INSERT A LINK TO A PICTURE HERE>",
+            //    linkName: linkName,
+            //    link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest"),
+            //    picture: picture_URL
+            //    );
         }
     }
 }
