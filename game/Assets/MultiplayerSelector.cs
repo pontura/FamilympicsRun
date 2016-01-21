@@ -45,7 +45,7 @@ public class MultiplayerSelector : MonoBehaviour {
         {
             if (playButton.interactable == false)
             {
-                playButton.animation.Play("PlayButtonOn");
+                playButton.GetComponent<Animation>().Play("PlayButtonOn");
                 playButton.interactable = true;
                 playButton.Select();
             }
@@ -53,7 +53,7 @@ public class MultiplayerSelector : MonoBehaviour {
         }
         else
         {
-            playButton.animation.Stop();
+            playButton.GetComponent<Animation>().Stop();
            playButton.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             playButton.interactable = false;
         }

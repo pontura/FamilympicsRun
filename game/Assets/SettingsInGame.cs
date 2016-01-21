@@ -18,7 +18,7 @@ public class SettingsInGame : MonoBehaviour {
     public void OpenIngameMenu()
     {
         Time.timeScale = 0;
-        GetComponent<AnimationExtensions>().Play( GetComponent<Animation>().animation, "SettingsOpen", false, () => Debug.Log("onComplete") );
+        GetComponent<AnimationExtensions>().Play( GetComponent<Animation>(), "SettingsOpen", false, () => Debug.Log("onComplete") );
     }
     public void Close()
     {

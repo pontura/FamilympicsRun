@@ -10,7 +10,7 @@ public class RaceStart : MonoBehaviour {
     public GameObject panel;
 
 	void Start () {
-        panel.transform.localScale = Data.Instance.screenManager.scale;
+       // panel.transform.localScale = Data.Instance.screenManager.scale;
         float totalLaps = Data.Instance.levels.GetCurrentLevelData().totalLaps;
         float totalTime = Data.Instance.levels.GetCurrentLevelData().totalTime;
         float gameOver = Data.Instance.levels.GetCurrentLevelData().gameOver;
