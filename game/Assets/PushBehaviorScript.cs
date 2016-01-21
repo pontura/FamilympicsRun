@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Parse;
+using NotificationServices = UnityEngine.iOS.NotificationServices;
+using NotificationType = UnityEngine.iOS.NotificationType;
 
 public class PushBehaviorScript : MonoBehaviour
 {
@@ -24,8 +26,12 @@ public class PushBehaviorScript : MonoBehaviour
 
         if (currentInstallation == null)
         {
+           
 #if UNITY_IPHONE && !UNITY_EDITOR
-				NotificationServices.RegisterForRemoteNotificationTypes (RemoteNotificationType.Alert | RemoteNotificationType.Badge | RemoteNotificationType.Sound);
+             NotificationServices.RegisterForNotifications(
+             NotificationType.Alert |
+             NotificationType.Badge |
+             NotificationType.Sound);
 #endif
         }
     }
