@@ -8,6 +8,10 @@ public class ProfilePicture : MonoBehaviour
     //{
     //    setPicture(data.facebookID);
     //}
+    public void SetDefaultPicture(Sprite defaultSprite)
+    {
+        GetComponent<Image>().sprite = defaultSprite;
+    }
     public void setPicture(string facebookID)
     {
        // if (!this.gameObject.activeInHierarchy) return;

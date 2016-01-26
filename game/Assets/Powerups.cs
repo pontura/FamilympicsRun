@@ -94,7 +94,6 @@ public class Powerups : MonoBehaviour {
     }
     public void Clicked(int type)
     {
-        type = 1;
         switch (type)
         {
             case 1: Events.OnPowerUpActive(playerId, types.BOOST); break;

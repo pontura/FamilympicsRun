@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NotificationSignal : MonoBehaviour {
 
@@ -16,6 +17,7 @@ public class NotificationSignal : MonoBehaviour {
         NOTIFICATIONS,
         CHALLENGES
     }
+    public Sprite defaultSprite;
 
 	void Start () {
         SetOff();
@@ -27,8 +29,12 @@ public class NotificationSignal : MonoBehaviour {
         panel.SetActive(true);
 
         anim.Play("NotificationSignalOn");
-        
-        profilePicture.setPicture(facebookID);
+
+        if (facebookID == "")
+            profilePicture.SetDefaultPicture(defaultSprite);
+        else
+            profilePicture.setPicture(facebookID);
+
         title.text = username.ToUpper();
         description.text = _description.ToUpper();
     }
@@ -47,6 +53,39 @@ public class NotificationSignal : MonoBehaviour {
     }
     void CheckForNotifications()
     {
+
+        //////////////////// chequea si agrupa los challenges:////////////////////////////////////////////////
+
+        List<ChallengersManager.PlayerData> totalChallengesToShow = new List<ChallengersManager.PlayerData>();
+        foreach (ChallengersManager.PlayerData playerData in Data.Instance.challengesManager.received)
+        {
+            if (!playerData.notificated && playerData.winner == "")
+            {
+                totalChallengesToShow.Add(playerData);
+            }
+        }
+        foreach (ChallengersManager.PlayerData playerData in Data.Instance.challengesManager.made)
+        {
+            if (!playerData.notificated && playerData.winner != "")
+            {
+                totalChallengesToShow.Add(playerData);
+            }
+        }
+        if (totalChallengesToShow.Count > 1)
+        {
+            foreach (ChallengersManager.PlayerData playerData in totalChallengesToShow)
+            {
+                type = types.CHALLENGES;
+                string text = "YOU HAVE " + totalChallengesToShow.Count + " NEW CHALLENGES";
+                SetOn("", "NEW CHALLENGES", text);
+                playerData.notificated = true;
+                Events.OnChallengeNotificated(playerData.objectID);
+            }
+            return;
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+
         foreach( ChallengersManager.PlayerData playerData in Data.Instance.challengesManager.received)
         {
             if (!playerData.notificated && playerData.winner == "")
@@ -76,6 +115,45 @@ public class NotificationSignal : MonoBehaviour {
                 return;
             }
         }
+
+
+
+
+
+        //////////////////// chequea si agrupa los notifications:////////////////////////////////////////////////
+
+        List<Notifications.NotificationData> totalNotificationsToShow = new List<Notifications.NotificationData>();
+        foreach (Notifications.NotificationData playerData in Data.Instance.notifications.notifications)
+        {
+            if (!playerData.notificated && playerData.status == "0")
+            {
+                totalNotificationsToShow.Add(playerData);
+            }
+        }
+        foreach (Notifications.NotificationData playerData in Data.Instance.notifications.notificationsReceived)
+        {
+            if (!playerData.notificated && playerData.status == "1")
+            {
+                totalNotificationsToShow.Add(playerData);
+            }
+        }
+        if (totalNotificationsToShow.Count > 1)
+        {
+            foreach (Notifications.NotificationData playerData in totalNotificationsToShow)
+            {
+                type = types.NOTIFICATIONS;
+                string text = "YOU HAVE " + totalNotificationsToShow.Count + " NEW ENEGRY NOTIFICATIONS";
+                SetOn("", "NEW ENERGY!", text);
+                playerData.notificated = true;
+                Data.Instance.notifications.NotificationNotificated(playerData.facebookID, Data.Instance.userData.facebookID);
+            }
+            return;
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
         foreach (Notifications.NotificationData data in Data.Instance.notifications.notifications)
         {
             if (!data.notificated && data.status == "0")
