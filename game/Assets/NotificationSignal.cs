@@ -76,8 +76,10 @@ public class NotificationSignal : MonoBehaviour {
             foreach (ChallengersManager.PlayerData playerData in totalChallengesToShow)
             {
                 type = types.CHALLENGES;
-                string text = "YOU HAVE " + totalChallengesToShow.Count + " NEW CHALLENGES";
-                SetOn("", "NEW CHALLENGES", text);
+                string title = "You have received";
+                string text = totalChallengesToShow.Count + " challenges from your friends.";
+
+                SetOn(title, text, text);
                 playerData.notificated = true;
                 Events.OnChallengeNotificated(playerData.objectID);
             }
@@ -142,8 +144,11 @@ public class NotificationSignal : MonoBehaviour {
             foreach (Notifications.NotificationData playerData in totalNotificationsToShow)
             {
                 type = types.NOTIFICATIONS;
-                string text = "YOU HAVE " + totalNotificationsToShow.Count + " NEW ENEGRY NOTIFICATIONS";
-                SetOn("", "NEW ENERGY!", text);
+
+                string title = "You have received";
+                string text = totalNotificationsToShow.Count + " Energy Gifts.";
+
+                SetOn(title, text, text);
                 playerData.notificated = true;
                 Data.Instance.notifications.NotificationNotificated(playerData.facebookID, Data.Instance.userData.facebookID);
             }
