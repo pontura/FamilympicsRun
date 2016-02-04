@@ -17,7 +17,8 @@ public class NotificationSignal : MonoBehaviour {
         NOTIFICATIONS,
         CHALLENGES
     }
-    public Sprite defaultSprite;
+    public GameObject defaultProfilePicture;
+    public GameObject customProfilePicture;
 
 	void Start () {
         SetOff();
@@ -25,15 +26,25 @@ public class NotificationSignal : MonoBehaviour {
 	}
     public void SetOn(string facebookID, string username, string _description)
     {
+        
         isOn = true;
         panel.SetActive(true);
 
         anim.Play("NotificationSignalOn");
 
         if (facebookID == "")
-            profilePicture.SetDefaultPicture(defaultSprite);
+        {
+            print(" no hay facebook ID:__________________");
+
+            customProfilePicture.SetActive(false);
+            defaultProfilePicture.SetActive(true);
+        }
         else
+        {
+            customProfilePicture.SetActive(true);
+            defaultProfilePicture.SetActive(false);
             profilePicture.setPicture(facebookID);
+        }
 
         title.text = username.ToUpper();
         description.text = _description.ToUpper();
@@ -79,7 +90,7 @@ public class NotificationSignal : MonoBehaviour {
                 string title = "You have received";
                 string text = totalChallengesToShow.Count + " challenges from your friends.";
 
-                SetOn(title, text, text);
+                SetOn("", title, text);
                 playerData.notificated = true;
                 Events.OnChallengeNotificated(playerData.objectID);
             }
@@ -148,7 +159,7 @@ public class NotificationSignal : MonoBehaviour {
                 string title = "You have received";
                 string text = totalNotificationsToShow.Count + " Energy Gifts.";
 
-                SetOn(title, text, text);
+                SetOn("", title, text);
                 playerData.notificated = true;
                 Data.Instance.notifications.NotificationNotificated(playerData.facebookID, Data.Instance.userData.facebookID);
             }

@@ -256,13 +256,15 @@ public class Player : MonoBehaviour {
     //from animation
     public void EndJump()
     {
-        if (state == states.STARTING_NEXT_LAP) return;
+       // if (state == states.STARTING_NEXT_LAP) return;
+        if (gameManager.state == GameManager.states.READY) return;
         state = states.RUNNING;
         GetComponent<Animation>().Play("playerIdle");
     }
     public void EndHurt()
     {
-        if (state == states.STARTING_NEXT_LAP) return;
+        //if (state == states.STARTING_NEXT_LAP) return;
+        if (gameManager.state == GameManager.states.READY) return;
         Idle();
     }
     void Update()
