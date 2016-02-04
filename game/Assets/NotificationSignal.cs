@@ -23,7 +23,12 @@ public class NotificationSignal : MonoBehaviour {
 	void Start () {
         SetOff();
         Invoke("EverySecond", 1);
+        Events.OnLoading += OnLoading;
 	}
+    void OnLoading(bool result)
+    {
+        SetOff();
+    }
     public void SetOn(string facebookID, string username, string _description)
     {
         
@@ -34,8 +39,6 @@ public class NotificationSignal : MonoBehaviour {
 
         if (facebookID == "")
         {
-            print(" no hay facebook ID:__________________");
-
             customProfilePicture.SetActive(false);
             defaultProfilePicture.SetActive(true);
         }
