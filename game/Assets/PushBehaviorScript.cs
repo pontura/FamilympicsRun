@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Parse;
+#if UNITY_IPHONE
 using NotificationServices = UnityEngine.iOS.NotificationServices;
 using NotificationType = UnityEngine.iOS.NotificationType;
+#endif
 
 public class PushBehaviorScript : MonoBehaviour
 {
