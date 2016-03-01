@@ -43,14 +43,16 @@ public class SingleplayerResults : MonoBehaviour
         title.text = "LEVEL " + Data.Instance.levels.currentLevel;
         Invoke("SaveScore", 1);
     }
+
+    private float score = 0;
+
     void SaveScore()
     {
         System.TimeSpan t = System.TimeSpan.FromSeconds(Data.Instance.levelData.time);
         time = string.Format("{0:00}:{1:00}.{2:00}", t.Minutes, t.Seconds, t.Milliseconds / 10);
 
         numStars = Data.Instance.levels.GetCurrentLevelStars(Data.Instance.levelData.time, Data.Instance.levelData.laps);
-
-        float score = 0;
+        
         if (Data.Instance.levels.GetCurrentLevelData().totalTime > 0)
             score = Data.Instance.levelData.laps;
         else
@@ -65,8 +67,11 @@ public class SingleplayerResults : MonoBehaviour
     }
     public void SetOn()
     {
-        if(Data.Instance.levelData.challenge_facebookID == "")
+        if (Data.Instance.levelData.challenge_facebookID == "")
+        {
             SetOnSingleResult();
+            Events.OnCheckIfAutomaticChallenge(score);
+        }
         else
             SetOnChallengeResult();
     }

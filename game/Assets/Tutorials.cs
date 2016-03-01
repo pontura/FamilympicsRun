@@ -45,6 +45,7 @@ public class Tutorials : MonoBehaviour {
                 if (!Data.Instance.userData.ready_tutorial_hurdles) 
                 {
                     tutorial_hurdles.SetActive(true); SetOn();
+                    StartCoroutine(PlayCoroutine(tutorial_hurdles.GetComponent<Animation>(), "hurdles", false));
                     Data.Instance.userData.ready_tutorial_hurdles = true;
                 }
                 break;
@@ -52,6 +53,7 @@ public class Tutorials : MonoBehaviour {
                 if (!Data.Instance.userData.ready_tutorial_mud) 
                 {
                     tutorial_mud.SetActive(true); SetOn();
+                    StartCoroutine(PlayCoroutine(tutorial_mud.GetComponent<Animation>(), "hurdles", false));
                     Data.Instance.userData.ready_tutorial_mud = true;
                 } 
                 break;
@@ -59,6 +61,7 @@ public class Tutorials : MonoBehaviour {
                 if (!Data.Instance.userData.ready_tutorial_run) 
                 {
                     tutorial_run.SetActive(true); SetOn();
+                    StartCoroutine(PlayCoroutine(tutorial_run.GetComponent<Animation>(), "run", false));
                     Data.Instance.userData.ready_tutorial_run = true;
                 } 
                 break;
@@ -66,6 +69,7 @@ public class Tutorials : MonoBehaviour {
                 if (!Data.Instance.userData.ready_tutorial_trampolin) 
                 {
                     tutorial_trampolin.SetActive(true); SetOn();
+                    StartCoroutine(PlayCoroutine(tutorial_trampolin.GetComponent<Animation>(), "hurdles", false));
                     Data.Instance.userData.ready_tutorial_trampolin = true;
                 } 
                 break;
@@ -73,6 +77,7 @@ public class Tutorials : MonoBehaviour {
                 if (!Data.Instance.userData.ready_tutorial_walls) 
                 {
                     tutorial_walls.SetActive(true); SetOn();
+                    StartCoroutine(PlayCoroutine(tutorial_walls.GetComponent<Animation>(), "walls", false));
                     Data.Instance.userData.ready_tutorial_walls = true;
                 } 
                 break;
@@ -88,5 +93,53 @@ public class Tutorials : MonoBehaviour {
         print("Close");
         panel.SetActive(false);
         Time.timeScale = 1;
+    }
+
+    public IEnumerator PlayCoroutine(Animation animation, string clipName, bool useTimeScale)
+    {
+        if (!useTimeScale)
+        {
+            AnimationState _currState = animation[clipName];
+            bool isPlaying = true;
+            float _progressTime = 0F;
+            float _timeAtLastFrame = 0F;
+            float _timeAtCurrentFrame = 0F;
+            float deltaTime = 0F;
+
+            animation.Play(clipName);
+
+            _timeAtLastFrame = Time.realtimeSinceStartup;
+
+            while (isPlaying)
+            {
+                _timeAtCurrentFrame = Time.realtimeSinceStartup;
+                deltaTime = _timeAtCurrentFrame - _timeAtLastFrame;
+                _timeAtLastFrame = _timeAtCurrentFrame;
+
+                _progressTime += deltaTime;
+                _currState.normalizedTime = _progressTime / _currState.length;
+                animation.Sample();
+
+                if (_progressTime >= _currState.length)
+                {
+                    if (_currState.wrapMode != WrapMode.Loop)
+                    {
+                        isPlaying = false;
+                    }
+                    else
+                    {
+                        //Debug.Log(&quot;Loop anim, continue.&quot;);
+                        _progressTime = 0.0f;
+                    }
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
+            yield return null;
+        }
+        else
+        {
+            animation.Play(clipName);
+        }
     }
 }

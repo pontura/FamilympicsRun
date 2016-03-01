@@ -35,6 +35,7 @@ public static class Events {
     
     public static System.Action StartGame = delegate { };
     public static System.Action OnLevelComplete = delegate { };
+    public static System.Action<float> OnCheckIfAutomaticChallenge = delegate { };
     public static System.Action OpenIngameMenu = delegate { };
     
 
