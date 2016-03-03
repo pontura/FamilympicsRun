@@ -66,8 +66,8 @@ public class FacebookFriends : MonoBehaviour {
         Debug.Log("OnFacebookInviteFriends");
 
         FB.Mobile.AppInvite(
-            new Uri("https://fb.me/1248005065213962"),
-           // new Uri("https://fb.me/1098052860209184"),
+           // new Uri("https://fb.me/1248005065213962"),
+            new Uri("https://fb.me/1271323376215464"),
             new Uri(icon_url),
             AppInviteCallback
         );

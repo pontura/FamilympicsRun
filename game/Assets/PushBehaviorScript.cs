@@ -17,6 +17,7 @@ public class PushBehaviorScript : MonoBehaviour
     void Start()
     {
         Events.OnChallengeCreate += OnChallengeCreate;
+        Events.OnChallengeClose += OnChallengeClose;
         Events.OnChallengeRemind += OnChallengeRemind;
         Events.SendNotificationTo += SendNotificationTo;
 
@@ -107,5 +108,27 @@ public class PushBehaviorScript : MonoBehaviour
 
         ParseCloud.CallFunctionAsync<string>("sendNotificationTo", dic).ContinueWith(t =>
            Debug.Log("received: " + t.Result));
+    }
+
+    void OnChallengeClose(string objectID, string op_facebookID, string winner, float newScore)
+    {
+        print("______OnChallengeClose: ");
+        string friendName = Data.Instance.userData.GetUsernameByFacebookID(op_facebookID);
+        Dictionary<string, object> dic = new Dictionary<string, object>();
+        
+        dic.Add("facebookFriendId", op_facebookID);
+        dic.Add("username", friendName);
+
+        if (winner == Data.Instance.userData.username)
+        {
+            ParseCloud.CallFunctionAsync<string>("challengeLost", dic).ContinueWith(t =>
+                Debug.Log("received: " + t.Result));
+        }
+        else
+        {
+            ParseCloud.CallFunctionAsync<string>("challengeBeatYou", dic).ContinueWith(t =>
+                Debug.Log("received: " + t.Result));
+
+        }
     }
 }

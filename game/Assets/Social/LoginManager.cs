@@ -208,8 +208,10 @@ public class LoginManager : MonoBehaviour
     private bool profileLoaded;
     private void UpdateProfile()
     {
+        FB.ActivateApp();
+
         if (profileLoaded) return;
-        print("UpdateProfile");
+        print("________UpdateProfile");
         var user = ParseUser.CurrentUser;
         Events.OnParseLogin();
         profileLoaded = true;
