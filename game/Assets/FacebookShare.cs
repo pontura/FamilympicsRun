@@ -10,7 +10,7 @@ public class FacebookShare : MonoBehaviour {
     private string feedLink = "http://tipitap.com/";
     private string feedTitle = "Running!";
     private string feedCaption = "Running Caption";
-    private string feedDescription = "Running Description";
+    private string feedDescription = "Running is an amazing — fast-tapping — game. Run as fast as you can by tapping your fingers on the screen (left, right, left, right!!!) Short races, marathons, treadmill lanes, sudden death, tournaments, obstacles and powerups! Challenge your friends! In multiplayer mode, up to 4 players compete TOGETHER, SIMULTANEOUSLY on the SAME device!";
     private string feedImage = "http://tipitap.com/running-icon.jpg";
     private string feedMediaSource = string.Empty;
 
