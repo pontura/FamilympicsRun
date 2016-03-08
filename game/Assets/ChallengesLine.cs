@@ -68,6 +68,9 @@ public class ChallengesLine : MonoBehaviour
 
         Levels.LevelData data = Data.Instance.levels.GetData(levelId);
 
+        if(data.Sudden_Death)
+            scoreLabel.text = score;
+        else
         if (data.totalTime > 0)
             scoreLabel.text = score + " in " + Data.Instance.levelsData.GetTimer(data.totalTime);
         else
