@@ -176,6 +176,7 @@ public class Player : MonoBehaviour {
     {
        // if (state == states.STARTING_NEXT_LAP) return;
         speed = speed/2;
+        state = states.RUNNING;
        // state = states.PLAYING;
         GetComponent<Animation>().Play("playerIdle");
     }
