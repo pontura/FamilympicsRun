@@ -41,8 +41,10 @@ public class ScreenManager : MonoBehaviour {
                 isTablet = true;
             }
         }
-        if (isTablet) scale = Vector3.one;
-        else scale = new Vector3(1.2f, 1.2f, 1.2f);
+        if (isTablet) 
+            scale = Vector3.one;
+        else 
+            scale = new Vector3(1.2f, 1.2f, 1.2f);
     }
 
 }

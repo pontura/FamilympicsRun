@@ -28,6 +28,7 @@ public class Ranking : MonoBehaviour {
 	}
     public void LoadSinglePlayerWinners(int levelID)
     {
+        scoresData.Clear();
         this.levelID = levelID;
         foreach (Transform child in container.transform)
         {

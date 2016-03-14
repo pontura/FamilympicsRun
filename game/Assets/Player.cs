@@ -40,6 +40,8 @@ public class Player : MonoBehaviour {
     private Color color;
     private bool inTRampolinZone;
 
+    private float timeTeResetAction;
+
     public enum states
     {
         PLAYING,
@@ -213,7 +215,8 @@ public class Player : MonoBehaviour {
         if (inTRampolinZone) speed *= 2;
 
         GetComponent<Animation>().Play("playerJump");
-        Invoke("EndJump", 0.7f);
+        //Invoke("EndJump", 0.7f);
+        timeTeResetAction = 0.7f;
     }
     public void Hurt()
     {
@@ -225,7 +228,8 @@ public class Player : MonoBehaviour {
         state = states.HURT;
         speed = 0;
         GetComponent<Animation>().Play("playerHurt");
-        Invoke("EndHurt", 0.4f);
+       // Invoke("EndHurt", 0.4f);
+        timeTeResetAction = 0.4f;
     }
     public void OnEnterWindZone()
     {
@@ -247,20 +251,34 @@ public class Player : MonoBehaviour {
     }
 
     //from animation
-    public void EndJump()
-    {
-       // if (state == states.STARTING_NEXT_LAP) return;
-        if (gameManager.state == GameManager.states.READY) return;
-        Idle();
-    }
-    public void EndHurt()
-    {
-        //if (state == states.STARTING_NEXT_LAP) return;
-        if (gameManager.state == GameManager.states.READY) return;
-        Idle();
-    }
+    //public void EndJump()
+    //{
+    //   // if (state == states.STARTING_NEXT_LAP) return;
+    //    if (gameManager.state == GameManager.states.READY) return;
+    //    Idle();
+    //}
+    //public void EndHurt()
+    //{
+    //    //if (state == states.STARTING_NEXT_LAP) return;
+    //    if (gameManager.state == GameManager.states.READY) return;
+    //    Idle();
+    //}
     void Update()
     {
+        if (timeTeResetAction > 0)
+        {
+            timeTeResetAction -= Time.deltaTime;
+        }
+        else
+        {
+            if (state == states.JUMPING || state == states.HURT)
+            {
+                if (gameManager.state == GameManager.states.READY) return;
+                state = states.RUNNING;
+                GetComponent<Animation>().Play("playerIdle");
+            }
+        }
+
         if (state == states.READY) return;
         if (state == states.DEAD) return;
         if (state == states.PLAYING) return;
@@ -384,12 +402,12 @@ public class Player : MonoBehaviour {
         gameCamera.NewLap();
         Events.OnFlashWinLap(color);
 
-        if (state == states.IN_WIND_ZONE)
-            state = states.RUNNING;
-
         OnExitTrampolinZone();
 
-        lastState = state;
+        if (state == states.JUMPING)
+            lastState = state;
+        else
+            lastState = states.RUNNING;
 
         meters = laps + "000";
         Events.OnAvatarWinLap(id, laps);        
@@ -410,7 +428,9 @@ public class Player : MonoBehaviour {
         }
 
         GetComponent<TrailRenderer>().time = TrilRendererDefaultTime;
-        state = lastState;
+        if (lastState != states.JUMPING)
+            state = states.RUNNING;
+
         Vector3 pos = transform.localPosition;
         pos.x = lastXPosition - 40;
         transform.localPosition = pos;
