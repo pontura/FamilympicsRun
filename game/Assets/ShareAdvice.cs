@@ -36,4 +36,8 @@ public class ShareAdvice : MonoBehaviour {
     {
         panel.SetActive(false);
     }
+    public void InviteFriends()
+    {
+        Events.OnFacebookInviteFriends();
+    }
 }

@@ -184,7 +184,8 @@ public class EnergyManager : MonoBehaviour {
     }
     void RejectEnergyTo(string facebookID)
     {
-        UpdataNotification(facebookID, Data.Instance.userData.facebookID , "2");
+       // UpdataNotification(facebookID, Data.Instance.userData.facebookID , "2");
+        Data.Instance.notifications.DeleteNotification(facebookID, Data.Instance.userData.facebookID);
        // Data.Instance.facebookShare.ShareToFriend(facebookID, Data.Instance.userData.username + " rejected sending you energy!");
     }
     void UpdataNotification(string facebookID, string asked_facebookID, string status)

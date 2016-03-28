@@ -167,13 +167,13 @@ public class Notifications : MonoBehaviour {
                 id = a;
         }
         notificationsReceived.RemoveAt(id);
-        DeleteNotification(facebookID);
+        DeleteNotification(Data.Instance.userData.facebookID, facebookID);
     }
-    public void DeleteNotification(string asked_facebookID)
+    public void DeleteNotification(string facebookID, string asked_facebookID)
     {
-        print("DeleteNotification");
+        print("DeleteNotification" + facebookID + " - " + asked_facebookID);
         var query = new ParseQuery<ParseObject>("Notifications")
-            .WhereEqualTo("facebookID", Data.Instance.userData.facebookID)
+            .WhereEqualTo("facebookID", facebookID)
             .WhereEqualTo("asked_facebookID", asked_facebookID);
 
         query.FindAsync().ContinueWith(t =>

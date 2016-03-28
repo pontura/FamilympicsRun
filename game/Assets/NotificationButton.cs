@@ -83,7 +83,7 @@ public class NotificationButton : MonoBehaviour {
     }
     public void DeleteRejectedEnergyRequest()
     {
-        Data.Instance.notifications.DeleteNotification(facebookID);
+        Data.Instance.notifications.DeleteNotification(Data.Instance.userData.facebookID, facebookID);
         Destroy(gameObject);
     }
     public void CancelAction()

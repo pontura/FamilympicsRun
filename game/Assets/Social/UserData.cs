@@ -59,6 +59,8 @@ public class UserData : MonoBehaviour {
     }
     public void RegisterUser(string username, string facebookID, string email)
     {
+        Debug.Log("RegisterUser " + username + "fb: " + facebookID + " email. " + email);
+
         PlayerPrefs.SetString("username", username);
         PlayerPrefs.SetString("facebookID", facebookID);
         PlayerPrefs.SetString("email", email);

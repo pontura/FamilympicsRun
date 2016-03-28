@@ -119,7 +119,7 @@ public class LevelsData : MonoBehaviour {
     }
     public void Reset()
     {
-        print("__________________RESET HISCORES_____________________");
+     //   print("__________________RESET HISCORES_____________________");
         foreach (LevelsData.LevelsScore levelScore in levelsScore)
         {
             levelScore.myScore = 0;
@@ -136,14 +136,14 @@ public class LevelsData : MonoBehaviour {
         while (Data.Instance.userData.facebookID == "")
             yield return null; 
 
-        print("________________________OnParseLogin::::::::::::::::::::::::");
+      //  print("________________________OnParseLogin::::::::::::::::::::::::");
         Events.AddFacebookFriend(Data.Instance.userData.facebookID, Data.Instance.userData.username);
         loadFriendsAndParseLogged++;
         CheckIfBothAreReady();
     }
     public void OnFacebookFriends()
     {
-        print("________________________OnFacebookFriends::::::::::::::::::::::::");
+       // print("________________________OnFacebookFriends::::::::::::::::::::::::");
         
         foreach (UserData.FacebookUserData facebookUserData in Data.Instance.userData.FacebookFriends)
             Events.AddFacebookFriend(facebookUserData.facebookID, facebookUserData.username);

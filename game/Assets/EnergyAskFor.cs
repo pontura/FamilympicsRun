@@ -82,7 +82,10 @@ public class EnergyAskFor : MonoBehaviour {
             newButton.Init(this, a + 1, data.username, facebookID, done);
         }
     }
-
+    public void InviteFriends()
+    {
+        Events.OnFacebookInviteFriends();
+    }
 
     public void Back()
     {

@@ -77,7 +77,11 @@ public class FacebookFriends : MonoBehaviour {
     }
     void AppInviteCallback(IAppInviteResult result)
     {
-        Debug.Log("IAppInviteResult: " + result);
+        Debug.Log("_______IAppInviteResult: " + result.Cancelled);
+
+        if (!result.Cancelled)
+            Events.ReFillEnergy(1);
+
     }
     void AddFacebookFriend(string id, string username)
     {

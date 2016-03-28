@@ -136,7 +136,7 @@ public class NotificationsScene : MonoBehaviour {
        // print("new Energy qty: " + friendsIdsThatGaveYouEnergy.Count);
         foreach (string asked_facebookID in friendsIdsThatGaveYouEnergy)
         {
-            Data.Instance.notifications.DeleteNotification(asked_facebookID);
+            Data.Instance.notifications.DeleteNotification(Data.Instance.userData.facebookID, asked_facebookID);
         }
     }
     public void AcceptFail()
