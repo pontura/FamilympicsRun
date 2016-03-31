@@ -67,7 +67,7 @@ public class FacebookFriends : MonoBehaviour {
 
         FB.Mobile.AppInvite(
            // new Uri("https://fb.me/1248005065213962"),
-            new Uri("https://fb.me/1271323376215464"),
+            new Uri("https://fb.me/1271323376215464")
             , callback: this.HandleResult
             //new Uri(icon_url),
             //AppInviteCallback
