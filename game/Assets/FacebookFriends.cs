@@ -68,12 +68,48 @@ public class FacebookFriends : MonoBehaviour {
         FB.Mobile.AppInvite(
            // new Uri("https://fb.me/1248005065213962"),
             new Uri("https://fb.me/1271323376215464"),
-            new Uri(icon_url),
-            AppInviteCallback
+            , callback: this.HandleResult
+            //new Uri(icon_url),
+            //AppInviteCallback
         );
         //FB.AppRequest(
         //    "Running!", null, null, null, null, "Come and play Running!", null
         //);
+    }
+    private string LastResponse;
+    private string Status;
+    protected void HandleResult(IResult result)
+    {
+        Debug.Log("________________HandleResult_____________");
+        if (result == null)
+        {
+            this.LastResponse = "Null Response\n";
+            Debug.Log(" Null " + this.LastResponse);
+            return;
+        }
+        if (!string.IsNullOrEmpty(result.Error))
+        {
+            this.Status = "Error - Check log for details";
+            this.LastResponse = "Error Response:\n" + result.Error;
+            Debug.Log(Status + " - " + result.Error);
+        }
+        else if (result.Cancelled)
+        {
+            this.Status = "Cancelled - Check log for details";
+            this.LastResponse = "Cancelled Response:\n" + result.RawResult;
+             Debug.Log(Status + " - " + result.RawResult);
+        }
+        else if (!string.IsNullOrEmpty(result.RawResult))
+        {
+            this.Status = "Success - Check log for details";
+            this.LastResponse = "Success Response:\n" + result.RawResult;
+            Debug.Log(Status + " - " + result.RawResult);
+        }
+        else
+        {
+            this.LastResponse = "Empty Response\n";
+            Debug.Log(this.LastResponse);
+        }
     }
     void AppInviteCallback(IAppInviteResult result)
     {

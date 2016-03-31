@@ -171,7 +171,7 @@ public class Notifications : MonoBehaviour {
     }
     public void DeleteNotification(string facebookID, string asked_facebookID)
     {
-        print("DeleteNotification" + facebookID + " - " + asked_facebookID);
+        print("___DeleteNotification" + facebookID + " - " + asked_facebookID);
         var query = new ParseQuery<ParseObject>("Notifications")
             .WhereEqualTo("facebookID", facebookID)
             .WhereEqualTo("asked_facebookID", asked_facebookID);
