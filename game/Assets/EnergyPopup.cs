@@ -86,4 +86,22 @@ public class EnergyPopup : MonoBehaviour {
     {
         Data.Instance.Load("Buy");
     }
+    public void InviteFriends()
+    {
+        if (FB.IsLoggedIn)
+        {
+            Close();
+            Invoke("Da", 1);
+            Events.OnFacebookInviteFriends();
+        }
+        else
+        {
+            CloseOff();
+            Events.OnFacebookNotConnected();
+        }
+    }
+    void Da()
+    {
+        Events.ReFillEnergy(1);
+    }
 }

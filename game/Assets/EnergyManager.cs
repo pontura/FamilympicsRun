@@ -172,15 +172,15 @@ public class EnergyManager : MonoBehaviour {
     }
     public void ReFillEnergy(int qty)
     {
+        Debug.Log("ReFillEnergy " + qty + " energy " + energy + "     plusEnergy: " + plusEnergy);
         energy += qty;
         if (energy > MAX_ENERGY)
         {
             energy = 1;
-            plusEnergy++;
-            Debug.Log("ReFillEnergy energy " + energy + "     plusEnergy: " + plusEnergy);
+            AddPlusEnergy(1);
+            Debug.Log("plusEnergy++ : energy " + energy + "     plusEnergy: " + plusEnergy);
         }
         SaveEnergy();
-        SavePlusEnergy();
        // Data.Instance.Load("LevelSelector");
     }
     void SendEnergyTo(string facebookID)
