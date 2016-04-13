@@ -31,6 +31,9 @@ public class ChallengeResult : MonoBehaviour {
         wonPanel.SetActive(false);
         losePanel.SetActive(false);
 
+        wonPanel.transform.localScale = Data.Instance.screenManager.scale;
+        losePanel.transform.localScale = Data.Instance.screenManager.scale;
+
         int levelID = Data.Instance.levels.currentLevel;
 
         username1.text = Data.Instance.gameSettings.GetUsername(Data.Instance.userData.username);

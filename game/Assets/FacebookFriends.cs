@@ -64,6 +64,10 @@ public class FacebookFriends : MonoBehaviour {
     void OnFacebookInviteFriends()
     {
         Debug.Log("OnFacebookInviteFriends");
+        return;
+        // le da energia desde el popup
+
+
 
         FB.Mobile.AppInvite(
            // new Uri("https://fb.me/1248005065213962"),
