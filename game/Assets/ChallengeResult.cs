@@ -4,6 +4,8 @@ using System.Collections;
 
 public class ChallengeResult : MonoBehaviour {
 
+    public GameObject panel;
+
     public string challenge_objectID;
     public string winner;
     public float myScore;
@@ -31,8 +33,7 @@ public class ChallengeResult : MonoBehaviour {
         wonPanel.SetActive(false);
         losePanel.SetActive(false);
 
-        wonPanel.transform.localScale = Data.Instance.screenManager.scale;
-        losePanel.transform.localScale = Data.Instance.screenManager.scale;
+        panel.transform.localScale = Data.Instance.screenManager.scale;
 
         int levelID = Data.Instance.levels.currentLevel;
 
