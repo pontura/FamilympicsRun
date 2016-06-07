@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using Facebook.Unity;
+using Soomla.Store;
 
 public class SettingsMenu : MonoBehaviour {
 
@@ -21,10 +22,12 @@ public class SettingsMenu : MonoBehaviour {
             SetLoginButton(true);
         }
         Events.OnFacebookLogin += OnFacebookLogin;
+        StoreEvents.OnRestoreTransactionsFinished += OnRestoreTransactionsFinished;
     }
     void OnDestroy()
     {
         Events.OnFacebookLogin -= OnFacebookLogin;
+        StoreEvents.OnRestoreTransactionsFinished -= OnRestoreTransactionsFinished;
     }
 
     void SetLoginButton(bool logged)
@@ -80,5 +83,16 @@ public class SettingsMenu : MonoBehaviour {
     void FBLogin()
     {
         Data.Instance.loginManager.FBLogin();
+    }
+    public void RestoreApp()
+    {
+        Events.OnLoading(true);
+        SoomlaStore.RestoreTransactions();
+    }
+    void OnRestoreTransactionsFinished(bool events)
+    {
+        Events.OnLoading(false);
+        if (events)
+            Data.Instance.Load("MainMenu");
     }
 }
